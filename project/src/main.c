@@ -6,7 +6,12 @@
 #include <string.h>
 #include <stdlib.h>
 
-struct buf {
+struct mas_str {  // массив строк
+    struct buf* elem;
+    size_t size;
+};
+
+struct buf {  // типа строка
     char* str;  // string
     size_t size;  // used mem in char
     size_t buf_size;  // capacity
@@ -17,6 +22,7 @@ int main(void) {
     struct buf tmp_buf = {NULL, 0, 0};  // хранит только одну введенную строку
     char in_char;  // введенный символ
 
+    // TODO(): бахнуть весь while в функцию
     while ((in_char = getchar()) != EOF) {
         if (tmp_buf.size + 1 > tmp_buf.buf_size) {
             size_t new_size = !tmp_buf.buf_size ? 1 : tmp_buf.buf_size * 2;
