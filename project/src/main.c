@@ -13,12 +13,7 @@ struct buf {  // типа строка
 };
 
 int copy_buf(struct buf* l_buf, struct buf* r_buf) {
-    printf("->copy_buf\n");
-    // if (l_buf->str) {
-    //     free(l_buf->str);
-    // }
-    // l_buf->str = r_buf->str;
-    char* tmp = (char*)malloc((r_buf->buf_size + 1) * sizeof(char));
+    char* tmp = (char*)malloc((r_buf->buf_size) * sizeof(char));
     if (!tmp) {
         // добавить освобождение памяти в буфере
         printf("[error]\n");
@@ -26,14 +21,15 @@ int copy_buf(struct buf* l_buf, struct buf* r_buf) {
     }
 
     strcpy(tmp, r_buf->str);
-    free(l_buf->str);
+//    if (l_buf->str) {
+//        free(l_buf->str);
+//    }
+
     l_buf->str = tmp;
-    printf("::copy_buf->l_buf->str = |%s|\n", l_buf->str);
 
     l_buf->size = r_buf->size;
     l_buf->buf_size = r_buf->buf_size;
 
-    printf("<-copy_buf\n");
     return 0;
 }
 
@@ -44,29 +40,27 @@ struct mas_str {  // массив строк
 };
 
 int add_item(struct mas_str* in_mas, struct buf* in_buf) {
-    printf("->add_item\n");
-    struct buf* tmp = (struct buf*)malloc(in_mas->size + 1);
+    struct buf* tmp = (struct buf*)malloc((in_mas->size + 1) * sizeof(struct buf));
+
     if (!tmp) {
         // добавить освобождение памяти в буфере
         printf("[error]\n");
         return 0;
     }
-    
-    for (size_t i = 0; i < in_mas->size; i++) {
 
+    for (size_t i = 0; i < in_mas->size; i++) {
         copy_buf(&tmp[i], &in_mas->elem[i]);
+
+        printf("|%s|\n", tmp[i].str);
     }
-    printf("::add_item->cicle for DONE\n");
 
     copy_buf(&tmp[in_mas->size], in_buf);
-    printf("::add_item->copy_buf DONE\n");
 
     free(in_mas->elem);
 
     in_mas->elem = tmp;
     in_mas->size++;
 
-    printf("<-add_item\n");
     return 0;
 }
 
@@ -109,14 +103,10 @@ int main(void) {
     struct buf tmp_buf = {NULL, 0, 0};  // хранит только одну введенную строку
 
     while (str_input(&tmp_buf) == 1) {
-        printf("::str_input(&tmp_buf) DONE\n");
-
         add_item(&all_str, &tmp_buf);
-        printf("::add_item(&all_str, &tmp_buf) DONE\n");
-
-        free(tmp_buf.str);
-        printf("::free(tmp_buf.str) DONE\n");
-        
+        tmp_buf.str = NULL;
+        tmp_buf.size = 0;
+        tmp_buf.buf_size = 0;
     }
     // char in_char;  // введенный символ
 
@@ -145,7 +135,7 @@ int main(void) {
 
     //     if (in_char == '\n') {
     //         printf("out = %s", tmp_buf.str);
-            
+
     //         int jeppa = add_item(&all_str, &tmp_buf);
     //         printf("add_item = %d\n", jeppa);
 
@@ -157,6 +147,7 @@ int main(void) {
 
 
     for (size_t i = 0; i < all_str.size; i++) {
+        printf("%zu\n", i);
         printf("%s", all_str.elem[i].str);
     }
 
