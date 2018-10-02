@@ -32,13 +32,14 @@ int copy_buf(struct buf* l_buf, struct buf* r_buf) {
 
 
 struct mas_str {  // массив строк
-    struct buf* elem;
-    size_t size;
+    struct buf* elem;  // хранимые элементы
+    size_t size;  // реал сайз
+//    size_t mas_size;  // капасити
 };
 
 int add_item(struct mas_str* in_mas, struct buf* in_buf) {
-    struct buf* tmp = (struct buf*)malloc((in_mas->size + 1) * sizeof(struct buf));
 
+    struct buf* tmp = (struct buf*)malloc((in_mas->size + 1) * sizeof(struct buf));
     if (!tmp) {
         // добавить освобождение памяти в буфере
         printf("[error]\n");
@@ -91,28 +92,30 @@ int str_input(struct buf* tmp_buf) {  // '\0' - 0, '\n' - 1
     return 0;
 }
 
-struct mas_str* parse_str(struct mas_str* in_mas) {
+int parse_str(const struct mas_str* in_mas, struct mas_str* result) {
     if (!in_mas) {
-        return NULL;
+        return -1;
     }
 
     for (size_t i = 0; i < in_mas->size; i++) {
-        if (((strnstr(in_mas->elem[i].str, "Date: ", 6)) != NULL) ||
-            ((strnstr(in_mas->elem[i].str, "From: ", 6)) != NULL) ||
-            ((strnstr(in_mas->elem[i].str, "To: ", 4)) != NULL) ||
-            ((strnstr(in_mas->elem[i].str, "Subject: ", 9)) != NULL)) {
+        if (((strstr(in_mas->elem[i].str, "Date: ")) != NULL) ||
+            ((strstr(in_mas->elem[i].str, "From: ")) != NULL) ||
+            ((strstr(in_mas->elem[i].str, "To: ")) != NULL) ||
+            ((strstr(in_mas->elem[i].str, "Subject: ")) != NULL)) {
 
-            printf("%s", in_mas->elem[i].str);
+            //  printf("%s", in_mas->elem[i].str);
+            add_item(result, &in_mas->elem[i]);
         }
     }
-    return NULL;
+    return 0;
 }
 
 
 int main(void) {
     struct mas_str all_str = {NULL, 0};  // хранит весь ввод
     struct buf tmp_buf = {NULL, 0, 0};  // хранит только одну введенную строку
-
+    struct mas_str res = {NULL, 0};
+    
     while (str_input(&tmp_buf) == 1) {
         add_item(&all_str, &tmp_buf);
         tmp_buf.str = NULL;
@@ -120,14 +123,10 @@ int main(void) {
         tmp_buf.buf_size = 0;
     }
 
-//    for (size_t i = 0; i < all_str.size; i++) {
-//        printf("--[%zu]: |", i);
-//        printf("%s", all_str.elem[i].str);
-//    }
+    parse_str(&all_str, &res);
 
-//    printf("\t--results:\n");
-    parse_str(&all_str);
-//    printf(("END\n"));
-
+    for (size_t i = 0; i < res.size; i++) {
+        printf("%s", res.elem[i].str);
+    }
     return 0;
 }
