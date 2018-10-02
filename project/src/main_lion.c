@@ -19,8 +19,6 @@ int copy_buf(struct buf* l_buf, struct buf* r_buf) {
 
     char* tmp = (char*)malloc((r_buf->buf_size) * sizeof(char));
     if (!tmp) {
-        // добавить освобождение памяти в буфере
-//        free(tmp);
         printf("[error]\n");
         return 1;
     }
@@ -31,11 +29,11 @@ int copy_buf(struct buf* l_buf, struct buf* r_buf) {
         return 1;
     }
 
-    strncpy(tmp, r_buf->str, r_buf->buf_size);
-//    if (l_buf->str) {
-//        free(l_buf->str);
-//    }
+    if (l_buf->str) {
+        free(l_buf->str);
+    }
 
+    strncpy(tmp, r_buf->str, r_buf->buf_size);
     l_buf->str = tmp;
 
     l_buf->size = r_buf->size;
@@ -91,7 +89,7 @@ int str_input(struct buf* tmp_buf) {  // '\0' - 0, '\n' - 1
             if (!tmp) {
                 // добавить освобождение памяти в буфере
                 printf("[error]\n");
-                return 0;
+                return 1;
             }
             if (tmp_buf->str) {
                 strncpy(tmp, tmp_buf->str, (int)strlen(tmp_buf->str));
@@ -113,7 +111,7 @@ int str_input(struct buf* tmp_buf) {  // '\0' - 0, '\n' - 1
 
 int parse_str(const struct mas_str* in_mas, struct mas_str* result) {
     if (!in_mas) {
-        return -1;
+        return 1;
     }
 
     for (size_t i = 0; i < in_mas->size; i++) {
