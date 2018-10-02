@@ -21,9 +21,6 @@ int copy_buf(struct buf* l_buf, struct buf* r_buf) {
     }
 
     strcpy(tmp, r_buf->str);
-//    if (l_buf->str) {
-//        free(l_buf->str);
-//    }
 
     l_buf->str = tmp;
 
@@ -50,8 +47,6 @@ int add_item(struct mas_str* in_mas, struct buf* in_buf) {
 
     for (size_t i = 0; i < in_mas->size; i++) {
         copy_buf(&tmp[i], &in_mas->elem[i]);
-
-        // printf("|%s|\n", tmp[i].str);
     }
 
     copy_buf(&tmp[in_mas->size], in_buf);
@@ -65,7 +60,6 @@ int add_item(struct mas_str* in_mas, struct buf* in_buf) {
 }
 
 int str_input(struct buf* tmp_buf) {  // '\0' - 0, '\n' - 1
-    // struct buf tmp_buf = {NULL, 0, 0};  // хранит только одну введенную строку
     char in_char;  // введенный символ
 
     while ((in_char = getchar()) != EOF) {  // В силайоне не работает поэтому там 'D'
@@ -92,13 +86,30 @@ int str_input(struct buf* tmp_buf) {  // '\0' - 0, '\n' - 1
 
         if (in_char == '\n') {
             return 1;
-            // return tmp_buf.str;
         }
     }
     return 0;
 }
+
+struct mas_str* parse_str(struct mas_str* in_mas) {
+    if (!in_mas) {
+        return NULL;
+    }
+
+    for (size_t i = 0; i < in_mas->size; i++) {
+        if (((strnstr(in_mas->elem[i].str, "Date: ", 6)) != NULL) ||
+            ((strnstr(in_mas->elem[i].str, "From: ", 6)) != NULL) ||
+            ((strnstr(in_mas->elem[i].str, "To: ", 4)) != NULL) ||
+            ((strnstr(in_mas->elem[i].str, "Subject: ", 9)) != NULL)) {
+
+            printf("%s", in_mas->elem[i].str);
+        }
+    }
+    return NULL;
+}
+
+
 int main(void) {
-    // struct buf my_buf = {NULL, 0, 0};  // хранит весь ввод
     struct mas_str all_str = {NULL, 0};  // хранит весь ввод
     struct buf tmp_buf = {NULL, 0, 0};  // хранит только одну введенную строку
 
@@ -109,10 +120,14 @@ int main(void) {
         tmp_buf.buf_size = 0;
     }
 
-    for (size_t i = 0; i < all_str.size; i++) {
-        printf("--[%zu]: |", i);
-        printf("%s", all_str.elem[i].str);
-    }
+//    for (size_t i = 0; i < all_str.size; i++) {
+//        printf("--[%zu]: |", i);
+//        printf("%s", all_str.elem[i].str);
+//    }
+
+//    printf("\t--results:\n");
+    parse_str(&all_str);
+//    printf(("END\n"));
 
     return 0;
 }
