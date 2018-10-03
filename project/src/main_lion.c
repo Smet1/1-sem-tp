@@ -13,33 +13,31 @@ struct buf {  // типа строка
 };
 
 int copy_buf(struct buf* l_buf, struct buf* r_buf) {
-    if (!r_buf || !r_buf->str || !l_buf) {
-        printf("hui\n");
+    if (!r_buf) {
         return 1;
     }
 
-    char* tmp = (char*)malloc((r_buf->size) * sizeof(char));
+    char* tmp = (char*)malloc((r_buf->buf_size) * sizeof(char));
     if (!tmp) {
         printf("[error]\n");
         return 1;
     }
 
-    strncpy(tmp, r_buf->str, r_buf->size);
-//    tmp[r_buf->size] = 0;
-
-//    printf("-stlren = %zu | r_buf->size = %zu\n", strlen(r_buf->str), r_buf->size);
-//    printf("%c",tmp[r_buf->size]);
-//    printf("\n%s\n", r_buf->str);
+    if (!r_buf->str) {
+        free(tmp);
+        printf("[error]\n");
+        return 1;
+    }
 
     if (l_buf->str) {
         free(l_buf->str);
-        l_buf->str = NULL;
     }
+
+    strncpy(tmp, r_buf->str, r_buf->buf_size);
     l_buf->str = tmp;
 
-    tmp = NULL;
     l_buf->size = r_buf->size;
-    l_buf->buf_size = r_buf->size;
+    l_buf->buf_size = r_buf->buf_size;
 
     return 0;
 }
@@ -57,11 +55,11 @@ int add_item(struct mas_str* in_mas, struct buf* in_buf) {
 
         struct buf* tmp = (struct buf*)malloc((new_size) * sizeof(struct buf));
         if (!tmp) {
+            // добавить освобождение памяти в буфере
             printf("[error]\n");
             return 1;
         }
         for (size_t i = 0; i < in_mas->size; i++) {
-            printf("here?\n");
             copy_buf(&tmp[i], &in_mas->elem[i]);
             free(in_mas->elem[i].str);
         }
@@ -72,7 +70,6 @@ int add_item(struct mas_str* in_mas, struct buf* in_buf) {
         in_mas->elem = tmp;
     }
 
-    printf("here_1?\n");
     copy_buf(&in_mas->elem[in_mas->size], in_buf);  // добавление in_buf в конец
     in_mas->size++;
 
@@ -82,7 +79,7 @@ int add_item(struct mas_str* in_mas, struct buf* in_buf) {
 int str_input(struct buf* tmp_buf) {  // '\0' - 0, '\n' - 1
     char in_char;  // введенный символ
 
-    while ((in_char = getchar()) != 'D') {  // В силайоне не работает поэтому там 'D'
+    while ((in_char = getchar()) != EOF) {  // В силайоне не работает поэтому там 'D'
         if (tmp_buf->size + 1 > tmp_buf->buf_size) {
             // size_t new_size = !tmp_buf.buf_size ? 1 : tmp_buf.buf_size * 2;
             size_t new_size = ((tmp_buf->buf_size * 2)>(16))?(tmp_buf->buf_size * 2):(16);
@@ -90,15 +87,13 @@ int str_input(struct buf* tmp_buf) {  // '\0' - 0, '\n' - 1
             // TODO(): new_size + 1 ?? добавлять ли символ конца строки
             char* tmp = (char*)malloc((new_size + 1) * sizeof(char));
             if (!tmp) {
+                // добавить освобождение памяти в буфере
                 printf("[error]\n");
                 return 1;
             }
-
             if (tmp_buf->str) {
-                // strncpy(tmp, tmp_buf->str, (int)strlen(tmp_buf->str));
-                strncpy(tmp, tmp_buf->str, tmp_buf->size);
-                // printf("::str_input->strncpy\n");             
-                // free(tmp_buf->str);
+                strncpy(tmp, tmp_buf->str, (int)strlen(tmp_buf->str));
+                free(tmp_buf->str);
             }
 
             tmp_buf->str = tmp;
@@ -116,7 +111,7 @@ int str_input(struct buf* tmp_buf) {  // '\0' - 0, '\n' - 1
 
 int parse_str(const struct mas_str* in_mas, struct mas_str* result) {
     if (!in_mas) {
-        return -1;
+        return 1;
     }
 
     for (size_t i = 0; i < in_mas->size; i++) {
@@ -132,18 +127,15 @@ int parse_str(const struct mas_str* in_mas, struct mas_str* result) {
 }
 
 
-int main() {
+int main(void) {
     struct mas_str all_str = {NULL, 0, 0};  // хранит весь ввод
     struct buf tmp_buf = {NULL, 0, 0};  // хранит только одну введенную строку
     struct mas_str res = {NULL, 0, 0};  // результат парсера
 
     while (str_input(&tmp_buf) == 1) {
-//        printf("::add_item(&all_str, &tmp_buf) BEFORE\n");
         add_item(&all_str, &tmp_buf);
-//        printf("::add_item(&all_str, &tmp_buf) DONE\n\n");
 
         free(tmp_buf.str);
-//        printf("::free(tmp_buf.str) DONE\n\n");
         tmp_buf.str = NULL;
         tmp_buf.size = 0;
         tmp_buf.buf_size = 0;
@@ -151,23 +143,13 @@ int main() {
 
     parse_str(&all_str, &res);
 
-    // TODO(): написать метод free_? для всех структур
-    // beg
     for (size_t i = 0; i < res.size; i++) {
         printf("%s", res.elem[i].str);
     }
 
-    for (size_t i = 0; i < all_str.size; i++) {
-        free(all_str.elem[i].str);
-    }
     free(all_str.elem);
-
     free(tmp_buf.str);
-
-    for (size_t i = 0; i < all_str.size; i++) {
-        free(res.elem[i].str);
-    }
     free(res.elem);
-    // end
+
     return 0;
 }

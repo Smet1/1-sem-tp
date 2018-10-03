@@ -11,7 +11,7 @@ SRCS = \
 
 .PHONY: all main test clean
 
-all: main test
+# all: main test
 
 main: $(SRCS)
 	$(CC) -Wall -Wextra -Werror $(addprefix -I,$(HDRS)) -o $(TARGET) $(CFLAGS) $(SRCS) -lm
