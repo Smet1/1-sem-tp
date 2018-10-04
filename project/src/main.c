@@ -63,6 +63,7 @@ int add_item(struct mas_str* in_mas, struct buf* in_buf) {
         }
 
         in_mas->mas_size = new_size;
+        free(in_mas->elem);  // new
         in_mas->elem = tmp;
     }
 
@@ -90,6 +91,8 @@ int str_input(struct buf* tmp_buf) {  // '\0' - 0, '\n' - 1
             if (tmp_buf->str) {
                 strncpy(tmp, tmp_buf->str, tmp_buf->size);
             }
+
+            free(tmp_buf->str);  // new
 
             tmp_buf->str = tmp;
             tmp_buf->buf_size = new_size;
