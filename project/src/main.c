@@ -44,7 +44,7 @@ struct mas_str {  // массив строк
 
 int add_item(struct mas_str* in_mas, struct buf* in_buf) {
     if (in_mas->size + 1 > in_mas->mas_size) {
-        size_t new_size = (in_mas->mas_size * 2) > 5 ? (in_mas->mas_size * 2) : 5;  // стандартный размер 5
+        size_t new_size = (in_mas->mas_size * 2) > 4 ? (in_mas->mas_size * 2) : 4;  // стандартный размер 4
 
         struct buf* tmp = (struct buf*)malloc((new_size) * sizeof(struct buf));
         if (!tmp) {
@@ -112,12 +112,12 @@ struct mas_str* parse_str(const struct mas_str* in_mas) {
     struct mas_str* result = (struct mas_str*)malloc(1 * sizeof(struct mas_str));
     result->mas_size = 0;
     result->size = 0;
-
+    result->elem = NULL;
     for (size_t i = 0; i < in_mas->size; i++) {
-        if (((strstr(in_mas->elem[i].str, "Date: ")) != NULL) ||
-            ((strstr(in_mas->elem[i].str, "From: ")) != NULL) ||
-            ((strstr(in_mas->elem[i].str, "To: ")) != NULL) ||
-            ((strstr(in_mas->elem[i].str, "Subject: ")) != NULL)) {
+        if (((strncmp(in_mas->elem[i].str, "Date: ", 6)) == 0) ||
+            ((strncmp(in_mas->elem[i].str, "From: ", 6)) == 0) ||
+            ((strncmp(in_mas->elem[i].str, "To: ", 4)) == 0) ||
+            ((strncmp(in_mas->elem[i].str, "Subject: ", 9)) == 0)) {
 
             add_item(result, &in_mas->elem[i]);
         }
@@ -141,20 +141,20 @@ int main() {
     }
 
     struct mas_str* res = parse_str(&all_str);  // результат парсера
-    // TODO(): написать метод free_? для всех структур
-    // beg
     for (size_t i = 0; i < res->size; i++) {
         printf("%s", res->elem[i].str);
     }
+
+    // TODO(): написать метод free_? для всех структур
+    // beg
+    free(tmp_buf.str);
 
     for (size_t i = 0; i < all_str.size; i++) {
         free(all_str.elem[i].str);
     }
     free(all_str.elem);
 
-    free(tmp_buf.str);
-
-    for (size_t i = 0; i < all_str.mas_size; i++) {
+    for (size_t i = 0; i < res->mas_size; i++) {
         free(res->elem[i].str);
     }
     free(res->elem);
