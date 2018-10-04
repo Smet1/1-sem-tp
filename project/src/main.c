@@ -18,23 +18,24 @@ int copy_buf(struct buf* l_buf, struct buf* r_buf) {
         return 1;
     }
 
-    char* tmp = (char*)malloc((r_buf->size) * sizeof(char));
+    char* tmp = (char*)malloc((r_buf->size + 1) * sizeof(char));
     if (!tmp) {
         printf("[error]\n");
         return 1;
     }
 
     strncpy(tmp, r_buf->str, r_buf->size);
-//    tmp[r_buf->size] = 0;
+    tmp[r_buf->size] = 0;
 
 //    printf("-stlren = %zu | r_buf->size = %zu\n", strlen(r_buf->str), r_buf->size);
 //    printf("%c",tmp[r_buf->size]);
 //    printf("\n%s\n", r_buf->str);
 
-    if (l_buf->str) {
-        free(l_buf->str);
-        l_buf->str = NULL;
-    }
+    //  возможно нужно занулить str в buf при его создании
+//    if (l_buf->str) {
+//        free(l_buf->str);
+//        l_buf->str = NULL;
+//    }
     l_buf->str = tmp;
 
     tmp = NULL;
@@ -61,7 +62,7 @@ int add_item(struct mas_str* in_mas, struct buf* in_buf) {
             return 1;
         }
         for (size_t i = 0; i < in_mas->size; i++) {
-            printf("here?\n");
+//            printf("here?\n");
             copy_buf(&tmp[i], &in_mas->elem[i]);
             free(in_mas->elem[i].str);
         }
@@ -72,7 +73,7 @@ int add_item(struct mas_str* in_mas, struct buf* in_buf) {
         in_mas->elem = tmp;
     }
 
-    printf("here_1?\n");
+//    printf("here_1?\n");
     copy_buf(&in_mas->elem[in_mas->size], in_buf);  // добавление in_buf в конец
     in_mas->size++;
 
@@ -164,7 +165,7 @@ int main() {
 
     free(tmp_buf.str);
 
-    for (size_t i = 0; i < all_str.size; i++) {
+    for (size_t i = 0; i < all_str.mas_size; i++) {
         free(res.elem[i].str);
     }
     free(res.elem);
