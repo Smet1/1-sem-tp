@@ -3,8 +3,6 @@
 // Sender: admin\0
 // EOF = ctr + D
 
-// TODO(): переименовать структуры на наиболее очевидные
-// TODO(): написать конструктор и деструктор к ним
 // TODO(): add_item - не оптимальна(кек) не нужно копировать в новую память старые строки - достаточно "переместить" их, т.е. просто перенести указатели вообще есть стандартная функция realloc, которая увеличивает размер массива, лучше воспользоваться ей
 // TODO(): realloc только вот нахуя
 // TODO(): ВОЗВРАЩАЕМЫЕ ЗНАЧЕНИЯ
@@ -19,9 +17,9 @@ struct buf {  // типа строка
     size_t capacity;  // capacity
 };
 
-void buf_init(struct buf*);  // около конструктор
+void init_buf(struct buf *);  // около конструктор
 
-void buf_free(struct buf*);  // около деструктор
+void free_buf(struct buf *);  // около деструктор
 
 int copy_buf(struct buf*, struct buf*);
 
@@ -40,16 +38,13 @@ struct mas_str* parse_str(const struct mas_str*);
 
 int main() {
     struct mas_str all_str = {NULL, 0, 0};  // хранит весь ввод
-    struct buf tmp_buf = {NULL, 0, 0};  // хранит только одну введенную строку
+    struct buf tmp_buf;  // хранит только одну введенную строку
+    init_buf(&tmp_buf);
 
     while (str_input(&tmp_buf) == 1) {
         add_item(&all_str, &tmp_buf);
 
-        free(tmp_buf.str);
-
-        tmp_buf.str = NULL;
-        tmp_buf.size = 0;
-        tmp_buf.capacity = 0;
+        free_buf(&tmp_buf);
     }
 
     struct mas_str* res = parse_str(&all_str);  // результат парсера
@@ -57,30 +52,30 @@ int main() {
         printf("%s", res->elem[i].str);
     }
 
-    free(tmp_buf.str);
+    free_buf(&tmp_buf);
 
     for (size_t i = 0; i < all_str.size; i++) {
-        free(all_str.elem[i].str);
+        free_buf(&all_str.elem[i]);
     }
     free(all_str.elem);
 
     for (size_t i = 0; i < res->capacity; i++) {
-        free(res->elem[i].str);
+        free_buf(res->elem);
     }
     free(res->elem);
     free(res);
     return 0;
 }
 
-void buf_init(struct buf* init_buf) {
+void init_buf(struct buf *init_buf) {
     init_buf->str = NULL;
     init_buf->size = 0;
     init_buf->capacity = 0;
 }
 
-void buf_free(struct buf* free_buf) {
+void free_buf(struct buf *free_buf) {
     free(free_buf->str);
-    buf_init(free_buf);  // мб не надо, да и выглядит странно, но конструктор зануляет все значения
+    init_buf(free_buf);  // мб не надо, да и выглядит странно, но конструктор зануляет все значения
 }
 
 int copy_buf(struct buf* l_buf, struct buf* r_buf) {
@@ -109,29 +104,35 @@ int copy_buf(struct buf* l_buf, struct buf* r_buf) {
 int add_item(struct mas_str* in_mas, struct buf* in_buf) {
     if (in_mas->size + 1 > in_mas->capacity) {
         size_t new_size = (in_mas->capacity * 2) > 4 ? (in_mas->capacity * 2) : 4;  // стандартный размер 4
-
-        struct buf* tmp = (struct buf*)malloc((new_size) * sizeof(struct buf));
-        if (!tmp) {
-            printf("[error]\n");
+//
+//        struct buf* tmp = (struct buf*)malloc((new_size) * sizeof(struct buf));
+//        if (!tmp) {
+//            printf("[error]\n");
+//            return 1;
+//        }
+//        for (size_t i = 0; i < in_mas->size; i++) {
+//            copy_buf(&tmp[i], &in_mas->elem[i]);
+//            free(in_mas->elem[i].str);
+//        }
+//
+//        for (size_t i = in_mas->size + 1; i < new_size; i++) {  // зануляю выделенную неиспользованную память
+//            tmp[i].str = NULL;
+////            tmp[i].size = 0;
+////            tmp[i].capacity = 0;
+//        }
+//
+//        in_mas->capacity = new_size;
+//        free(in_mas->elem);  // new
+//        in_mas->elem = tmp;
+        in_mas->elem = (struct buf*)realloc(in_mas->elem, (new_size) * (sizeof(struct buf)));
+        if (!in_mas->elem) {
             return 1;
         }
-        for (size_t i = 0; i < in_mas->size; i++) {
-            copy_buf(&tmp[i], &in_mas->elem[i]);
-            free(in_mas->elem[i].str);
-        }
-
-        for (size_t i = in_mas->size + 1; i < new_size; i++) {  // зануляю выделенную неиспользованную память
-            tmp[i].str = NULL;
-//            tmp[i].size = 0;
-//            tmp[i].capacity = 0;
-        }
-
         in_mas->capacity = new_size;
-        free(in_mas->elem);  // new
-        in_mas->elem = tmp;
     }
 
-    copy_buf(&in_mas->elem[in_mas->size], in_buf);  // добавление in_buf в конец
+//    copy_buf(&in_mas->elem[in_mas->size], in_buf);  // добавление in_buf в конец
+    in_mas->elem[in_mas->size] = *in_buf;
     in_mas->size++;
 
     return 0;
