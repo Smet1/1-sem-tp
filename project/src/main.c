@@ -2,6 +2,13 @@
 // Subject: hi\n
 // Sender: admin\0
 // EOF = ctr + D
+
+// TODO(): переименовать структуры на наиболее очевидные
+// TODO(): написать конструктор и деструктор к ним
+// TODO(): add_item - не оптимальна(кек) не нужно копировать в новую память старые строки - достаточно "переместить" их, т.е. просто перенести указатели вообще есть стандартная функция realloc, которая увеличивает размер массива, лучше воспользоваться ей
+// TODO(): realloc только вот нахуя
+// TODO(): ВОЗВРАЩАЕМЫЕ ЗНАЧЕНИЯ
+
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -11,6 +18,55 @@ struct buf {  // типа строка
     size_t size;  // used mem in char
     size_t buf_size;  // capacity
 };
+
+int copy_buf(struct buf*, struct buf*);
+
+struct mas_str {  // массив строк
+    struct buf* elem;  // хранимые элементы
+    size_t size;  // реал сайз
+    size_t mas_size;  // капасити
+};
+
+int add_item(struct mas_str*, struct buf*);
+
+int str_input(struct buf*);
+
+struct mas_str* parse_str(const struct mas_str*);
+
+
+int main() {
+    struct mas_str all_str = {NULL, 0, 0};  // хранит весь ввод
+    struct buf tmp_buf = {NULL, 0, 0};  // хранит только одну введенную строку
+
+    while (str_input(&tmp_buf) == 1) {
+        add_item(&all_str, &tmp_buf);
+
+        free(tmp_buf.str);
+
+        tmp_buf.str = NULL;
+        tmp_buf.size = 0;
+        tmp_buf.buf_size = 0;
+    }
+
+    struct mas_str* res = parse_str(&all_str);  // результат парсера
+    for (size_t i = 0; i < res->size; i++) {
+        printf("%s", res->elem[i].str);
+    }
+
+    free(tmp_buf.str);
+
+    for (size_t i = 0; i < all_str.size; i++) {
+        free(all_str.elem[i].str);
+    }
+    free(all_str.elem);
+
+    for (size_t i = 0; i < res->mas_size; i++) {
+        free(res->elem[i].str);
+    }
+    free(res->elem);
+    free(res);
+    return 0;
+}
 
 int copy_buf(struct buf* l_buf, struct buf* r_buf) {
     if (!r_buf || !r_buf->str || !l_buf) {
@@ -34,13 +90,6 @@ int copy_buf(struct buf* l_buf, struct buf* r_buf) {
 
     return 0;
 }
-
-
-struct mas_str {  // массив строк
-    struct buf* elem;  // хранимые элементы
-    size_t size;  // реал сайз
-    size_t mas_size;  // капасити
-};
 
 int add_item(struct mas_str* in_mas, struct buf* in_buf) {
     if (in_mas->size + 1 > in_mas->mas_size) {
@@ -81,7 +130,6 @@ int str_input(struct buf* tmp_buf) {  // '\0' - 0, '\n' - 1
             // size_t new_size = !tmp_buf.buf_size ? 1 : tmp_buf.buf_size * 2;
             size_t new_size = ((tmp_buf->buf_size * 2)>(16))?(tmp_buf->buf_size * 2):(16);
 
-            // TODO(): new_size + 1 ?? добавлять ли символ конца строки
             char* tmp = (char*)malloc((new_size + 1) * sizeof(char));
             if (!tmp) {
                 printf("[error]\n");
@@ -126,42 +174,4 @@ struct mas_str* parse_str(const struct mas_str* in_mas) {
         }
     }
     return result;
-}
-
-
-int main() {
-    struct mas_str all_str = {NULL, 0, 0};  // хранит весь ввод
-    struct buf tmp_buf = {NULL, 0, 0};  // хранит только одну введенную строку
-
-    while (str_input(&tmp_buf) == 1) {
-        add_item(&all_str, &tmp_buf);
-
-        free(tmp_buf.str);
-
-        tmp_buf.str = NULL;
-        tmp_buf.size = 0;
-        tmp_buf.buf_size = 0;
-    }
-
-    struct mas_str* res = parse_str(&all_str);  // результат парсера
-    for (size_t i = 0; i < res->size; i++) {
-        printf("%s", res->elem[i].str);
-    }
-
-    // TODO(): написать метод free_? для всех структур
-    // beg
-    free(tmp_buf.str);
-
-    for (size_t i = 0; i < all_str.size; i++) {
-        free(all_str.elem[i].str);
-    }
-    free(all_str.elem);
-
-    for (size_t i = 0; i < res->mas_size; i++) {
-        free(res->elem[i].str);
-    }
-    free(res->elem);
-    free(res);
-    // end
-    return 0;
 }
