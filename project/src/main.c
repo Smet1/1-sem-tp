@@ -16,15 +16,19 @@
 struct buf {  // типа строка
     char* str;  // string
     size_t size;  // used mem in char
-    size_t buf_size;  // capacity
+    size_t capacity;  // capacity
 };
+
+void buf_init(struct buf*);  // около конструктор
+
+void buf_free(struct buf*);  // около деструктор
 
 int copy_buf(struct buf*, struct buf*);
 
 struct mas_str {  // массив строк
     struct buf* elem;  // хранимые элементы
     size_t size;  // реал сайз
-    size_t mas_size;  // капасити
+    size_t capacity;  // капасити
 };
 
 int add_item(struct mas_str*, struct buf*);
@@ -45,7 +49,7 @@ int main() {
 
         tmp_buf.str = NULL;
         tmp_buf.size = 0;
-        tmp_buf.buf_size = 0;
+        tmp_buf.capacity = 0;
     }
 
     struct mas_str* res = parse_str(&all_str);  // результат парсера
@@ -60,12 +64,23 @@ int main() {
     }
     free(all_str.elem);
 
-    for (size_t i = 0; i < res->mas_size; i++) {
+    for (size_t i = 0; i < res->capacity; i++) {
         free(res->elem[i].str);
     }
     free(res->elem);
     free(res);
     return 0;
+}
+
+void buf_init(struct buf* init_buf) {
+    init_buf->str = NULL;
+    init_buf->size = 0;
+    init_buf->capacity = 0;
+}
+
+void buf_free(struct buf* free_buf) {
+    free(free_buf->str);
+    buf_init(free_buf);  // мб не надо, да и выглядит странно, но конструктор зануляет все значения
 }
 
 int copy_buf(struct buf* l_buf, struct buf* r_buf) {
@@ -86,14 +101,14 @@ int copy_buf(struct buf* l_buf, struct buf* r_buf) {
 
     tmp = NULL;
     l_buf->size = r_buf->size;
-    l_buf->buf_size = r_buf->size;
+    l_buf->capacity = r_buf->size;
 
     return 0;
 }
 
 int add_item(struct mas_str* in_mas, struct buf* in_buf) {
-    if (in_mas->size + 1 > in_mas->mas_size) {
-        size_t new_size = (in_mas->mas_size * 2) > 4 ? (in_mas->mas_size * 2) : 4;  // стандартный размер 4
+    if (in_mas->size + 1 > in_mas->capacity) {
+        size_t new_size = (in_mas->capacity * 2) > 4 ? (in_mas->capacity * 2) : 4;  // стандартный размер 4
 
         struct buf* tmp = (struct buf*)malloc((new_size) * sizeof(struct buf));
         if (!tmp) {
@@ -108,10 +123,10 @@ int add_item(struct mas_str* in_mas, struct buf* in_buf) {
         for (size_t i = in_mas->size + 1; i < new_size; i++) {  // зануляю выделенную неиспользованную память
             tmp[i].str = NULL;
 //            tmp[i].size = 0;
-//            tmp[i].buf_size = 0;
+//            tmp[i].capacity = 0;
         }
 
-        in_mas->mas_size = new_size;
+        in_mas->capacity = new_size;
         free(in_mas->elem);  // new
         in_mas->elem = tmp;
     }
@@ -125,10 +140,10 @@ int add_item(struct mas_str* in_mas, struct buf* in_buf) {
 int str_input(struct buf* tmp_buf) {  // '\0' - 0, '\n' - 1
     char in_char;  // введенный символ
 
-    while ((in_char = getchar()) != EOF) {  // В силайоне не работает поэтому там 'D'
-        if (tmp_buf->size + 1 > tmp_buf->buf_size) {
-            // size_t new_size = !tmp_buf.buf_size ? 1 : tmp_buf.buf_size * 2;
-            size_t new_size = ((tmp_buf->buf_size * 2)>(16))?(tmp_buf->buf_size * 2):(16);
+    while ((in_char = getchar()) != 'D') {  // В силайоне не работает поэтому там 'D'
+        if (tmp_buf->size + 1 > tmp_buf->capacity) {
+            // size_t new_size = !tmp_buf.capacity ? 1 : tmp_buf.capacity * 2;
+            size_t new_size = ((tmp_buf->capacity * 2)>(16))?(tmp_buf->capacity * 2):(16);
 
             char* tmp = (char*)malloc((new_size + 1) * sizeof(char));
             if (!tmp) {
@@ -143,7 +158,7 @@ int str_input(struct buf* tmp_buf) {  // '\0' - 0, '\n' - 1
             free(tmp_buf->str);  // new
 
             tmp_buf->str = tmp;
-            tmp_buf->buf_size = new_size;
+            tmp_buf->capacity = new_size;
         }
         tmp_buf->str[tmp_buf->size] = in_char;
         tmp_buf->size++;
@@ -161,7 +176,7 @@ struct mas_str* parse_str(const struct mas_str* in_mas) {
     }
 
     struct mas_str* result = (struct mas_str*)malloc(1 * sizeof(struct mas_str));
-    result->mas_size = 0;
+    result->capacity = 0;
     result->size = 0;
     result->elem = NULL;
     for (size_t i = 0; i < in_mas->size; i++) {
