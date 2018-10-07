@@ -44,13 +44,28 @@ int main() {
     struct buf tmp_buf;  // хранит только одну введенную строку
     init_buf(&tmp_buf);
 
-    while (str_input(&tmp_buf) == 1) {
-        add_item(&all_str, &tmp_buf);
+    int check_input = 0;
+    while ((check_input = str_input(&tmp_buf)) == 1) {
+        int check_add = 0;
+        check_add = add_item(&all_str, &tmp_buf);
+        if (check_add) {
+            printf("[error]");
+            return 0;
+        }
 
         free_buf(&tmp_buf);
     }
+    if (check_input == 3) {
+        printf("[error]");
+        return 0;
+    }
 
     struct mas_str* res = parse_str(&all_str);  // результат парсера
+    if (!res) {
+        printf("[error]");
+        return 0;
+    }
+
     for (size_t i = 0; i < res->size; i++) {
         printf("%s", res->elem[i].str);
     }
@@ -75,19 +90,17 @@ void free_buf(struct buf* free_buf) {
 
 int copy_buf(struct buf* l_buf, struct buf* r_buf) {
     if (!r_buf || !r_buf->str || !l_buf) {
-        printf("!r_buf || !r_buf->str || !l_buf\n");
         return 1;
     }
 
     char* tmp = (char*)malloc((r_buf->size + 1) * sizeof(char));
     if (!tmp) {
-        printf("[error]\n");
         return 1;
     }
 
     strncpy(tmp, r_buf->str, r_buf->size);
     tmp[r_buf->size] = 0;
-    
+
     l_buf->str = tmp;
     l_buf->size = r_buf->size;
     l_buf->capacity = r_buf->size;
@@ -110,6 +123,10 @@ void free_mas(struct mas_str* free_mas) {
 }
 
 int add_item(struct mas_str* in_mas, struct buf* in_buf) {
+    if (!in_mas || !in_buf) {
+        return 1;
+    }
+
     if (in_mas->size + 1 > in_mas->capacity) {
         size_t new_size = (in_mas->capacity * 2) > 4 ? (in_mas->capacity * 2) : 4;  // стандартный размер 4
 
@@ -123,7 +140,11 @@ int add_item(struct mas_str* in_mas, struct buf* in_buf) {
         in_mas->capacity = new_size;
     }
 
-    copy_buf(&in_mas->elem[in_mas->size], in_buf);  // добавление in_buf в конец
+    int checker = 0;
+    checker = copy_buf(&in_mas->elem[in_mas->size], in_buf);  // добавление in_buf в конец
+    if (checker) {  // ошибка выполнения copy_buf
+        return 1;
+    }
     in_mas->size++;
 
     return 0;
@@ -132,13 +153,13 @@ int add_item(struct mas_str* in_mas, struct buf* in_buf) {
 int str_input(struct buf* tmp_buf) {  // '\0' - 0, '\n' - 1
     char in_char;  // введенный символ
 
-    while ((in_char = getchar()) != 'D') {  // В силайоне не работает поэтому там 'D'
+    while ((in_char = getchar()) != EOF) {  // В силайоне не работает поэтому там 'D'
         if (tmp_buf->size + 1 > tmp_buf->capacity) {
             size_t new_size = ((tmp_buf->capacity * 2)>(16))?(tmp_buf->capacity * 2):(16);
 
             tmp_buf->str = (char *)realloc(tmp_buf->str, (new_size + 1) * sizeof(char));
             if (!tmp_buf->str) {
-                return 1;
+                return 3;
             }
             tmp_buf->capacity = new_size;
         }
@@ -163,13 +184,17 @@ struct mas_str* parse_str(const struct mas_str* in_mas) {
     }
 
     init_mas(result);
+    int check = 0;
     for (size_t i = 0; i < in_mas->size; i++) {
         if (((strncmp(in_mas->elem[i].str, "Date: ", 6)) == 0) ||
             ((strncmp(in_mas->elem[i].str, "From: ", 6)) == 0) ||
             ((strncmp(in_mas->elem[i].str, "To: ", 4)) == 0) ||
             ((strncmp(in_mas->elem[i].str, "Subject: ", 9)) == 0)) {
 
-            add_item(result, &in_mas->elem[i]);
+            check = add_item(result, &in_mas->elem[i]);
+            if (check) {
+                return NULL;
+            }
         }
     }
     return result;
