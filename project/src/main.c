@@ -150,7 +150,7 @@ int add_item(struct mas_str* in_mas, struct buf* in_buf) {
     return 0;
 }
 
-int str_input(struct buf* tmp_buf) {  // '\0' - 0, '\n' - 1
+int str_input(struct buf* tmp_buf) {  // '\0' - 0, '\n' - 1, [error] - 3
     char in_char;  // введенный символ
 
     while ((in_char = getchar()) != EOF) {  // В силайоне не работает поэтому там 'D'
