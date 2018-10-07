@@ -60,7 +60,7 @@ int main() {
     free(all_str.elem);
 
     for (size_t i = 0; i < res->capacity; i++) {
-        free_buf(res->elem);
+        free_buf(&res->elem[i]);
     }
     free(res->elem);
     free(res);
@@ -104,35 +104,18 @@ int copy_buf(struct buf* l_buf, struct buf* r_buf) {
 int add_item(struct mas_str* in_mas, struct buf* in_buf) {
     if (in_mas->size + 1 > in_mas->capacity) {
         size_t new_size = (in_mas->capacity * 2) > 4 ? (in_mas->capacity * 2) : 4;  // стандартный размер 4
-//
-//        struct buf* tmp = (struct buf*)malloc((new_size) * sizeof(struct buf));
-//        if (!tmp) {
-//            printf("[error]\n");
-//            return 1;
-//        }
-//        for (size_t i = 0; i < in_mas->size; i++) {
-//            copy_buf(&tmp[i], &in_mas->elem[i]);
-//            free(in_mas->elem[i].str);
-//        }
-//
-//        for (size_t i = in_mas->size + 1; i < new_size; i++) {  // зануляю выделенную неиспользованную память
-//            tmp[i].str = NULL;
-////            tmp[i].size = 0;
-////            tmp[i].capacity = 0;
-//        }
-//
-//        in_mas->capacity = new_size;
-//        free(in_mas->elem);  // new
-//        in_mas->elem = tmp;
+
         in_mas->elem = (struct buf*)realloc(in_mas->elem, (new_size) * (sizeof(struct buf)));
         if (!in_mas->elem) {
             return 1;
         }
+        for (size_t i = in_mas->size + 1; i < new_size; i++) {  // зануляю выделенную неиспользованную память
+            init_buf(&in_mas->elem[i]);
+        }
         in_mas->capacity = new_size;
     }
 
-//    copy_buf(&in_mas->elem[in_mas->size], in_buf);  // добавление in_buf в конец
-    in_mas->elem[in_mas->size] = *in_buf;
+    copy_buf(&in_mas->elem[in_mas->size], in_buf);  // добавление in_buf в конец
     in_mas->size++;
 
     return 0;
