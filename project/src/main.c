@@ -126,22 +126,12 @@ int str_input(struct buf* tmp_buf) {  // '\0' - 0, '\n' - 1
 
     while ((in_char = getchar()) != 'D') {  // В силайоне не работает поэтому там 'D'
         if (tmp_buf->size + 1 > tmp_buf->capacity) {
-            // size_t new_size = !tmp_buf.capacity ? 1 : tmp_buf.capacity * 2;
             size_t new_size = ((tmp_buf->capacity * 2)>(16))?(tmp_buf->capacity * 2):(16);
 
-            char* tmp = (char*)malloc((new_size + 1) * sizeof(char));
-            if (!tmp) {
-                printf("[error]\n");
+            tmp_buf->str = (char *)realloc(tmp_buf->str, (new_size + 1) * sizeof(char));
+            if (!tmp_buf->str) {
                 return 1;
             }
-
-            if (tmp_buf->str) {
-                strncpy(tmp, tmp_buf->str, tmp_buf->size);
-            }
-
-            free(tmp_buf->str);  // new
-
-            tmp_buf->str = tmp;
             tmp_buf->capacity = new_size;
         }
         tmp_buf->str[tmp_buf->size] = in_char;
