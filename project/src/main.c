@@ -3,8 +3,6 @@
 // Sender: admin\0
 // EOF = ctr + D
 
-// TODO(): add_item - не оптимальна(кек) не нужно копировать в новую память старые строки - достаточно "переместить" их, т.е. просто перенести указатели вообще есть стандартная функция realloc, которая увеличивает размер массива, лучше воспользоваться ей
-// TODO(): realloc только вот нахуя
 // TODO(): ВОЗВРАЩАЕМЫЕ ЗНАЧЕНИЯ
 
 #include <stdio.h>
@@ -17,9 +15,9 @@ struct buf {  // типа строка
     size_t capacity;  // capacity
 };
 
-void init_buf(struct buf *);  // около конструктор
+void init_buf(struct buf*);  // около конструктор
 
-void free_buf(struct buf *);  // около деструктор
+void free_buf(struct buf*);  // около деструктор
 
 int copy_buf(struct buf*, struct buf*);
 
@@ -29,6 +27,10 @@ struct mas_str {  // массив строк
     size_t capacity;  // капасити
 };
 
+void init_mas(struct mas_str*);
+
+void free_mas(struct mas_str*);
+
 int add_item(struct mas_str*, struct buf*);
 
 int str_input(struct buf*);
@@ -37,7 +39,8 @@ struct mas_str* parse_str(const struct mas_str*);
 
 
 int main() {
-    struct mas_str all_str = {NULL, 0, 0};  // хранит весь ввод
+    struct mas_str all_str;  // хранит весь ввод
+    init_mas(&all_str);
     struct buf tmp_buf;  // хранит только одну введенную строку
     init_buf(&tmp_buf);
 
@@ -53,27 +56,19 @@ int main() {
     }
 
     free_buf(&tmp_buf);
-
-    for (size_t i = 0; i < all_str.size; i++) {
-        free_buf(&all_str.elem[i]);
-    }
-    free(all_str.elem);
-
-    for (size_t i = 0; i < res->capacity; i++) {
-        free_buf(&res->elem[i]);
-    }
-    free(res->elem);
+    free_mas(&all_str);
+    free_mas(res);
     free(res);
     return 0;
 }
 
-void init_buf(struct buf *init_buf) {
+void init_buf(struct buf* init_buf) {
     init_buf->str = NULL;
     init_buf->size = 0;
     init_buf->capacity = 0;
 }
 
-void free_buf(struct buf *free_buf) {
+void free_buf(struct buf* free_buf) {
     free(free_buf->str);
     init_buf(free_buf);  // мб не надо, да и выглядит странно, но конструктор зануляет все значения
 }
@@ -92,13 +87,26 @@ int copy_buf(struct buf* l_buf, struct buf* r_buf) {
 
     strncpy(tmp, r_buf->str, r_buf->size);
     tmp[r_buf->size] = 0;
+    
     l_buf->str = tmp;
-
-    tmp = NULL;
     l_buf->size = r_buf->size;
     l_buf->capacity = r_buf->size;
 
     return 0;
+}
+
+void init_mas(struct mas_str* init_mas) {
+    init_mas->elem = NULL;
+    init_mas->size = 0;
+    init_mas->capacity = 0;
+}
+
+void free_mas(struct mas_str* free_mas) {
+    for (size_t i = 0; i < free_mas->capacity; i++) {
+        free_buf(&free_mas->elem[i]);
+    }
+    free(free_mas->elem);
+    init_mas(free_mas);  // коммент такой же как и в free_buf
 }
 
 int add_item(struct mas_str* in_mas, struct buf* in_buf) {
@@ -150,9 +158,11 @@ struct mas_str* parse_str(const struct mas_str* in_mas) {
     }
 
     struct mas_str* result = (struct mas_str*)malloc(1 * sizeof(struct mas_str));
-    result->capacity = 0;
-    result->size = 0;
-    result->elem = NULL;
+    if (!result) {
+        return NULL;
+    }
+
+    init_mas(result);
     for (size_t i = 0; i < in_mas->size; i++) {
         if (((strncmp(in_mas->elem[i].str, "Date: ", 6)) == 0) ||
             ((strncmp(in_mas->elem[i].str, "From: ", 6)) == 0) ||
