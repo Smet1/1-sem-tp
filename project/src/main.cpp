@@ -16,9 +16,9 @@
 
 #include <iostream>
 
-int pair_count(int*, int, int*, int, int);
+int pair_count(const int*, const int, const int*, const int, const int);
 
-int main(int argc, const char** argv) {
+int main() {
     int n = 0;  // size of A
     std::cin >> n;
     int *A = new int[n];
@@ -33,16 +33,6 @@ int main(int argc, const char** argv) {
         std::cin >> B[i];
     }
 
-//    for (size_t i = 0; i < n; i++) {
-//        std::cout << A[i] << " ";
-//    }
-//    std::cout << std::endl;
-//
-//    for (size_t i = 0; i < m; i++) {
-//        std::cout << B[i] << " ";
-//    }
-//    std::cout << std::endl;
-
     int k = 0;  // pair sum
     std::cin >> k;
     int res = pair_count(A, n, B, m, k);
@@ -54,7 +44,20 @@ int main(int argc, const char** argv) {
     return 0;
 }
 
-int pair_count(int* A, int n, int* B, int m, int k) {
+int pair_count(const int* A, const int n, const int* B, const int m, const int k) {
     int count = 0;
+    int i = 0, j = m - 1;
+
+    while (i < n && j >= 0) {
+        if (A[i] + B[j] == k) {
+            count++;
+            i++;
+            j--;
+        } else if (A[i] + B[j] < k) {
+            i++;
+        } else {
+            j--;
+        }
+    }
     return count;
 }
