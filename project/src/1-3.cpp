@@ -15,15 +15,16 @@
 //      3
 
 #include <iostream>
+#include <cassert>
 
-int pair_count(const int*, const size_t , const int*, const size_t , const int);
+int pair_count(const int*, const size_t, const int*, const size_t, const int);
 
 int main() {
     size_t n = 0;  // size of A
     std::cin >> n;
     // checking n is valid
     assert(n <= 100000);
-    assert(n < 0);
+//    assert(n < 0);
 
     int *A = new int[n];
     for (size_t i = 0; i < n; i++) {
@@ -34,7 +35,7 @@ int main() {
     std::cin >> m;
     // checking m is valid
     assert(m <= 100000);
-    assert(m < 0);
+//    assert(m < 0);
 
     int *B = new int[m];
     for (size_t i = 0; i < m; i++) {
@@ -45,7 +46,7 @@ int main() {
     std::cin >> k;
     int res = pair_count(A, n, B, m, k);
 
-    std::cout << res << std::endl;
+    std::cout << res;
 
     delete[] A;
     delete[] B;
