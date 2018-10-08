@@ -17,32 +17,32 @@
 #include <iostream>
 #include <cassert>
 
-int pair_count(const int*, const size_t, const int*, const size_t, const int);
+int pair_count(const int*, int, const int*, int, int);
 
 int main() {
-    size_t n = 0;  // size of A
+    int n = 0;  // size of A
     std::cin >> n;
     // checking n is valid
     assert(n <= 100000);
 //    assert(n < 0);
 
     int *A = new int[n];
-    for (size_t i = 0; i < n; i++) {
+    for (int i = 0; i < n; i++) {
         std::cin >> A[i];
     }
 
-    size_t m = 0;  // size of B
+    int m = 0;  // size of B
     std::cin >> m;
     // checking m is valid
     assert(m <= 100000);
 //    assert(m < 0);
 
     int *B = new int[m];
-    for (size_t i = 0; i < m; i++) {
+    for (int i = 0; i < m; i++) {
         std::cin >> B[i];
     }
 
-    int k = 0;  // pair sum
+    int k = 0;  // searching pair sum
     std::cin >> k;
     int res = pair_count(A, n, B, m, k);
 
@@ -53,9 +53,12 @@ int main() {
     return 0;
 }
 
-int pair_count(const int* A, const size_t n, const int* B, const size_t m, const int k) {
+int pair_count(const int* A, const int n, const int* B, const int m, const int k) {
     int count = 0;
-    size_t i = 0, j = m - 1;
+    if (m == 0 || n == 0) {
+        return count;
+    }
+    int i = 0, j = m - 1;
 
     while (i < n && j >= 0) {
         if (A[i] + B[j] == k) {
