@@ -11,8 +11,19 @@
 // OUT:
 //      6
 #include <iostream>
+#include <cassert>
 
 int main() {
+    int n = 0;  // size of A
+    std::cin >> n;
+    // checking n is valid
+    assert(n <= 10000);
+    assert(n >= 2);
+
+    int *A = new int[n];
+    for (int i = 0; i < n; i++) {
+        std::cin >> A[i];
+    }
+
     return 0;
 }
-
