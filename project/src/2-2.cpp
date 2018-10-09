@@ -13,6 +13,8 @@
 #include <iostream>
 #include <cassert>
 
+int search_pos(const int*, int);
+
 int main() {
     int n = 0;  // size of A
     std::cin >> n;
@@ -25,5 +27,34 @@ int main() {
         std::cin >> A[i];
     }
 
+    int res = search_pos(A, n);
+//    std::cout << "A[" << res << "] = " << A[res];
+    std::cout << res;
+    delete[] A;
     return 0;
+}
+
+int search_pos(const int* A, int n) {
+    int i = 1, beg = 0, end = n;
+
+    while (i < n) {
+        if (A[i - 1] > A[i]) {
+            beg = i / 2;
+            end = i;
+            break;
+        }
+        i *= 2;  // begin -> mid -> end
+    }
+
+//    int m = (end + beg) / 2;
+    int m = 0;
+    while (end - beg > 1) {
+        m = (end + beg) / 2;
+        if (A[m - 1] < A[m]) {
+            beg = m;
+        } else if (A[m - 1] > A[m]) {
+            end = m;
+        }
+    }
+    return m - 1;  // wtf условие
 }
