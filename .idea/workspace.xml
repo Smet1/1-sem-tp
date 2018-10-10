@@ -11,9 +11,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ec7665c0-1a6b-4344-886c-4acafd30ead4" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/project/src/2-2.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/project/src/2-2.cpp" afterDir="false" />
-    </list>
+    <list default="true" id="ec7665c0-1a6b-4344-886c-4acafd30ead4" name="Default Changelist" comment="" />
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -26,7 +24,7 @@
     <session id="-253969577">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="4" />
+          <entry key="project.closed" value="5" />
           <entry key="project.open.time.0" value="1" />
           <entry key="project.open.time.2" value="1" />
           <entry key="project.open.time.4" value="1" />
@@ -235,22 +233,23 @@
       <workItem from="1538729480452" duration="375000" />
       <workItem from="1538729888573" duration="1983000" />
       <workItem from="1538984069155" duration="8608000" />
-      <workItem from="1539082157898" duration="5420000" />
+      <workItem from="1539082157898" duration="5547000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="17427000" />
+    <option name="totallyTimeSpent" value="17554000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1440" height="900" extended-state="0" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49551168" visible="true" weight="0.22031474" />
-      <window_info id="Structure" order="1" sideWeight="0.50448835" side_tool="true" visible="true" weight="0.22031474" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49638554" visible="true" weight="0.22031474" />
+      <window_info id="Structure" order="1" sideWeight="0.5036145" side_tool="true" visible="true" weight="0.22031474" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.32891566" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.32891566" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -284,7 +283,7 @@
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/project/src/2-2.cpp</url>
           <line>48</line>
-          <option name="timeStamp" value="6" />
+          <option name="timeStamp" value="7" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
