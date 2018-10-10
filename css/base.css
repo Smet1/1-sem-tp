@@ -1,0 +1,5 @@
+.flex_navbar {
+    justify-content: flex-end; 
+    display: flex; 
+    align-items: center;
+}
