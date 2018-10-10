@@ -24,8 +24,8 @@
   }
   
   @media all and (min-width: 750px) {
-      .main_column { flex: 0.7; }
-      .side_bar { flex: 0.3; }
+      .main_column { flex: 0.85; }
+      .side_bar { flex: 0.15; }
       .main_column { order: 1; }
       .side_bar { order: 2; }
       .footer { order: 3; }
@@ -44,7 +44,7 @@
       /* float: left; */
       /* width: 40%; */
       /* height: 30%; */
-      background: #00ff40;
+      /* background: #00ff40; */
   }
 
   .footer {
@@ -54,5 +54,26 @@
 
 .mem_links {
     text-decoration: underline;
+    margin-left: 1%;
+}
+
+.top_tag {
+    font-size: 20px;
+    color: red;
+    margin-left: 1%;
+}
+.popular_tag {
+    /* font-size: 15px; */
+    color: green;
+    margin-left: 1%;
+}
+.norm_tag {
+    /* font-size: 20px; */
+    color: black;
+    margin-left: 1%;
+}
+.orange_tag {
+    font-size: 14px;
+    color: orange;
     margin-left: 1%;
 }
