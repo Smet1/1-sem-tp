@@ -41,16 +41,16 @@
 
         <div class="wrapper">
             <article class="main_column">
-                <!-- -----------------------------------------LOGIN---------------------------------------- -->
+                <!-- -----------------------------------------REGISTER---------------------------------------- -->
                 <!-- Header of page -->
-                <h3>Log In</h3>
+                <h3>Registration</h3>
 
                 <!-- Main part -->
-                <form class="needs-validation" novalidate id="login_form">
+                <form class="needs-validation" novalidate id="register_form">
                     <div class="form-group row">
-                        <label for="title_input" class="col-sm-2 col-form-label" style="padding-left: 7%">Login</label>
+                        <label for="title_input" class="col-sm-3 col-form-label" style="padding-left: 7%">Login</label>
                         <div class="col-sm-3">
-                            <input type="text" class="form-control" id="login_input" name="login_input" placeholder="Enter your login here" required>
+                            <input type="text" class="form-control" id="login_input" name="login_input" placeholder="dr_pepper" required>
                             
                             <!-- div's with valid's out -->
                             <div class="invalid-feedback">
@@ -60,7 +60,32 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="tags_input" class="col-sm-2 col-form-label" style="padding-left: 7%">Password</label>
+                        <label for="email_input" class="col-sm-3 col-form-label" style="padding-left: 7%">Email</label>
+                        <div class="col-sm-3">
+                            <input type="email" class="form-control" id="email_input" placeholder="dr.pepper@mail.ru" required>
+                        </div>
+
+                        <!-- div's with valid's out -->
+                        <div class="invalid-feedback">
+                            Email required
+                        </div>
+
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="nick_input" class="col-sm-3 col-form-label" style="padding-left: 7%">NickName</label>
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control" id="nick_input" name="nick_input" placeholder="Dr. Pepper" required>
+                        
+                            <!-- div's with valid's out -->
+                            <div class="invalid-feedback">
+                                Nick is required
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="password_input" class="col-sm-3 col-form-label" style="padding-left: 7%">Password</label>
                         <div class="col-sm-3">
                             <input type="password" class="form-control" id="password_input" name="password_input" placeholder="********" required>
                         
@@ -71,12 +96,29 @@
 
                         </div>
                     </div>
-                    
-                    <button type="submit" id="submit" class="btn btn-primary" style="margin-left: 17%">Log in!</button>   
-                    <p class="register_login"><a href="file:///Users/smet_k/Desktop/1_sem_cpp/project/templates/signup.html">create new acount</a></p>
+                    <div class="form-group row">
+                        <label for="password2_input" class="col-sm-3 col-form-label" style="padding-left: 7%">Repeat Password</label>
+                        <div class="col-sm-3">
+                            <input type="password" class="form-control" id="password2_input" name="password2_input" placeholder="********" required>
+                        
+                            <!-- div's with valid's out -->
+                            <div class="invalid-feedback">
+                                Repeat password
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="avatar_input" class="col-sm-3 col-form-label" style="padding-left: 7%">Upload avatar</label>
+                        <div class="col-sm-3 custom-file" style="margin-left: 1.5%;">
+                            <input type="file" class="custom-file-input" id="customFile">
+                            <label class="custom-file-label" for="customFile">c:\avatar.jpg</label>
+                        </div>
+                    </div>
+                    <button type="submit" id="submit" class="btn btn-primary" style="margin-left: 25.8%">Register!</button>
 
                 </form>
-                <!-- ----------------------------------------/LOGIN---------------------------------------- -->
+                <!-- ----------------------------------------/REGISTER---------------------------------------- -->
                 <br>
             </article>
 
