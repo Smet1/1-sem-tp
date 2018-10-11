@@ -47,7 +47,7 @@
         <!-- Main part -->
         <form class="needs-validation" novalidate id="question_form">
             <div class="form-group row">
-                <label for="title_input" class="col-sm-2 col-form-label">Title</label>
+                <label for="title_input" class="col-sm-2 col-form-label" style="padding-left: 8%">Title</label>
                 <div class="col-sm-10">
                     <input type="text" class="form-control" id="title_input" name="title_input" placeholder="How to build a moon park?" minlength="2" maxlength="20" required>
                     
@@ -63,8 +63,8 @@
             </div>
 
             <div class="form-group row">
-                <label for="text_input" class="col-sm-2 col-form-label">Text</label>
-                <div class="col-lg-10">
+                <label for="text_input" class="col-sm-2 col-form-label" style="padding-left: 8%">Text</label>
+                <div class="col-sm-10">
                     <textarea class="form-control" rows="5" id="text_input" name="text_input" placeholder="Really, how? Have no idea about it" minlength="5", maxlength="250" required></textarea>
                     
                     <!-- div's with valid's out -->
@@ -79,7 +79,7 @@
             </div>
 
             <div class="form-group row">
-                <label for="tags_input" class="col-sm-2 col-form-label">Tags</label>
+                <label for="tags_input" class="col-sm-2 col-form-label" style="padding-left: 8%">Tags</label>
                 <div class="col-sm-10">
                     <input type="text" class="form-control" id="tags_input" name="tags_input" placeholder="moon, park, puzzle" required>
                 
@@ -93,12 +93,12 @@
 
                 </div>
             </div>
-
-          <button type="submit" id="submit" class="btn btn-primary">ASK!</button>   
+            
+            <button type="submit" id="submit" class="btn btn-primary" style="margin-left: 6%">ASK!</button>   
 
         </form>
         <!-- ----------------------------------------/ASK---------------------------------------- -->
-
+        <br>
       </article>
 
       <aside class="side_bar">
@@ -129,6 +129,7 @@
         </div>
       </aside>
 
+      
       <footer class="footer">Footer</footer>
 
     </div>
@@ -181,7 +182,7 @@
             window.addEventListener('load', function() {
                 // Fetch all the forms we want to apply custom Bootstrap validation styles to
                 var forms = document.getElementsByClassName('needs-validation');
-                console.log(forms);  // search value
+                // console.log(forms);  // search value
                 
                 // Loop over them and prevent submission
                 var validation = Array.prototype.filter.call(forms, function(form) {
