@@ -50,6 +50,8 @@
   .footer {
       /* position: fixed; */
       bottom: 0;
+      margin-left: 0 !important;
+      margin-right: 0 !important;
       text-align: center !important;
       background: #dbdbdb;
 }
@@ -88,4 +90,10 @@
 .error-box {
     color: red;
     font-size: 12px;
+}
+
+.register_login {
+    text-decoration: underline;
+    margin-top: 3%;
+    margin-left: 17%;
 }
