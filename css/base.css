@@ -37,7 +37,7 @@
       float: left !important;
       margin-right: 5%;
       /* width: 60%; */
-      background: #ffff00;
+      /* background: #a0a094; */
   }
   
   .side_bar {
@@ -76,4 +76,14 @@
     font-size: 14px;
     color: orange;
     margin-left: 1%;
+}
+
+.input-element{
+    height: 100px !important;
+    width: 400px;
+}
+
+.error-box {
+    color: red;
+    font-size: 12px;
 }

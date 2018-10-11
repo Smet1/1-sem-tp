@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="../../css/base.css">
+
+    <title>Hola!</title>
+  </head>
+  <body>
+    <!-- NavBar -->
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+      <div class="flex_navbar">
+
+        <!-- Brand/logo -->
+        <a class="navbar-brand" href="#">Ask Pupkin</a>
+        
+        <!-- Search form -->
+        <form class="form-inline my-1 my-sm-0">
+          <input class="form-control mr-sm-2" style="flex: 1 !important" type="text" placeholder="Search">
+          <button class="btn btn-success my-2 my-sm-2" type="submit">ASK!</button>
+        </form>
+      
+        <!-- Register / login -->
+        <ul class="navbar-nav flex-row-reverse ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="#">Register</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Login</a>          
+          </li>
+        </ul>
+
+      </div>
+    </nav>
+
+    <div class="wrapper">
+      <article class="main_column">
+        <!-- -----------------------------------------ASK---------------------------------------- -->
+        <!-- Header of page -->
+        <h3>New Question</h3>
+
+        <!-- Main part -->
+        <form id="question_form">
+            <div class="form-group row">
+                <label for="title_input" class="col-sm-2 col-form-label">Title</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="title_input" name="title_input" placeholder="How to build a moon park?" required>
+                </div>
+                <div class="error-box"></div>
+            </div>
+
+            <div class="form-group row">
+                <label for="text_input" class="col-sm-2 col-form-label">Text</label>
+                <div class="col-lg-10">
+                    <textarea class="form-control" rows="5" id="text_input" name="text_input" placeholder="Really, how? Have no idea about it" required></textarea>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="tags_input" class="col-sm-2 col-form-label">Tags</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="tags_input" name="tags_input" placeholder="moon, park, puzzle" required>
+                </div>
+            </div>
+
+          <button type="submit" id="submit" class="btn btn-primary">ASK!</button>   
+
+        </form>
+        <!-- ----------------------------------------/ASK---------------------------------------- -->
+
+      </article>
+
+      <aside class="side_bar">
+        <!-- Right column with popular tags -->
+        <div>
+          <h3>Popular Tags</h3>
+          <a class="norm_tag" href="#">perl</a>
+          <a class="top_tag" href="#">python</a>
+          <a class="norm_tag" href="#">TechoPark</a>
+          <a class="top_tag" href="#">MySQL</a>
+          <a class="popular_tag" href="#">django</a>
+          <a class="norm_tag" href="#">Mail.ru</a>
+          <a class="norm_tag" href="#">Voloshin</a>
+          <a class="orange_tag" href="#">Firefox</a>
+        </div>
+
+        <br>
+
+        <!-- Members -->
+        <div>
+          <h3>Best Members</h3>
+          <p class="mem_links"><a href="#">Mr.Freeman</a></p>
+          <p class="mem_links"><a href="#">Mr.House</a></p>
+          <p class="mem_links"><a href="#">Bender</a></p>
+          <p class="mem_links"><a href="#">V.Pupkin</a></p>
+          <p class="mem_links"><a href="#">P.Technick</a></p>
+
+        </div>
+      </aside>
+
+      <footer class="footer">Footer</footer>
+
+    </div>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.min.js"></script>
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> -->
+    
+    <!-- Form validation -->
+    <script>
+        $(function(){
+            $(function(){
+                $('#question_form').validate({
+                    rules: {
+                        title_input: {
+                            required: true,
+                            minlength: 2,
+                            maxlength: 20
+                        },
+                        text_input: {
+                            required: true,
+                            minlength: 5,
+                            maxlength: 250
+                        },
+                        tags_input: {
+                            required: true,
+                        }
+                    },
+                    messages: {
+                        title_input: {
+                            required: "field 'Title' is required",
+                            minlength: "length < 2, required >= 2",
+                            maxlength: "length > 20, required <= 20"
+                        },
+                        text_input: {
+                            required: "field 'Text' is required",
+                            minlength: "length < 5, required >= 5",
+                            maxlength: "length > 250, required <= 250"
+                        },
+                        tags_input: "field 'Tags' is required"
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
