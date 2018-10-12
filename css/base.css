@@ -108,8 +108,10 @@
 }
 
 /* ----------- */
-.quest_box {
+.gray {
     background: #f3f3f3 !important;
+}
+.quest_box {
     margin-left: 5%;
     margin-right: 5%;
     margin-top: 2%; 
