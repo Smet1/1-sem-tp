@@ -5,7 +5,7 @@
     align-items: center;
  }
  .flex_navbar {
-     flex: 1 100%;
+    flex: 1 100%;
  }
 
 .wrapper {
@@ -164,6 +164,7 @@
         .right_bot {
             height: 15%;
         }
+
 .rating {
     unicode-bidi: bidi-override;
     direction: rtl;
@@ -174,3 +175,38 @@
         position: absolute;
         
     }
+
+.usr_nick {
+    height: 50%;
+    text-align: center !important;
+    /* align-items: center !important; */
+}
+.usr_img {
+    /* text-align: center !important; */
+    /* align-items: center !important; */
+    /* vertical-align: middle !important; */
+    display: inline-block;
+}
+.usr_r-col {
+    display: inline-block;
+}
+
+/* ------ */
+.avatar {
+    flex : 1;
+}
+.user {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+.end_of_header {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.registrate{
+    display: flex;
+    align-items: baseline; 
+}
