@@ -14,28 +14,30 @@
 
     <body>
         <!-- NavBar -->
-        <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-            <div class="flex_navbar">
+        <nav class="navbar navbar-expand-sm bg-dark navbar-dark justify-content-between">
+            <!-- Brand/logo -->
+            <a class="navbar-brand" href="#">Ask Pupkin</a>
+            <!-- collapse button -->
+            <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-                <!-- Brand/logo -->
-                <a class="navbar-brand" href="#">Ask Pupkin</a>
-                
+            <div class="collapse navbar-collapse" id="navbarNav">
                 <!-- Search form -->
-                <form class="form-inline my-1 my-sm-0">
-                    <input class="form-control mr-sm-2" style="flex: 1 !important" type="text" placeholder="Search">
+                <form class="form-inline my-2 my-sm-0">
+                    <input class="form-control mr-sm-2" style="flex: 0.9 !important" type="text" placeholder="Search">
                     <button class="btn btn-success my-2 my-sm-2" type="submit">ASK!</button>
                 </form>
-            
+                
                 <!-- Register / login -->
-                <ul class="navbar-nav flex-row-reverse ml-auto">
+                <ul class="navbar-nav ml-auto" style="display: inline-flex !important; flex-direction: row;">
                     <li class="nav-item">
                         <a class="nav-link" href="#">Register</a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item" style="margin-left: 5%">
                         <a class="nav-link" href="#">Login</a>          
                     </li>
                 </ul>
-
             </div>
         </nav>
 
@@ -56,13 +58,17 @@
                     <div class="left_col">
                         <div class="left_top">
                             <!-- картинка -->
-                            <p style="text-align: center;">
-                                <img src="../../img/Thrall-WC3.jpg" alt="ava" width="25%">
+                            <p>
+                                <img src="../../img/Thrall-WC3.jpg" alt="ava" width="50%">
                             </p>
                         </div>
                         <div class="left_bot">
                             <!-- лайки -->
-                            лайки
+                            <div class="Stars">
+                                <div class="rating">
+                                    <span>☆</span><span>☆</span><span>☆</span><span>☆</span><span>☆</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="right_col">
@@ -99,12 +105,16 @@
                         <div class="left_top">
                             <!-- картинка -->
                             <p style="text-align: center;">
-                                <img src="../../img/dornan.png" alt="ava" width="25%">
+                                <img src="../../img/dornan.png" alt="ava" width="50%">
                             </p>
                         </div>
                         <div class="left_bot">
                             <!-- лайки -->
-                            лайки
+                            <div class="Stars">
+                                <div class="rating">
+                                    <span>☆</span><span>☆</span><span>☆</span><span>☆</span><span>☆</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="right_col">
@@ -139,12 +149,16 @@
                         <div class="left_top">
                             <!-- картинка -->
                             <p style="text-align: center;">
-                                <img src="../../img/dornan.png" alt="ava" width="25%">
+                                <img src="../../img/dornan.png" alt="ava" width="50%">
                             </p>
                         </div>
                         <div class="left_bot">
                             <!-- лайки -->
-                            лайки
+                            <div class="Stars">
+                                <div class="rating">
+                                    <span>☆</span><span>☆</span><span>☆</span><span>☆</span><span>☆</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="right_col">
@@ -155,6 +169,50 @@
                                 <!-- описание вопроса -->
                                 <p class="font-weight-light" style="font-size: 14px">
                                     «Рядовой, вы все ещё без формы. Я дал вам прямой приказ пойти и получить обмундирование. А ну прочь с глаз моих, и не сметь показываться, пока не будете выглядеть как солдат, а не как чучело огородное!»
+                                </p>
+                                <br>
+                            </div>
+                        </div>
+
+                        <div class="right_bot">
+                            <div class="mx-auto">
+                                <!-- correct? -->
+                                <div style="display: inline-block; flex: 80%;">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
+                                        <label class="form-check-label" for="inlineCheckbox1">Correct!</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="quest_box gray shadow-lg p-3 mb-5 bg-white rounded">
+                    <div class="left_col">
+                        <div class="left_top">
+                            <!-- картинка -->
+                            <p style="text-align: center;">
+                                <img src="../../img/dornan.png" alt="ava" width="50%">
+                            </p>
+                        </div>
+                        <div class="left_bot">
+                            <!-- лайки -->
+                            <div class="Stars">
+                                <div class="rating">
+                                    <span>☆</span><span>☆</span><span>☆</span><span>☆</span><span>☆</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="right_col">
+                        <div class="right_top">
+                            <!-- question -->
+
+                            <div class="mx-auto">
+                                <!-- описание вопроса -->
+                                <p class="font-weight-light" style="font-size: 14px">
+                                    И-ди-от, не сметь обсуждать приказы начальства! Скажу прыгать, будешь прыгать! Скажу драться, будешь драться! Скажу умереть за Родину, умрёшь без разговоров! Я ясно излагаю?
                                 </p>
                                 <br>
                             </div>
