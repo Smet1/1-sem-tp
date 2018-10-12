@@ -87,13 +87,69 @@
     width: 400px;
 }
 
-.error-box {
-    color: red;
-    font-size: 12px;
-}
-
 .register_login {
     text-decoration: underline;
     margin-top: 3%;
     margin-left: 17%;
 }
+
+.u_text {
+    text-decoration: underline;
+}
+
+.u_text-20 {
+    text-decoration: underline;
+    font-size: 20px;
+}
+
+.u_text-14 {
+    text-decoration: underline;
+    font-size: 14px;
+}
+
+/* ----------- */
+.quest_box {
+    background: #f3f3f3 !important;
+    margin-left: 5%;
+    margin-right: 5%;
+    margin-top: 2%; 
+    display: flex;
+    /* height: 200px; */
+    width: 90%;
+    /* text-align: center; */
+}
+    .quest_box > * {
+        flex: 1 100%;
+    }
+
+    .left_col {
+        display: inline-block; 
+        /* width: 20%; */
+        flex: 0.2;
+        /* background: #dde0ff; */
+        /* float: left; */
+    }
+        .left_top {
+            height: 70%;
+            /* background: green; */
+        }
+        .left_bot {
+            height: 30%;
+            /* background: lightgreen */
+        }
+
+    
+    .right_col {
+        display: inline-block; 
+        /* width: 80%; */
+        flex: 0.8;
+        /* background: lightcyan; */
+        /* float: right; */
+    }
+        .right_top {
+            height: 80%;
+            /* background: blanchedalmond; */
+        }
+        .right_bot {
+            height: 20%;
+        }
