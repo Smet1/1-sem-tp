@@ -88,3 +88,11 @@ HTML разместить в файлах **login.html** и **signup.html** со
 - [Верстка форм в Bootstrap](https://getbootstrap.com/css/#forms);
 - [Основы шаблонизатора Django](https://docs.djangoproject.com/en/2.0/ref/templates/language);
 - [Как отрисовать шаблон](https://docs.djangoproject.com/en/2.0/topics/http/shortcuts/#render).
+
+---
+
+### Недостатки
+  - формы бахнуть на центр
+  - пофиксить навбар 
+  - сделать нормальные лайки
+  - убрать футер
