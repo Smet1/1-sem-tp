@@ -45,12 +45,7 @@ int search_pos(const int* A, int n) {
         }
         i *= 2;  // 1 -> 2 -> 4 ...
     }
-//
-//    if (end - beg == n) {  // чисто возрастает, m - нет
-//        return 0;
-//    } else if (A[beg] < A[beg + 1]) {  // чисто убывает
-//        return 0;
-//    }
+
     int m = (end + beg) / 2;
     while (end - beg > 1) {
         m = (end + beg) / 2;
