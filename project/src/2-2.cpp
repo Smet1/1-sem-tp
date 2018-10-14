@@ -43,16 +43,15 @@ int search_pos(const int* A, int n) {
             end = i;
             break;
         }
-        i *= 2;  // begin -> mid -> end
+        i *= 2;  // 1 -> 2 -> 4 ...
     }
-
-    if (end - beg == n) {  // чисто возрастает, m - нет
-        return 0;
-    } else if (A[beg] < A[beg + 1]) {  // чисто убывает
-        return 0;
-    }
+//
+//    if (end - beg == n) {  // чисто возрастает, m - нет
+//        return 0;
+//    } else if (A[beg] < A[beg + 1]) {  // чисто убывает
+//        return 0;
+//    }
     int m = (end + beg) / 2;
-//    int m = 0;
     while (end - beg > 1) {
         m = (end + beg) / 2;
         if (A[m - 1] < A[m]) {
@@ -61,5 +60,5 @@ int search_pos(const int* A, int n) {
             end = m;
         }
     }
-    return m - 1;  // wtf условие
+    return beg;
 }
