@@ -35,13 +35,8 @@ public:
         array = nullptr;
     }
 
-    Cus_vec(size_t cap) : capacity(cap), size(0) {
-        array = new int [cap];
-
-        // зануляю выделенную память, необязательная часть
-//        for (size_t i = 0; i < capacity; i++) {
-//            array[i] = 0;
-//        }
+    explicit Cus_vec(size_t cap) : capacity(cap), size(0) {
+        array = new int[cap];
     }
 
     ~Cus_vec() {
@@ -71,7 +66,6 @@ private:
     size_t size;
 
     void inc_capacity();  // увеличение капасити
-
 };
 
 int Cus_vec::operator[](size_t index) const {
@@ -99,11 +93,6 @@ void Cus_vec::inc_capacity() {
     for (; i < size; i++) {
         new_arr[i] = array[i];
     }
-
-    // зануляю выделенную память, необязательная часть
-//    for (; i < new_cap; i++) {
-//        new_arr[i] = 0;
-//    }
 
     delete[] array;
 
@@ -137,7 +126,7 @@ int Cus_vec::pop_back() {
 class Heap {
 public:
     Heap() : array(DEFAULT_CAPACITY), max_size(0) {}
-    Heap(size_t cap) : array(cap), max_size(0) {}
+    explicit Heap(size_t cap) : array(cap), max_size(0) {}
     ~Heap() {
 //        array.~Cus_vec();
         max_size = 0;
@@ -146,14 +135,16 @@ public:
     void arr_print();
     int pop_max();  // извлечение максимума
     void add(int val);
+    void drop_bigger_vals(int val);
 
+    size_t get_size() const { return max_size; }
 
 private:
     Cus_vec array;
-    int max_size;
+    size_t max_size;
 
     void sift_down(size_t i);  // просеивание вниз
-    void sift_up(int i);  // просеивание вверх
+    void sift_up(size_t i);  // просеивание вверх
 
 };
 
@@ -162,84 +153,87 @@ void Heap::arr_print() {
 }
 
 void Heap::sift_down(size_t i) {
-    // TODO(): реализация
-    size_t left = 2 * i + 1;
+    size_t beg = 2 * i + 1;
     size_t right = 2 * i + 2;
-// Ищем большего сына, если такой есть.
-    size_t largest = i;
-    if (left < array.get_size() && array[left] > array[i])
-        largest = left;
-    if (right < array.get_size() && array[right] > array[largest])
-        largest = right;
-// Если больший сын есть, то проталкиваем корень в него.
-    if (largest != i) {
-        array.swap(i, largest);
-        sift_down(largest);
+    size_t max = i;
+
+    if (beg < array.get_size() && array[beg] > array[i]) {
+        max = beg;
+    }
+    if (right < array.get_size() && array[right] > array[max]) {
+        max = right;
+    }
+
+    if (max != i) {
+        array.swap(i, max);
+        sift_down(max);
     }
 
 }
 
-void Heap::sift_up(int i) {
-    // TODO(): реализация
+void Heap::sift_up(size_t i) {
     while (i > 0) {
-        int parent = (i - 1) / 2;
-        if (array[i] <= array[parent])
+        size_t par = (i - 1) / 2;
+        if (array[i] <= array[par]) {
             return;
-        array.swap((size_t)i, (size_t)parent);
-        i = parent;
+        }
+
+        array.swap(i, par);
+        i = par;
     }
 }
 
 int Heap::pop_max() {
-    // TODO(): реализация
-    // Запоминаем значение корня.
-    int result = array[0];
-    // Переносим последний элемент в корень.
+    int res = array[0];
+
     array.swap(0, array.get_size() - 1);
     array.pop_back();
-    // Вызываем SiftDown для корня.
+
     if (array.get_size() != 0) {
         sift_down(0);
     }
-    return result;
+    return res;
 }
 
 void Heap::add(int val) {
     array.push_back(val);
     sift_up(array.get_size() - 1);
+
+    if (array.get_size() > max_size) {
+        max_size++;
+    }
+}
+
+void Heap::drop_bigger_vals(int val) {
+    while (val < array[0]) {
+        if (array.get_size() == 0) {
+            return;
+        }
+        pop_max();
+    }
 }
 
 int main() {
-//    int n = 0;  // size of A
-//    std::cin >> n;
-//    // checking n is valid
-//    assert(n >= 0);
-//    assert(n <= 1000000000);
-    Heap my_heap;
-    my_heap.add(20);
-    my_heap.add(25);
-    my_heap.add(30);
-    my_heap.add(10);
-    my_heap.add(40);
-    my_heap.add(51);
+    int n = 0;  // size of A
+    std::cin >> n;
+    // checking n is valid
 
-    my_heap.arr_print();
+    Heap my_heap((size_t)n);
+    int time_in = 0, time_out = 0;
+    for (int i = 0; i < n; i++) {
+        std::cin >> time_in >> time_out;
+        assert(0 <= time_in);
+        assert(time_in <= 1000000000);
 
+        assert(0 <= time_out);
+        assert(time_out <= 1000000000);
 
-    my_heap.pop_max();
-    my_heap.arr_print();
-    my_heap.pop_max();
-    my_heap.arr_print();
-    my_heap.pop_max();
-    my_heap.arr_print();
-    my_heap.pop_max();
-    my_heap.arr_print();
-    my_heap.pop_max();
-    my_heap.arr_print();
-    my_heap.pop_max();
+        my_heap.drop_bigger_vals(time_in);
+        my_heap.add(time_out);
+//        my_heap.arr_print();
+    }
 
-
-    my_heap.arr_print();
+    std::cout << my_heap.get_size();
 
     return 0;
 }
