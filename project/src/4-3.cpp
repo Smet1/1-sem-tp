@@ -205,11 +205,26 @@ void Heap::add(int val) {
 }
 
 void Heap::drop_bigger_vals(int val) {
-    while (val < array[0]) {
+//    auto tmp = array[0];
+//    while (val < array[0]) {
+//        if (array.get_size() == 0) {
+//            return;
+//        }
+//        pop_max();
+//    }
+
+    size_t i = 0;
+    while (val < array[i] && i < array.get_size()) {
         if (array.get_size() == 0) {
             return;
         }
+
+        array.swap(0, i);
         pop_max();
+
+        std::cout << "--sz = " << array.get_size() << std::endl;
+
+        i++;
     }
 }
 
@@ -230,7 +245,7 @@ int main() {
 
         my_heap.drop_bigger_vals(time_in);
         my_heap.add(time_out);
-//        my_heap.arr_print();
+        my_heap.arr_print();
     }
 
     std::cout << my_heap.get_size();

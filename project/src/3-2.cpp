@@ -130,7 +130,6 @@ private:
     int head;
     int tail;
 
-    // TODO(): доделать increase capacity
     int inc_capacity() {
         int* new_arr = new int [capacity * 2];
 
