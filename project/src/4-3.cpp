@@ -25,6 +25,7 @@
 #include <cstring>
 #include <cassert>
 #include <algorithm>
+#include <utility>
 
 #define DEFAULT_CAPACITY 10
 
@@ -44,7 +45,7 @@ public:
     }
 
     ~Cus_vec() {
-        delete[](array);
+        delete[] array;
         capacity = 0;
         size = 0;
     }
@@ -54,8 +55,15 @@ public:
     int operator[](size_t index) const;
 
     void push_back(int val);  // запихуевание в конец
-
+    int pop_back();
     void print();
+    size_t get_size() const { return size; }
+    void swap(size_t a, size_t b);
+    int back() {
+        assert(size > 0);
+        return array[size - 1];
+    }
+
 
 private:
     int* array;
@@ -63,6 +71,7 @@ private:
     size_t size;
 
     void inc_capacity();  // увеличение капасити
+
 };
 
 int Cus_vec::operator[](size_t index) const {
@@ -96,7 +105,7 @@ void Cus_vec::inc_capacity() {
 //        new_arr[i] = 0;
 //    }
 
-    delete[](array);
+    delete[] array;
 
     array = new_arr;
     capacity = new_cap;
@@ -112,41 +121,125 @@ void Cus_vec::print() {
         }
         std::cout << std::endl;
     }
-
 }
+
+void Cus_vec::swap(size_t a, size_t b) {
+    std::swap(array[a], array[b]);
+}
+
+int Cus_vec::pop_back() {
+    int tmp = array[size--];
+    return tmp;
+}
+
+/////////////////////////////////////////////////////////////////////
 
 class Heap {
 public:
-    Heap(int size) : capacity(size), size(0), max_size(0) {
-        array = new int[capacity];
-
-        for (size_t i = 0; i < capacity; i++) {
-            array[i] = 0;
-        }
-    }
-
+    Heap() : array(DEFAULT_CAPACITY), max_size(0) {}
+    Heap(size_t cap) : array(cap), max_size(0) {}
     ~Heap() {
-        delete [] (array);
-        capacity = 0;
-        size = 0;
+//        array.~Cus_vec();
         max_size = 0;
     }
 
+    void arr_print();
+    int pop_max();  // извлечение максимума
+    void add(int val);
+
+
 private:
-    int* array;
-    int capacity;
-    int size;
+    Cus_vec array;
     int max_size;
+
+    void sift_down(size_t i);  // просеивание вниз
+    void sift_up(int i);  // просеивание вверх
+
 };
 
+void Heap::arr_print() {
+    array.print();
+}
+
+void Heap::sift_down(size_t i) {
+    // TODO(): реализация
+    size_t left = 2 * i + 1;
+    size_t right = 2 * i + 2;
+// Ищем большего сына, если такой есть.
+    size_t largest = i;
+    if (left < array.get_size() && array[left] > array[i])
+        largest = left;
+    if (right < array.get_size() && array[right] > array[largest])
+        largest = right;
+// Если больший сын есть, то проталкиваем корень в него.
+    if (largest != i) {
+        array.swap(i, largest);
+        sift_down(largest);
+    }
+
+}
+
+void Heap::sift_up(int i) {
+    // TODO(): реализация
+    while (i > 0) {
+        int parent = (i - 1) / 2;
+        if (array[i] <= array[parent])
+            return;
+        array.swap((size_t)i, (size_t)parent);
+        i = parent;
+    }
+}
+
+int Heap::pop_max() {
+    // TODO(): реализация
+    // Запоминаем значение корня.
+    int result = array[0];
+    // Переносим последний элемент в корень.
+    array.swap(0, array.get_size() - 1);
+    array.pop_back();
+    // Вызываем SiftDown для корня.
+    if (array.get_size() != 0) {
+        sift_down(0);
+    }
+    return result;
+}
+
+void Heap::add(int val) {
+    array.push_back(val);
+    sift_up(array.get_size() - 1);
+}
+
 int main() {
-    int n = 0;  // size of A
-    std::cin >> n;
-    // checking n is valid
-    assert(n >= 0);
-    assert(n <= 1000000000);
+//    int n = 0;  // size of A
+//    std::cin >> n;
+//    // checking n is valid
+//    assert(n >= 0);
+//    assert(n <= 1000000000);
+    Heap my_heap;
+    my_heap.add(20);
+    my_heap.add(25);
+    my_heap.add(30);
+    my_heap.add(10);
+    my_heap.add(40);
+    my_heap.add(51);
+
+    my_heap.arr_print();
 
 
+    my_heap.pop_max();
+    my_heap.arr_print();
+    my_heap.pop_max();
+    my_heap.arr_print();
+    my_heap.pop_max();
+    my_heap.arr_print();
+    my_heap.pop_max();
+    my_heap.arr_print();
+    my_heap.pop_max();
+    my_heap.arr_print();
+    my_heap.pop_max();
+
+
+    my_heap.arr_print();
 
     return 0;
 }
