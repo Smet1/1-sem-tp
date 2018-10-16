@@ -214,16 +214,19 @@ void Heap::drop_bigger_vals(int val) {
 //    }
 
     size_t i = 0;
-    while (val < array[i] && i < array.get_size()) {
-        if (array.get_size() == 0) {
-            return;
+    while (i < array.get_size()) {
+//        if (array.get_size() == 0) {
+//            return;
+//        }
+        if (val > array[i]) {
+            array.swap(i, array.get_size() - 1);
+            array.pop_back();
+//          pop_max();
+            sift_down(i);
+            sift_up(i);
+
+//            std::cout << "--sz = " << array.get_size() << std::endl;
         }
-
-        array.swap(0, i);
-        pop_max();
-
-        std::cout << "--sz = " << array.get_size() << std::endl;
-
         i++;
     }
 }
@@ -245,7 +248,7 @@ int main() {
 
         my_heap.drop_bigger_vals(time_in);
         my_heap.add(time_out);
-        my_heap.arr_print();
+//        my_heap.arr_print();
     }
 
     std::cout << my_heap.get_size();
