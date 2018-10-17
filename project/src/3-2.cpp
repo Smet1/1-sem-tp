@@ -23,6 +23,11 @@
 #include <cassert>
 
 
+// TODO(): правило пяти
+// TODO(): выполнение команд снаружи
+
+
+
 class Deq {  // deque
 public:
     Deq(size_t capacity) : capacity((int)capacity), head(0), tail(0) {

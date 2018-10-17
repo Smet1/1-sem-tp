@@ -29,8 +29,14 @@
 
 #define DEFAULT_CAPACITY 10
 
+// TODO(): перемеиновать вектор в массив
+// TODO(): шаблон для вектора
+// TODO(): дефолт размер 16 и добавить в конструктор дефолт размер
+// TODO(): правило пяти
+// TODO(): хранить хип наоборот
+
 class Cus_vec {
-public:
+ public:
     Cus_vec() : capacity(0), size(0) {
         array = nullptr;
     }
@@ -60,7 +66,7 @@ public:
     }
 
 
-private:
+ private:
     int* array;
     size_t capacity;
     size_t size;

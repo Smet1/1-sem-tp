@@ -43,7 +43,7 @@ int search_pos(const int* A, int n) {
             end = i;
             break;
         }
-        i *= 2;  // 1 -> 2 -> 4 ...
+        i *= 2;  // 1 -> 2 -> 4 ...  // сделать сдвигом
     }
 
     int m = (end + beg) / 2;
