@@ -163,10 +163,10 @@ void Heap::sift_down(size_t i) {
     size_t right = 2 * i + 2;
     size_t max = i;
 
-    if (beg < array.get_size() && array[beg] > array[i]) {
+    if (beg < array.get_size() && array[beg] < array[i]) {
         max = beg;
     }
-    if (right < array.get_size() && array[right] > array[max]) {
+    if (right < array.get_size() && array[right] < array[max]) {
         max = right;
     }
 
@@ -180,7 +180,7 @@ void Heap::sift_down(size_t i) {
 void Heap::sift_up(size_t i) {
     while (i > 0) {
         size_t par = (i - 1) / 2;
-        if (array[i] <= array[par]) {
+        if (array[i] >= array[par]) {
             return;
         }
 
@@ -212,29 +212,31 @@ void Heap::add(int val) {
 
 void Heap::drop_bigger_vals(int val) {
 //    auto tmp = array[0];
-//    while (val < array[0]) {
+    while (val > array[0]) {
+        if (array.get_size() == 0) {
+            return;
+        }
+        pop_max();
+    }
+
+//    size_t i = 0;
+
+//    while (i < array.get_size()) {
 //        if (array.get_size() == 0) {
 //            return;
 //        }
-//        pop_max();
+//        if (val > array[i]) {
+//            array.swap(i, array.get_size() - 1);
+//            array.pop_back();
+////          pop_max();
+//            sift_down(i);
+//            sift_up(i);
+//
+////            std::cout << "--sz = " << array.get_size() << std::endl;
+//        }
+//        i++;
 //    }
 
-    size_t i = 0;
-    while (i < array.get_size()) {
-//        if (array.get_size() == 0) {
-//            return;
-//        }
-        if (val > array[i]) {
-            array.swap(i, array.get_size() - 1);
-            array.pop_back();
-//          pop_max();
-            sift_down(i);
-            sift_up(i);
-
-//            std::cout << "--sz = " << array.get_size() << std::endl;
-        }
-        i++;
-    }
 }
 
 int main() {
@@ -254,7 +256,7 @@ int main() {
 
         my_heap.drop_bigger_vals(time_in);
         my_heap.add(time_out);
-//        my_heap.arr_print();
+        my_heap.arr_print();
     }
 
     std::cout << my_heap.get_size();
