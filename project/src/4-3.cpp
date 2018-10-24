@@ -27,7 +27,7 @@
 #include <algorithm>
 #include <utility>
 
-#define DEFAULT_CAPACITY 10
+#define DEFAULT_CAPACITY 16
 
 // TODO(): перемеиновать вектор в массив
 // TODO(): шаблон для вектора
@@ -35,55 +35,59 @@
 // TODO(): правило пяти
 // TODO(): хранить хип наоборот
 
-class Cus_vec {
+template <class T>
+class Dynamic_mas {
  public:
-    Cus_vec() : capacity(0), size(0) {
+    Dynamic_mas() : capacity(0), size(0) {
         array = nullptr;
     }
 
-    explicit Cus_vec(size_t cap) : capacity(cap), size(0) {
-        array = new int[cap];
+    explicit Dynamic_mas(size_t cap) : capacity(cap), size(0) {
+        array = new T[cap];
     }
 
-    ~Cus_vec() {
+    ~Dynamic_mas() {
         delete[] array;
         capacity = 0;
         size = 0;
     }
 
-    int get_elem(size_t index) const;  // получение элемента по индексу
+    T get_elem(size_t index) const;  // получение элемента по индексу
 
-    int operator[](size_t index) const;
+    T operator[](size_t index) const;
 
     void push_back(int val);  // запихуевание в конец
-    int pop_back();
+    T pop_back();
     void print();
     size_t get_size() const { return size; }
     void swap(size_t a, size_t b);
-    int back() {
+    T back() {
         assert(size > 0);
         return array[size - 1];
     }
 
 
  private:
-    int* array;
+    T* array;
     size_t capacity;
     size_t size;
 
     void inc_capacity();  // увеличение капасити
 };
 
-int Cus_vec::operator[](size_t index) const {
+template<class T>
+T Dynamic_mas<T>::operator[](size_t index) const {
     return get_elem(index);
 }
 
-int Cus_vec::get_elem(size_t index) const {
+template<class T>
+T Dynamic_mas<T>::get_elem(size_t index) const {
     assert(index <= size);  // мб не ассерт, но вот так
     return array[index];
 }
 
-void Cus_vec::push_back(int val) {
+template<class T>
+void Dynamic_mas<T>::push_back(int val) {
     if (size == capacity) {
         inc_capacity();
     }
@@ -91,7 +95,8 @@ void Cus_vec::push_back(int val) {
     array[size++] = val;
 }
 
-void Cus_vec::inc_capacity() {
+template<class T>
+void Dynamic_mas<T>::inc_capacity() {
     size_t new_cap = (capacity * 2 < DEFAULT_CAPACITY) ? DEFAULT_CAPACITY : capacity * 2;
 
     int* new_arr = new int[new_cap];
@@ -106,7 +111,8 @@ void Cus_vec::inc_capacity() {
     capacity = new_cap;
 }
 
-void Cus_vec::print() {
+template<class T>
+void Dynamic_mas<T>::print() {
     if (size == 0) {
         std::cout << "nothing to print, size = 0\n";
         return;
@@ -118,47 +124,52 @@ void Cus_vec::print() {
     }
 }
 
-void Cus_vec::swap(size_t a, size_t b) {
+template<class T>
+void Dynamic_mas<T>::swap(size_t a, size_t b) {
     std::swap(array[a], array[b]);
 }
 
-int Cus_vec::pop_back() {
+template<class T>
+T Dynamic_mas<T>::pop_back() {
     int tmp = array[size--];
     return tmp;
 }
 
 /////////////////////////////////////////////////////////////////////
 
+template<class T>
 class Heap {
 public:
     Heap() : array(DEFAULT_CAPACITY), max_size(0) {}
     explicit Heap(size_t cap) : array(cap), max_size(0) {}
     ~Heap() {
-//        array.~Cus_vec();
+//        array.Dynamic_mas_mas();
         max_size = 0;
     }
 
     void arr_print();
-    int pop_max();  // извлечение максимума
+    T pop_max();  // извлечение максимума
     void add(int val);
     void drop_bigger_vals(int val);
 
     size_t get_size() const { return max_size; }
 
 private:
-    Cus_vec array;
+    Dynamic_mas<T> array;
     size_t max_size;
 
-    void sift_down(size_t i);  // просеивание вниз
+    void §_down(size_t i);  // просеивание вниз
     void sift_up(size_t i);  // просеивание вверх
 
 };
 
-void Heap::arr_print() {
+template<class T>
+void Heap<T>::arr_print() {
     array.print();
 }
 
-void Heap::sift_down(size_t i) {
+template<class T>
+void Heap<T>::sift_down(size_t i) {
     size_t beg = 2 * i + 1;
     size_t right = 2 * i + 2;
     size_t max = i;
@@ -177,7 +188,8 @@ void Heap::sift_down(size_t i) {
 
 }
 
-void Heap::sift_up(size_t i) {
+template<class T>
+void Heap<T>::sift_up(size_t i) {
     while (i > 0) {
         size_t par = (i - 1) / 2;
         if (array[i] >= array[par]) {
@@ -189,7 +201,8 @@ void Heap::sift_up(size_t i) {
     }
 }
 
-int Heap::pop_max() {
+template<class T>
+T Heap<T>::pop_max() {
     int res = array[0];
 
     array.swap(0, array.get_size() - 1);
@@ -201,7 +214,8 @@ int Heap::pop_max() {
     return res;
 }
 
-void Heap::add(int val) {
+template<class T>
+void Heap<T>::add(int val) {
     array.push_back(val);
     sift_up(array.get_size() - 1);
 
@@ -210,32 +224,14 @@ void Heap::add(int val) {
     }
 }
 
-void Heap::drop_bigger_vals(int val) {
-//    auto tmp = array[0];
+template<class T>
+void Heap<T>::drop_bigger_vals(int val) {
     while (val > array[0]) {
         if (array.get_size() == 0) {
             return;
         }
         pop_max();
     }
-
-//    size_t i = 0;
-
-//    while (i < array.get_size()) {
-//        if (array.get_size() == 0) {
-//            return;
-//        }
-//        if (val > array[i]) {
-//            array.swap(i, array.get_size() - 1);
-//            array.pop_back();
-////          pop_max();
-//            sift_down(i);
-//            sift_up(i);
-//
-////            std::cout << "--sz = " << array.get_size() << std::endl;
-//        }
-//        i++;
-//    }
 
 }
 
@@ -244,7 +240,7 @@ int main() {
     std::cin >> n;
     // checking n is valid
 
-    Heap my_heap((size_t)n);
+    Heap<int> my_heap((size_t)n);
     int time_in = 0, time_out = 0;
     for (int i = 0; i < n; i++) {
         std::cin >> time_in >> time_out;

@@ -24,16 +24,14 @@
 
 
 // TODO(): правило пяти
-// TODO(): выполнение команд снаружи
 
 
 
 class Deq {  // deque
 public:
-    Deq(size_t capacity) : capacity((int)capacity), head(0), tail(0) {
+  explicit Deq(size_t capacity) : capacity((int)capacity), head(0), tail(0) {
         array = new int[capacity];
 
-        // TODO(): delete
         for (size_t i = 0; i < capacity; i++) {
             array[i] = 0;
         }
@@ -64,7 +62,6 @@ public:
             return -1;
         } else {
             int res = array[head];
-            // TODO(): delete
             array[head] = 0;
             head = (head + 1) % capacity;
             return res;
@@ -104,30 +101,6 @@ public:
         std::cout << std::endl;
     }
 
-    bool do_command(int com, int val) {
-        switch (com) {
-            case 1:
-                this->push_front(val);
-                return true;
-            case 3:
-                this->push_back(val);
-                return true;
-            case 2:
-                if (val == this->pop_front()) {
-                    return true;
-                } else {
-                    return false;
-                }
-            case 4:
-                if (val == this->pop_back()) {
-                    return true;
-                } else {
-                    return false;
-                }
-            default:
-                return false;
-        }
-    }
 
 private:
     int* array;
@@ -154,6 +127,27 @@ private:
     };
 };
 
+bool do_command(Deq& deq, int com, int val) {
+  switch (com) {
+    case 1:
+      deq.push_front(val);
+      return true;
+
+    case 3:
+      deq.push_back(val);
+      return true;
+
+    case 2:
+      return val == deq.pop_front();
+
+    case 4:
+      return val == deq.pop_back();
+
+    default:
+      return false;
+  }
+}
+
 int main() {
     int n = 0;  // size of A
     std::cin >> n;
@@ -166,7 +160,7 @@ int main() {
     for (int i = 0; i < n; i++) {
         std::cin >> com >> val;
         if (res) {
-            res = deq.do_command(com, val);
+            res = do_command(deq, com, val);
 //            deq.print();
         }
     }
