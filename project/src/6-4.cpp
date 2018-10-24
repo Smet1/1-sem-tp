@@ -149,12 +149,7 @@ template<class T>
 T partition(Dynamic_mas<T> &arr, int begin, int end) {
   int rand = rand_num(begin, end - 1);
 
-  // TODO(): delete tmp
-//  int tmp = arr[rand];
-
   arr.swap((size_t) rand, (size_t) end - 1);
-//  std::cout << rand << std::endl;
-//  arr.print();
 
   int i = end - 2;
   int j = end - 2;
@@ -164,17 +159,12 @@ T partition(Dynamic_mas<T> &arr, int begin, int end) {
       arr.swap(i, j);
       i--;
       j--;
-//      std::cout << "--partition.swap ";
-//      arr.print();
     } else {
       j--;
     }
   }
-//  std::cout << "--partition.res_mas ";
   arr.swap(++i, end - 1);
 
-//  arr.print();
-//  std::cout << "--partition.out " <<  tmp << " is " << i << std::endl;
   return i;
 }
 
@@ -185,10 +175,11 @@ T k_statistic(Dynamic_mas<T> &arr, int begin, int end, int k) {
   int pivot = partition(arr, begin, end);
   while (pivot != k) {
     if (pivot > k) {
-      pivot = partition(arr, begin, pivot);
-    }
-    if (pivot < k) {
-      pivot = partition(arr, pivot, end);
+      end = pivot;
+      pivot = partition(arr, begin, end);
+    } else if (pivot < k) {
+      begin = pivot;
+      pivot = partition(arr, begin, end);
     }
   }
 
@@ -215,11 +206,7 @@ int main() {
     int_mas.push_back(tmp);
   }
 
-//  int_mas.print();
   std::cout << k_statistic(int_mas, 0, n, k) << std::endl;
 
-//  const int range_from  = 0;
-//  const int range_to    = 10;
-//  std::cout << rand_num(range_from, range_to);
   return 0;
 }
