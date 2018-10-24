@@ -56,7 +56,7 @@ class Dynamic_mas {
 
   T operator[](size_t index) const;
 
-  void push_back(int val);  // запихуевание в конец
+  void push_back(T val);  // запихуевание в конец
   T pop_back();
   void print();
   size_t get_size() const { return size; }
@@ -86,7 +86,7 @@ T Dynamic_mas<T>::get_elem(size_t index) const {
 }
 
 template<class T>
-void Dynamic_mas<T>::push_back(int val) {
+void Dynamic_mas<T>::push_back(T val) {
   if (size == capacity) {
     inc_capacity();
   }

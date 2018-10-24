@@ -56,7 +56,7 @@ class Dynamic_mas {
 
     T operator[](size_t index) const;
 
-    void push_back(int val);  // запихуевание в конец
+    void push_back(T val);  // запихуевание в конец
     T pop_back();
     void print();
     size_t get_size() const { return size; }
@@ -215,7 +215,7 @@ T Heap<T>::pop_max() {
 }
 
 template<class T>
-void Heap<T>::add(int val) {
+void Heap<T>::add(T val) {
     array.push_back(val);
     sift_up(array.get_size() - 1);
 
