@@ -142,39 +142,39 @@ T rand_num(const T &from = 0, const T &to = 10) {  // рандомное чис�
   std::mt19937 generator(rand_dev());
   std::uniform_int_distribution<T> distr(from, to);
 
-//  std::cout << distr(generator) << '\n';
   return distr(generator);
 }
 
 template<class T>
-int partition(Dynamic_mas<T> &arr, int begin, int end) {
+T partition(Dynamic_mas<T> &arr, int begin, int end) {
   int rand = rand_num(begin, end - 1);
-  int tmp = arr[rand];
+
+  // TODO(): delete tmp
+//  int tmp = arr[rand];
 
   arr.swap((size_t) rand, (size_t) end - 1);
-  std::cout << rand << std::endl;
-  arr.print();
+//  std::cout << rand << std::endl;
+//  arr.print();
 
   int i = end - 2;
   int j = end - 2;
 
   while (j >= 0){
     if (arr[j] > arr[end - 1]){
-//      std::swap(Array[i], Array[j]);
       arr.swap(i, j);
       i--;
       j--;
-      std::cout << "--swap ";
-      arr.print();
+//      std::cout << "--partition.swap ";
+//      arr.print();
     } else {
       j--;
     }
   }
-  std::cout << "--res_mas ";
+//  std::cout << "--partition.res_mas ";
   arr.swap(++i, end - 1);
 
-  arr.print();
-  std::cout << tmp << " is " << i << std::endl;
+//  arr.print();
+//  std::cout << "--partition.out " <<  tmp << " is " << i << std::endl;
   return i;
 }
 
@@ -182,12 +182,14 @@ template<class T>
 T k_statistic(Dynamic_mas<T> &arr, int begin, int end, int k) {
   assert(begin < end);
 
-  const int pivot = partition(arr, begin, end);
-  if (pivot > k) {
-    return k_statistic(arr, begin, pivot, k);
-  }
-  if (pivot < k) {
-    return k_statistic(arr, pivot, end, k);
+  int pivot = partition(arr, begin, end);
+  while (pivot != k) {
+    if (pivot > k) {
+      pivot = partition(arr, begin, pivot);
+    }
+    if (pivot < k) {
+      pivot = partition(arr, pivot, end);
+    }
   }
 
   return arr[pivot];
@@ -202,8 +204,8 @@ int main() {
 
   int k = 0;
   std::cin >> k;
-  assert(k < (n - 1));
-  assert(k >= 0);
+//  assert(k < (n - 1));
+//  assert(k >= 0);
 
   Dynamic_mas<int> int_mas(n);
 
@@ -213,7 +215,7 @@ int main() {
     int_mas.push_back(tmp);
   }
 
-  int_mas.print();
+//  int_mas.print();
   std::cout << k_statistic(int_mas, 0, n, k) << std::endl;
 
 //  const int range_from  = 0;
