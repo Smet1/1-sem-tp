@@ -24,7 +24,7 @@
 #include <cassert>
 #include <algorithm>
 #include <utility>
-
+#include <vector>
 #define DEFAULT_CAPACITY 16
 
 template<class T>
@@ -177,15 +177,36 @@ std::ostream &operator<<(std::ostream &os, const Customer &in) {
 }
 
 bool operator<(Customer const &a, Customer const &b) {
-  return (a.time_out < b.time_out || (a.time_out == b.time_out && a.time_in > b.time_in));
+//  return (a.time_out < b.time_out || (a.time_out == b.time_out && a.time_in > b.time_in));
+  if (a.time_out < b.time_in) {
+    return true;
+  }
+  if (a.time_out == b.time_out) {
+    return a.time_in > b.time_in;
+  }
+  return false;
 }
 
 bool operator>(Customer const &a, Customer const &b) {
-  return (a.time_out > b.time_out || (a.time_out == b.time_out && a.time_in < b.time_in));
+//  return (a.time_out > b.time_out || (a.time_out == b.time_out && a.time_in < b.time_in));
+  if (a.time_out > b.time_out) {
+    return true;
+  }
+  if (a.time_out == b.time_out) {
+    return a.time_in < b.time_in;
+  }
+  return false;
 }
 
 bool operator<=(Customer const &a, Customer const &b) {
-  return (a.time_out <= b.time_out || (a.time_out == b.time_out && a.time_in <= b.time_in));
+//  return (a.time_out <= b.time_out || (a.time_out == b.time_out && a.time_in <= b.time_in));
+  if (a.time_out <= b.time_out) {
+    return true;
+  }
+  if (a.time_out == b.time_out) {
+    return a.time_in <= b.time_in;
+  }
+  return false;
 }
 
 Customer &Customer::operator=(const Customer &right) {
@@ -201,14 +222,47 @@ Customer &Customer::operator=(const Customer &right) {
 
 /////////////////////////////////////////////////////////////
 
-template <class T>
-void merge_sort(Dynamic_mas<T> &in, size_t beg, size_t end) {
+//template <class T>
+//void merge(Dynamic_mas<T> &in, size_t beg, size_t mid, size_t end) {
+//  int i = 0, j = 0;
+//
+//  Dynamic_mas<T> tmp(mid - beg);
+//  for (int k = 0; k < (mid - beg); ++k) {
+//    tmp[k] = in[k];
+//  }
+//
+//  tmp.print();
+//
+//}
+//
+//
+//template <class T>
+//void merge_sort(Dynamic_mas<T> &in, size_t beg, size_t end) {
+//  if (end - beg <= 1) {
+//    return;
+//  }
+//
+//  size_t mid = beg + (end - beg) / 2;
+//
+//  merge_sort(in, beg, mid);
+//  merge_sort(in, mid, end);
+//
+//  merge(in, beg, mid, end);
+//}
+
+void print_vec(std::vector<Customer> &vec_in) {
+  for (auto x : vec_in) {
+    std::cout << x << " ";
+  }
+  std::cout << std::endl << "========"<< std::endl;
+}
+void merge_sort(std::vector<Customer> &in, size_t beg, size_t end) {
   if (end - beg < 2) {
     return;
   }
   if (end - beg == 2) {
-    if (in[beg+1] < in[beg]) {
-      in.swap(beg, beg + 1);
+    if (in[beg] > in[beg+1]) {
+      std::swap(in[beg], in[beg+1]);
     }
     return;
   }
@@ -216,13 +270,13 @@ void merge_sort(Dynamic_mas<T> &in, size_t beg, size_t end) {
   merge_sort(in, beg, beg + (end - beg) / 2);
   merge_sort(in, beg + (end - beg) / 2, end);
 
-  Dynamic_mas<T> tmp;
+  std::vector<Customer> tmp;
   size_t b1 = beg;
   size_t e1 = beg + (end - beg) / 2;
   size_t b2 = e1;
 
-  while (tmp.get_size() < end - beg) {
-    if (b1 >= e1 || (b2 < end && in[b2] <= in[b1])) {
+  while (tmp.size() < end - beg) {
+    if (b1 >= e1 || (b2 < end && in[b2] < in[b1])) {
       tmp.push_back(in[b2]);
       ++b2;
     } else {
@@ -234,8 +288,8 @@ void merge_sort(Dynamic_mas<T> &in, size_t beg, size_t end) {
   for (size_t i = beg; i < end; i++) {
     in[i] = tmp[i - beg];
   }
+  print_vec(tmp);
 
-//  tmp.print();
 }
 
 int main() {
@@ -255,17 +309,29 @@ int main() {
 //      std::cout << "a > b";
 //    }
 
-  Dynamic_mas<Customer> cus_mas(n);
-  int tmp, tmp1;
+//  Dynamic_mas<Customer> cus_mas(n);
+//  int tmp, tmp1;
+//
+//  for (int i = 0; i < n; i++) {
+//    std::cin >> tmp >> tmp1;
+//
+//    cus_mas.push_back(Customer(tmp, tmp1));
+//  }
+////  merge_sort(cus_mas, 0, n);
+//
+//  cus_mas.print();
+    int tmp, tmp1;
 
+  std::vector<Customer> cus_vec;
   for (int i = 0; i < n; i++) {
-    std::cin >> tmp >> tmp1;
+        std::cin >> tmp >> tmp1;
 
-    cus_mas.push_back(Customer(tmp, tmp1));
+        cus_vec.emplace_back(tmp, tmp1);
   }
-  cus_mas.print();
-  merge_sort(cus_mas, 0, n);
+
+  merge_sort(cus_vec, 0, cus_vec.size());
 
 
+  print_vec(cus_vec);
   return 0;
 }
