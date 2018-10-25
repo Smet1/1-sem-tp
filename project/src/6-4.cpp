@@ -98,7 +98,7 @@ template<class T>
 void Dynamic_mas<T>::inc_capacity() {
   size_t new_cap = (capacity * 2 < DEFAULT_CAPACITY) ? DEFAULT_CAPACITY : capacity * 2;
 
-  int *new_arr = new int[new_cap];
+  T *new_arr = new T[new_cap];
   size_t i = 0;
   for (; i < size; i++) {
     new_arr[i] = array[i];
@@ -130,7 +130,7 @@ void Dynamic_mas<T>::swap(size_t a, size_t b) {
 
 template<class T>
 T Dynamic_mas<T>::pop_back() {
-  int tmp = array[size--];
+  T tmp = array[size--];
   return tmp;
 }
 
