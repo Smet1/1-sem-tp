@@ -87,7 +87,7 @@ T Dynamic_mas<T>::get_elem(size_t index) const {
 }
 
 template<class T>
-void Dynamic_mas<T>::push_back(int val) {
+void Dynamic_mas<T>::push_back(T val) {
     if (size == capacity) {
         inc_capacity();
     }
@@ -99,7 +99,7 @@ template<class T>
 void Dynamic_mas<T>::inc_capacity() {
     size_t new_cap = (capacity * 2 < DEFAULT_CAPACITY) ? DEFAULT_CAPACITY : capacity * 2;
 
-    int* new_arr = new int[new_cap];
+    T* new_arr = new T[new_cap];
     size_t i = 0;
     for (; i < size; i++) {
         new_arr[i] = array[i];
@@ -131,7 +131,7 @@ void Dynamic_mas<T>::swap(size_t a, size_t b) {
 
 template<class T>
 T Dynamic_mas<T>::pop_back() {
-    int tmp = array[size--];
+    T tmp = array[size--];
     return tmp;
 }
 
@@ -149,7 +149,7 @@ public:
 
     void arr_print();
     T pop_max();  // извлечение максимума
-    void add(int val);
+    void add(T val);
     void drop_bigger_vals(int val);
 
     size_t get_size() const { return max_size; }
@@ -158,7 +158,7 @@ private:
     Dynamic_mas<T> array;
     size_t max_size;
 
-    void §_down(size_t i);  // просеивание вниз
+    void sift_down(size_t i);  // просеивание вниз
     void sift_up(size_t i);  // просеивание вверх
 
 };
@@ -252,7 +252,7 @@ int main() {
 
         my_heap.drop_bigger_vals(time_in);
         my_heap.add(time_out);
-        my_heap.arr_print();
+//        my_heap.arr_print();
     }
 
     std::cout << my_heap.get_size();
