@@ -178,47 +178,36 @@ void merge_sort(std::vector<T> &in, size_t beg, size_t end) {
 
 int count_adv(std::vector<Customer> in_vec) {
   int adv = 0;
-  int adv_l = 0, adv_r = 0;  // время последних двух реклам
+  int adv_l = -1, adv_r = -1;  // время последних двух реклам
 
   int beg = 0;
   int j = beg;
   while (j < in_vec.size()) {
-//    while (in_vec[j].get_time_out() == in_vec[beg].get_time_out()) {
-//      ++j;
-//    }
-//    --j;
     for (;in_vec[j + 1].get_time_out() == in_vec[beg].get_time_out(); ++j) {}
 
-//    if (in_vec[j].get_time_out() > adv_r && in_vec[j].get_time_in() < adv_l) {
-//      adv += 0;
-//
-//    } else if (in_vec[j].get_time_in() > adv_r && in_vec[j].get_time_out() > adv_r) {
-//      adv += 2;
-//      adv_r = in_vec[j].get_time_out();
-//      adv_l = adv_r - 1;
-//
-//    } else if (in_vec[j].get_time_in() > adv_l && in_vec[j].get_time_in() < adv_r ) {
-//      adv += 1;
-//      adv_l = adv_r;
-//      adv_r = in_vec[j].get_time_out();
-//
-//    }
     if (adv_r == in_vec[j].get_time_in()) {
       adv += 1;
       adv_l = adv_r;
       adv_r = in_vec[j].get_time_out();
 
-    } else if (adv_l >= in_vec[j].get_time_in()) {
+    } else if (adv_l >= in_vec[j].get_time_in() && adv_l < in_vec[j].get_time_out()) {
       adv += 0;
+
+    } else if (adv_r < in_vec[j].get_time_out() && adv_r > in_vec[j].get_time_in()) {
+      adv += 1;
+      adv_l = adv_r;
+      adv_r = in_vec[j].get_time_out();
 
     } else {
       adv += 2;
       adv_r = in_vec[j].get_time_out();
-      adv_l = in_vec[j].get_time_in();
-      
+      adv_l = adv_r - 1;
+
     }
 
     ++j;
+
+//    std::cout << "adv_l = " << adv_l << ", adv_r = " << adv_r << std::endl;
 
   }
   return adv;
@@ -234,14 +223,14 @@ int main() {
   std::vector<Customer> cus_vec;
   for (int i = 0; i < n; i++) {
     std::cin >> tmp >> tmp1;
-    assert(tmp > 0);
+//    assert(tmp > 0);
     assert(tmp < tmp1);
     cus_vec.emplace_back(tmp, tmp1);
   }
 
   merge_sort(cus_vec, 0, cus_vec.size());
 
-//  print_vec(cus_vec);
+  print_vec(cus_vec);
 
   auto res = count_adv(cus_vec);
   std::cout << res;
