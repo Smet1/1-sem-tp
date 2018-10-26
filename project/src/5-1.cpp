@@ -140,6 +140,9 @@ class Customer {
   int set_time_out(int& val);
   int set_time_in(int& val);
 
+  int inc_adv();
+  int get_adv();
+
   friend bool operator<(Customer const &a, Customer const &b);
   friend bool operator>(Customer const &a, Customer const &b);
   friend bool operator<=(Customer const &a, Customer const &b);
@@ -170,6 +173,15 @@ int Customer::set_time_in(int &val) {
   return time_in;
 }
 
+int Customer::inc_adv() {
+  adv_view++;
+  return adv_view;
+}
+
+int Customer::get_adv() {
+  return adv_view;
+}
+
 std::ostream &operator<<(std::ostream &os, const Customer &in) {
 //  os << "time_in = " << in.time_in << "time_out = " << in.time_out << std::endl;
   os << in.time_in << " " << in.time_out << std::endl;
@@ -178,7 +190,7 @@ std::ostream &operator<<(std::ostream &os, const Customer &in) {
 
 bool operator<(Customer const &a, Customer const &b) {
 //  return (a.time_out < b.time_out || (a.time_out == b.time_out && a.time_in > b.time_in));
-  if (a.time_out < b.time_in) {
+  if (a.time_out < b.time_out) {
     return true;
   }
   if (a.time_out == b.time_out) {
@@ -222,40 +234,13 @@ Customer &Customer::operator=(const Customer &right) {
 
 /////////////////////////////////////////////////////////////
 
-//template <class T>
-//void merge(Dynamic_mas<T> &in, size_t beg, size_t mid, size_t end) {
-//  int i = 0, j = 0;
-//
-//  Dynamic_mas<T> tmp(mid - beg);
-//  for (int k = 0; k < (mid - beg); ++k) {
-//    tmp[k] = in[k];
-//  }
-//
-//  tmp.print();
-//
-//}
-//
-//
-//template <class T>
-//void merge_sort(Dynamic_mas<T> &in, size_t beg, size_t end) {
-//  if (end - beg <= 1) {
-//    return;
-//  }
-//
-//  size_t mid = beg + (end - beg) / 2;
-//
-//  merge_sort(in, beg, mid);
-//  merge_sort(in, mid, end);
-//
-//  merge(in, beg, mid, end);
-//}
-
 void print_vec(std::vector<Customer> &vec_in) {
   for (auto x : vec_in) {
     std::cout << x << " ";
   }
   std::cout << std::endl << "========"<< std::endl;
 }
+
 void merge_sort(std::vector<Customer> &in, size_t beg, size_t end) {
   if (end - beg < 2) {
     return;
@@ -296,42 +281,17 @@ int main() {
   int n = 0;  // size of customers
   std::cin >> n;
   // checking n is valid
-//    int tmp, tmp1;
-//    std::cin >> tmp >> tmp1;
-//    Customer a(tmp, tmp1);
-//
-//    std::cin >> tmp >> tmp1;
-//    Customer b(tmp, tmp1);
-//
-//    if (a < b) {
-//      std::cout << "a < b";
-//    } else {
-//      std::cout << "a > b";
-//    }
-
-//  Dynamic_mas<Customer> cus_mas(n);
-//  int tmp, tmp1;
-//
-//  for (int i = 0; i < n; i++) {
-//    std::cin >> tmp >> tmp1;
-//
-//    cus_mas.push_back(Customer(tmp, tmp1));
-//  }
-////  merge_sort(cus_mas, 0, n);
-//
-//  cus_mas.print();
-    int tmp, tmp1;
+  int tmp, tmp1;
 
   std::vector<Customer> cus_vec;
   for (int i = 0; i < n; i++) {
-        std::cin >> tmp >> tmp1;
-
-        cus_vec.emplace_back(tmp, tmp1);
+    std::cin >> tmp >> tmp1;
+    cus_vec.emplace_back(tmp, tmp1);
   }
 
   merge_sort(cus_vec, 0, cus_vec.size());
 
-
   print_vec(cus_vec);
+
   return 0;
 }
