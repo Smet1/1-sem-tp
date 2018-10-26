@@ -233,15 +233,16 @@ Customer &Customer::operator=(const Customer &right) {
 }
 
 /////////////////////////////////////////////////////////////
-
-void print_vec(std::vector<Customer> &vec_in) {
+template <class T>
+void print_vec(std::vector<T> &vec_in) {
   for (auto x : vec_in) {
     std::cout << x << " ";
   }
   std::cout << std::endl << "========"<< std::endl;
 }
 
-void merge_sort(std::vector<Customer> &in, size_t beg, size_t end) {
+template <class T>
+void merge_sort(std::vector<T> &in, size_t beg, size_t end) {
   if (end - beg < 2) {
     return;
   }
@@ -255,7 +256,7 @@ void merge_sort(std::vector<Customer> &in, size_t beg, size_t end) {
   merge_sort(in, beg, beg + (end - beg) / 2);
   merge_sort(in, beg + (end - beg) / 2, end);
 
-  std::vector<Customer> tmp;
+  std::vector<T> tmp;
   size_t b1 = beg;
   size_t e1 = beg + (end - beg) / 2;
   size_t b2 = e1;
@@ -273,8 +274,7 @@ void merge_sort(std::vector<Customer> &in, size_t beg, size_t end) {
   for (size_t i = beg; i < end; i++) {
     in[i] = tmp[i - beg];
   }
-  print_vec(tmp);
-
+//  print_vec(tmp);
 }
 
 int main() {
