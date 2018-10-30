@@ -21,5 +21,7 @@ from AskPupkin import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.home_page),
-    path('question', views.question_id),
+    path('question', views.question_page),
+    path('ask', views.ask_page),
+    path('signup', views.signup_page),
 ]
