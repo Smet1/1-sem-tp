@@ -24,4 +24,5 @@ urlpatterns = [
     path('question', views.question_page),
     path('ask', views.ask_page),
     path('signup', views.signup_page),
+    path('login', views.login_page),
 ]

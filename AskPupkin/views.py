@@ -18,3 +18,8 @@ def ask_page(request):
 def signup_page(request):
     return render(request, 'signup.html')
 
+
+def login_page(request):
+    return render(request, 'login.html')
+
+
