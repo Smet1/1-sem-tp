@@ -54,7 +54,7 @@
                     <div style="display: inline-block; flex: 80%;">
                         <a>Tags:</a>
                         {% for tag in tags %}
-                            <a class="u_text-14" href="#">{{ tag.tag }}</a>
+                            <a class="u_text-14" href="{% url 'tag_sort' tag_sort=tag.tag %}">{{ tag.tag }}</a>
                         {% endfor %}
                     </div>
                 </div>

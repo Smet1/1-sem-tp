@@ -7,7 +7,19 @@ fake = Faker('ru_RU')
 # Create your views here.
 
 def home_page(request):
-    return render(request, 'index.html')
+    quest = [
+        {
+            'id': quest_id,
+            'title': fake.sentence(),
+            'text': fake.text(),
+            'tags': [
+                {
+                    'tag': fake.sentence(nb_words=1)
+                } for x in range(3)
+            ],
+        } for quest_id in range(10)
+    ]
+    return render(request, 'index.html', {'questions': quest})
 
 
 def question_page(request, question_id):

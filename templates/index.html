@@ -17,136 +17,51 @@
     </div>
 
     <!-- Main part -->
-
-    <div class="quest_box gray shadow-lg p-3 mb-5 bg-white rounded">
-        <div class="left_col">
-            <div class="left_top">
-                <!-- картинка -->
-                <p style="text-align: center;">
-                    <img src={% static 'img/Thrall-WC3.jpg' %} alt=ava width="40%">
-                </p>
-            </div>
-            <div class="left_bot">
-                <!-- лайки -->
-                лайки
-            </div>
-        </div>
-        <div class="right_col">
-            <div class="right_top">
-                <!-- question -->
-                <a class="u_text-20" href="#">How to build a moon park?</a>
-                <div class="mx-auto">
-                    <!-- описание вопроса -->
-                    <p class="font-weight-light" style="font-size: 14px">
-                        Guys, i have trouble with a moon park. Can't find th black-jack...
+    {% for question in questions %}
+        <div class="quest_box gray shadow-lg p-3 mb-5 bg-white rounded">
+            <div class="left_col">
+                <div class="left_top">
+                    <!-- картинка -->
+                    <p style="text-align: center;">
+                        <img src={% static 'img/Thrall-WC3.jpg' %} alt=ava width="40%">
                     </p>
-                    <br>
+                </div>
+                <div class="left_bot">
+                    <!-- лайки -->
+                    лайки
                 </div>
             </div>
+            <div class="right_col">
+                <div class="right_top">
+                    <!-- question -->
+                    <a class="u_text-20" href="{% url 'question' question_id=question.id %}">{{ question.title }}</a>
+                    <div class="mx-auto">
+                        <!-- описание вопроса -->
+                        <p class="font-weight-light" style="font-size: 14px">
+                            {{ question.text }}
+                        </p>
+                        <br>
+                    </div>
+                </div>
 
-            <div class="right_bot">
-                <div class="mx-auto">
-                    <!-- количество респонсов -->
-                    <div style="display: inline-block; flex: 20%">
-                        <a class="u_text-14" href="#">answer (3)</a>
-                    </div>
-                    <!-- теги -->
-                    <div style="display: inline-block; flex: 80%;">
-                        <a>Tags:</a>
-                        <a class="u_text-14" href="#">black-jack</a>
-                        <a class="u_text-14" href="#">bender</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- just a few copies -->
-    <div class="quest_box gray shadow-lg p-3 mb-5 bg-white rounded">
-        <div class="left_col">
-            <div class="left_top">
-                <!-- картинка -->
-                <p style="text-align: center;">
-                    <img src={% static 'img/Thrall-WC3.jpg' %} alt=ava width="40%">
-                </p>
-            </div>
-            <div class="left_bot">
-                <!-- лайки -->
-                лайки
-            </div>
-        </div>
-        <div class="right_col">
-            <div class="right_top">
-                <!-- question -->
-                <a class="u_text-20" href="#">How to build a moon park?</a>
-                <div class="mx-auto">
-                    <!-- описание вопроса -->
-                    <p class="font-weight-light" style="font-size: 14px">
-                        Guys, i have trouble with a moon park. Can't find th black-jack...
-                    </p>
-                    <br>
-                </div>
-            </div>
-
-            <div class="right_bot">
-                <div class="mx-auto">
-                    <!-- количество респонсов -->
-                    <div style="display: inline-block; flex: 20%">
-                        <a class="u_text-14" href="#">answer (3)</a>
-                    </div>
-                    <!-- теги -->
-                    <div style="display: inline-block; flex: 80%;">
-                        <a>Tags:</a>
-                        <a class="u_text-14" href="#">black-jack</a>
-                        <a class="u_text-14" href="#">bender</a>
+                <div class="right_bot">
+                    <div class="mx-auto">
+                        <!-- количество респонсов -->
+                        <div style="display: inline-block; flex: 20%">
+                            <a class="u_text-14" href="#">answer (3)</a>
+                        </div>
+                        <!-- теги -->
+                        <div style="display: inline-block; flex: 80%;">
+                            <a>Tags:</a>
+                            {% for tag in question.tags %}
+                                <a class="u_text-14" href="{% url 'tag_sort' tag_sort=tag.tag %}">{{ tag.tag }}</a>
+                            {% endfor %}
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="quest_box gray shadow-lg p-3 mb-5 bg-white rounded">
-        <div class="left_col">
-            <div class="left_top">
-                <!-- картинка -->
-                <p style="text-align: center;">
-                    <img src={% static 'img/Thrall-WC3.jpg' %} alt=ava width="40%">
-                </p>
-            </div>
-            <div class="left_bot">
-                <!-- лайки -->
-                лайки
-            </div>
-        </div>
-        <div class="right_col">
-            <div class="right_top">
-                <!-- question -->
-                <a class="u_text-20" href="#">How to build a moon park?</a>
-                <div class="mx-auto">
-                    <!-- описание вопроса -->
-                    <p class="font-weight-light" style="font-size: 14px">
-                        Guys, i have trouble with a moon park. Can't find th black-jack...
-                    </p>
-                    <br>
-                </div>
-            </div>
-
-            <div class="right_bot">
-                <div class="mx-auto">
-                    <!-- количество респонсов -->
-                    <div style="display: inline-block; flex: 20%">
-                        <a class="u_text-14" href="#">answer (3)</a>
-                    </div>
-                    <!-- теги -->
-                    <div style="display: inline-block; flex: 80%;">
-                        <a>Tags:</a>
-                        <a class="u_text-14" href="#">black-jack</a>
-                        <a class="u_text-14" href="#">bender</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- end -->
+    {% endfor %}
 
     <br>
     <!-- paginator -->
