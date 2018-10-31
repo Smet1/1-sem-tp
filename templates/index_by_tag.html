@@ -31,7 +31,7 @@
             <div class="right_col">
                 <div class="right_top">
                     <!-- question -->
-                    <a class="u_text-20" href="#">{{ question.title }}</a>
+                    <a class="u_text-20" href="{% url 'question' question_id=question.id %}">{{ question.title }}</a>
                     <div class="mx-auto">
                         <!-- описание вопроса -->
                         <p class="font-weight-light" style="font-size: 14px">
@@ -51,7 +51,7 @@
                         <div style="display: inline-block; flex: 80%;">
                             <a>Tags:</a>
                             {% for tag in question.tags %}
-                                <a class="u_text-14" href="#">{{ tag.tag }}</a>
+                                <a class="u_text-14" href="{% url 'tag_sort' tag_sort=tag.tag %}">{{ tag.tag }}</a>
                             {% endfor %}
                         </div>
                     </div>
