@@ -20,9 +20,11 @@ from AskPupkin import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.home_page),
-    path('question', views.question_page),
-    path('ask', views.ask_page),
-    path('signup', views.signup_page),
-    path('login', views.login_page),
+    path('', views.home_page, name='home'),
+    path('tag/<str:tag_sort>/', views.tag_page, name='tag_sort'),
+    path('question/<int:question_id>/', views.question_page, name='questions'),
+    path('login/', views.login_page, name='login'),
+    path('signup/', views.signup_page, name='signup'),
+    path('ask/', views.ask_page, name='ask'),
+
 ]
