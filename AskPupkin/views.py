@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from faker import Faker
+from AskPupkin.funcs import paginate
 
 fake = Faker()
 
@@ -17,8 +18,9 @@ def home_page(request):
                     'tag': fake.sentence(nb_words=1)
                 } for x in range(3)
             ],
-        } for quest_id in range(10)
+        } for quest_id in range(40)
     ]
+    quest = paginate(request, quest)
     return render(request, 'index.html', {'questions': quest})
 
 
