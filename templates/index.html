@@ -9,12 +9,26 @@
 {% block main %}
     <!-- -----------------------------------------QUESTIONS---------------------------------------- -->
     <!-- Header of page -->
-    <div style="display: inline-block">
-        <h3>New Questions</h3>
+
+    {% if title == 'new' %}
+        <div style="display: inline-block">
+            <h3>New Questions</h3>
+        </div>
+        <div style="display: inline-block; margin-left: 5%">
+            <a class="u_text" href="{% url 'hot' %}">Hot Questions</a>
+        </div>
+    {% elif title == 'hot' %}
+        <div style="display: inline-block">
+            <h3>Hot Questions</h3>
+        </div>
+        <div style="display: inline-block; margin-left: 5%">
+            <a class="u_text" href="{% url 'home' %}">New Questions</a>
+        </div>
+    {% elif title == 'tag'%}
+        <div style="display: inline-block">
+        <h3>Tag: {{ tag_sort }}</h3>
     </div>
-    <div style="display: inline-block; margin-left: 5%">
-        <a class="u_text" href="{% url 'hot' %}">Hot Questions</a>
-    </div>
+    {% endif %}
 
     <!-- Main part -->
     {% for question in questions %}
@@ -65,18 +79,6 @@
 
     <br>
     <!-- paginator -->
-{#    <div style="margin-left: 5%;">#}
-{#        <nav aria-label="Page navigation example">#}
-{#            <ul class="pagination">#}
-{#                <li class="page-item"><a class="page-link" href="#">1</a></li>#}
-{#                <li class="page-item"><a class="page-link" href="#">2</a></li>#}
-{#                <li class="page-item"><a class="page-link" href="#">3</a></li>#}
-{#                <li class="page-item disabled"><a class="page-link" href="#">...</a></li>#}
-{#                <li class="page-item"><a class="page-link" href="#">53</a></li>#}
-{#            </ul>#}
-{#        </nav>#}
-{#    </div>#}
-
     {% include 'paginator.html' with objects=questions %}
     <!-- ----------------------------------------/QUESTIONS---------------------------------------- -->
 

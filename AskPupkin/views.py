@@ -21,7 +21,7 @@ def home_page(request):
         } for quest_id in range(40)
     ]
     quest = paginate(request, quest)
-    return render(request, 'index.html', {'questions': quest})
+    return render(request, 'index.html', {'questions': quest, 'title': 'new'})
 
 
 def question_page(request, question_id):
@@ -75,7 +75,7 @@ def tag_page(request, tag_sort):
     for x in quest:
         x['tags'].append({'tag': tag_sort})
 
-    return render(request, 'index_by_tag.html', {'questions': quest, 'tag_sort': tag_sort})
+    return render(request, 'index.html', {'questions': quest, 'title': 'tag', 'tag_sort': tag_sort})
 
 
 def hot_page(request):
@@ -91,5 +91,5 @@ def hot_page(request):
             ],
         } for quest_id in range(10)
     ]
-    return render(request, 'index.html', {'questions': quest})
+    return render(request, 'index.html', {'questions': quest, 'title': 'hot'})
 
