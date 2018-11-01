@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from faker import Faker
 
-fake = Faker('ru_RU')
+fake = Faker()
 
 
 # Create your views here.
@@ -74,4 +74,20 @@ def tag_page(request, tag_sort):
         x['tags'].append({'tag': tag_sort})
 
     return render(request, 'index_by_tag.html', {'questions': quest, 'tag_sort': tag_sort})
+
+
+def hot_page(request):
+    quest = [
+        {
+            'id': quest_id,
+            'title': fake.sentence(),
+            'text': fake.text(),
+            'tags': [
+                {
+                    'tag': fake.sentence(nb_words=1)
+                } for x in range(3)
+            ],
+        } for quest_id in range(10)
+    ]
+    return render(request, 'index.html', {'questions': quest})
 

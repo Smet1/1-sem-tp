@@ -21,6 +21,7 @@ from AskPupkin import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.home_page, name='home'),
+    path('hot/', views.hot_page, name='hot'),
     path('tag/<str:tag_sort>/', views.tag_page, name='tag_sort'),
     path('question/<int:question_id>/', views.question_page, name='question'),
     path('login/', views.login_page, name='login'),
