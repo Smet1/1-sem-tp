@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from faker import Faker
 from AskPupkin.funcs import paginate
-
+import random
 fake = Faker()
 
 
@@ -13,6 +13,7 @@ def home_page(request):
             'id': quest_id,
             'title': fake.sentence(),
             'text': fake.text(),
+            'raiting': random.randint(0, 2000),
             'tags': [
                 {
                     'tag': fake.sentence(nb_words=1)
@@ -28,7 +29,8 @@ def question_page(request, question_id):
     quest = {
         'id': 0,
         'title': fake.sentence(),
-        'text': fake.text()
+        'text': fake.text(),
+        'raiting': random.randint(0, 2000),
     }
 
     tags = [
@@ -64,16 +66,19 @@ def tag_page(request, tag_sort):
             'id': quest_id,
             'title': fake.sentence(),
             'text': fake.text(),
+            'raiting': random.randint(0, 2000),
             'tags': [
                 {
                     'tag': fake.sentence(nb_words=1)
                 } for x in range(3)
             ],
-        } for quest_id in range(6)
+        } for quest_id in range(20)
     ]
 
     for x in quest:
         x['tags'].append({'tag': tag_sort})
+
+    quest = paginate(request, quest)
 
     return render(request, 'index.html', {'questions': quest, 'title': 'tag', 'tag_sort': tag_sort})
 
@@ -84,12 +89,16 @@ def hot_page(request):
             'id': quest_id,
             'title': fake.sentence(),
             'text': fake.text(),
+            'raiting': random.randint(0, 2000),
             'tags': [
                 {
                     'tag': fake.sentence(nb_words=1)
                 } for x in range(3)
             ],
-        } for quest_id in range(10)
+        } for quest_id in range(30)
     ]
+
+    quest = paginate(request, quest)
+
     return render(request, 'index.html', {'questions': quest, 'title': 'hot'})
 
