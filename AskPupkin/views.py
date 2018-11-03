@@ -43,8 +43,11 @@ def question_page(request, question_id):
         {
             'id': id_res,
             'text': fake.text()
-        } for id_res in range(5)
+        } for id_res in range(15)
     ]
+
+    responses = paginate(request, responses)
+
     return render(request, 'question.html', {'questions': quest, 'tags': tags, 'responses': responses})
 
 
