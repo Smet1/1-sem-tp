@@ -1,3 +1,5 @@
+{% load static %}
+
 <!doctype html>
 <html lang="en">
     <head>
@@ -6,10 +8,15 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
         <!-- Bootstrap CSS -->
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-        <link rel="stylesheet" href="../../css/base.css">
+{#        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">#}
+        <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}">
+        <link rel="stylesheet" href="{% static 'fontawesome/css/all.css' %}">
 
-        <title>Base Authenticated!</title>
+        <title>{% block title %}{% endblock %}</title>
+
+        {% block head %}{% endblock %}
+
     </head>
 
     <body>
@@ -36,7 +43,7 @@
                             <img src="../../img/Thrall-WC3.jpg" alt="ava" width="25%%">
                         </div> -->
                         <div class = "usr_img">
-                            <img src="../../img/Thrall-WC3.jpg" width="50" height="50" class="d-inline-block align-top" alt="ava">
+                            <img src={% static 'img/Thrall-WC3.jpg' %} width="50" height="50" class="d-inline-block align-top" alt="ava">
                         </div>
                         <div class="usr_r-col">
                             <div class="usr_nick">
@@ -78,29 +85,25 @@
             </div>
         </nav>
 
-        <div class="wrapper">
+       <div class="wrapper">
             <article class="main_column">
-                <!-- Header of page -->
-                <div style="display: inline-block"> 
-                    <h3>ЭТО ЛЕВО</h3>
-                </div>
 
-                <!-- Main part -->
-                <p>это лево</p>
+                {% block main %}{% endblock %}
+
             </article>
 
             <aside class="side_bar">
                 <!-- Right column with popular tags -->
                 <div>
                     <h3>Popular Tags</h3>
-                    <a class="norm_tag" href="#">perl</a>
-                    <a class="top_tag" href="#">python</a>
-                    <a class="norm_tag" href="#">TechoPark</a>
-                    <a class="top_tag" href="#">MySQL</a>
-                    <a class="popular_tag" href="#">django</a>
-                    <a class="norm_tag" href="#">Mail.ru</a>
-                    <a class="norm_tag" href="#">Voloshin</a>
-                    <a class="orange_tag" href="#">Firefox</a>
+                    <a class="norm_tag" href="{% url 'tag_sort' tag_sort='perl' %}">perl</a>
+                    <a class="top_tag" href="{% url 'tag_sort' tag_sort='python' %}">python</a>
+                    <a class="norm_tag" href="{% url 'tag_sort' tag_sort='TechoPark' %}">TechoPark</a>
+                    <a class="top_tag" href="{% url 'tag_sort' tag_sort='MySQL' %}">MySQL</a>
+                    <a class="popular_tag" href="{% url 'tag_sort' tag_sort='django' %}">django</a>
+                    <a class="norm_tag" href="{% url 'tag_sort' tag_sort='Mail.ru' %}">Mail.ru</a>
+                    <a class="norm_tag" href="{% url 'tag_sort' tag_sort='Voloshin' %}">Voloshin</a>
+                    <a class="orange_tag" href="{% url 'tag_sort' tag_sort='Firefox' %}">Firefox</a>
                 </div>
 
                 <br>
@@ -116,6 +119,7 @@
                 </div>
             </aside>
         </div>
+        </br>
         <footer class="footer">Footer</footer>
 
         <!-- Optional JavaScript -->

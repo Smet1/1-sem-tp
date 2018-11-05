@@ -2,25 +2,29 @@ from django.shortcuts import render
 from faker import Faker
 from AskPupkin.funcs import paginate
 import random
+
+from AskPupkin.models import Question
+
 fake = Faker()
 
 
 # Create your views here.
 
 def home_page(request):
-    quest = [
-        {
-            'id': quest_id,
-            'title': fake.sentence(),
-            'text': fake.text(),
-            'raiting': random.randint(0, 2000),
-            'tags': [
-                {
-                    'tag': fake.sentence(nb_words=1)
-                } for x in range(3)
-            ],
-        } for quest_id in range(40)
-    ]
+    # quest = [
+    #     {
+    #         'id': quest_id,
+    #         'title': fake.sentence(),
+    #         'text': fake.text(),
+    #         'raiting': random.randint(0, 2000),
+    #         'tags': [
+    #             {
+    #                 'tag': fake.sentence(nb_words=1)
+    #             } for x in range(3)
+    #         ],
+    #     } for quest_id in range(40)
+    # ]
+    quest = Question.object.list_new()
     quest = paginate(request, quest)
     return render(request, 'index.html', {'questions': quest, 'title': 'new'})
 
