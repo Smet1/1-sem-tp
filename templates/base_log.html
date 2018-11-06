@@ -23,7 +23,7 @@
         <!-- NavBar -->
         <nav class="navbar navbar-expand-sm bg-dark navbar-dark justify-content-between">
             <!-- Brand/logo -->
-            <a class="navbar-brand" href="#">Ask Pupkin</a>
+            <a class="navbar-brand" href="{% url 'home' %}">Ask Pupkin</a>
             <!-- collapse button -->
             <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -31,57 +31,33 @@
 
             <div class="collapse navbar-collapse" id="navbarNav">
                 <!-- Search form -->
-                <form class="form-inline my-2 my-sm-0">
+                <form class="form-inline my-2 my-sm-0" action="{% url 'ask' %}">
                     <input class="form-control mr-sm-2" style="flex: 0.9 !important" type="text" placeholder="Search">
                     <button class="btn btn-success my-2 my-sm-2" type="submit">ASK!</button>
                 </form>
-                
                 <!-- Register / login -->
                 <ul class="navbar-nav ml-auto">
                     <li>
-                        <!-- <div class="usr_img">
-                            <img src="../../img/Thrall-WC3.jpg" alt="ava" width="25%%">
-                        </div> -->
-                        <div class = "usr_img">
-                            <img src={% static 'img/Thrall-WC3.jpg' %} width="50" height="50" class="d-inline-block align-top" alt="ava">
-                        </div>
-                        <div class="usr_r-col">
-                            <div class="usr_nick">
-                                <p class="font-weight-normal" style="color: white;">Go'el</p>
+                        <div class="usr_block">
+                            <div class = "usr_img">
+                                <img src="{% static 'usr_img/alove.png' %}" width="30%" alt="ava">
                             </div>
-                            <div style="height: 50%">
-                                <div style="display: inline-block"> 
-                                    <a class="nav-link" href="#">settings</a>
+                            <div class="usr_r-col">
+                                <div class="usr_nick">
+                                    <p class="font-weight-normal" style="color: white;">Go'el</p>
                                 </div>
-                                <div style="display: inline-block;">
-                                    <a class="nav-link" href="#">log out</a>
+                                <div class="usr_navigate">
+                                    <div style="display: inline-block">
+                                        <a class="nav-link" href="{% url 'settings' %}">settings</a>
+                                    </div>
+                                    <div style="display: inline-block;">
+                                        <a class="nav-link" href="#">log out</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </li>
                 </ul>
-
-                <!-- <div class="user">
-                    <div class = "avatar">
-                        <img src="../../img/Thrall-WC3.jpg" width="50" height="50" class="d-inline-block align-top" alt="ava">
-                    </div>
-                    <div class="end_of_header">
-                        <div class = "Name_User">
-                            Mr.Ocumare
-                        </div>
-                        <div class="usr_nick">
-                            <p class="font-weight-normal" style="color: white;">Go'el</p>
-                        </div>
-                        <div class = "registrate">
-                            <div class  ="settings">
-                                <a class = "header_urls login" href="#">log_in</a>
-                            </div>
-                            <div class = "logout">
-                                <a class = "header_urls login" href="#">register</a>
-                            </div>
-                        </div>
-                    </div>
-                </div> -->
             </div>
         </nav>
 

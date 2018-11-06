@@ -112,7 +112,7 @@ class Answer(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     date = models.DateTimeField(default=timezone.now)
-    correct = models.BooleanField(default=False)
+    is_correct = models.BooleanField(default=False)
     object = AnswerManager()
 
 

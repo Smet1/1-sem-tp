@@ -112,3 +112,6 @@ def hot_page(request):
 
     return render(request, 'index.html', {'questions': quest, 'title': 'hot'})
 
+
+def user_settings(request):
+    return render(request, 'usr_settings.html')

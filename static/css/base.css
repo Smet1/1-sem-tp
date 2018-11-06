@@ -178,31 +178,43 @@
             height: 15%;
         }
 
+.usr_block {
+    display: flex;
+    justify-items: center;
+    align-items: center;
+    margin: auto;
+}
 
-.usr_nick {
-    height: 50%;
-    text-align: center !important;
-    /* align-items: center !important; */
-}
-.usr_img {
-    /* text-align: center !important; */
-    /* align-items: center !important; */
-    /* vertical-align: middle !important; */
-    display: inline-block;
-}
-.usr_r-col {
-    display: inline-block;
-}
+    .usr_img {
+        flex: 0.6;
+        text-align: right !important;
+
+    }
+    .usr_r-col {
+        flex: 0.4;
+    }
+        .usr_nick {
+            height: 80%;
+            align-items: center;
+            justify-items: center;
+            text-align: center;
+        }
+        .usr_navigate {
+            height: 20%;
+            text-align: center;
+        }
 
 /* ------ */
 .avatar {
     flex : 1;
 }
+
 .user {
     display: flex;
     align-items: center;
     justify-content: flex-start;
 }
+
 .end_of_header {
     display: flex;
     align-items: center;
