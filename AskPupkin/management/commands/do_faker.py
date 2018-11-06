@@ -14,11 +14,11 @@ class Command(BaseCommand):
     help = 'Fills database with fake data'
     faker = Factory.create()
 
-    USERS_COUNT = 1
-    QUESTIONS_COUNT = 2
+    USERS_COUNT = 20
+    QUESTIONS_COUNT = 50
     TAGS_COUNT = 3
-    MIN_ANSWERS = 1
-    MAX_ANSWERS = 2
+    MIN_ANSWERS = 4
+    MAX_ANSWERS = 13
 
     def add_arguments(self, parser):
         pass
@@ -44,8 +44,7 @@ class Command(BaseCommand):
             image_url = 'https://robohash.org/%s.png' \
                         % u.id
             content = request.urlretrieve(image_url)
-            up.user_img.save('%s.png' % u.username,
-                           File(open(content[0], 'rb')), save=True)
+            up.user_img.save('%s.png' % u.username, File(open(content[0], 'rb')), save=True)
             up.save()
 
             self.stdout.write('[%d] added user %s' % (u.id, u.username))
@@ -56,10 +55,8 @@ class Command(BaseCommand):
         for i in range(0, self.QUESTIONS_COUNT):
             q = Question()
 
-            q.title = self.faker.sentence(nb_words=randint(4, 6),
-                                          variable_nb_words=True)
-            q.text = self.faker.paragraph(nb_sentences=randint(4, 13),
-                                          variable_nb_sentences=True),
+            q.title = self.faker.sentence(nb_words=randint(4, 6), variable_nb_words=True)
+            q.text = self.faker.paragraph(nb_sentences=randint(4, 13), variable_nb_sentences=True),
 
             q.author = choice(users)
             q.save()
@@ -67,14 +64,13 @@ class Command(BaseCommand):
 
     def create_answers(self):
         users = User.objects.all()[1:]
-        questions = Question.objects.all()
+        questions = Question.object.all()
 
         for question in questions:
             for i in range(0, randint(self.MIN_ANSWERS, self.MAX_ANSWERS)):
                 a = Answer()
                 a.author = choice(users)
-                a.text = self.faker.paragraph(nb_sentences=randint(2, 10),
-                                              variable_nb_sentences=True),
+                a.text = self.faker.paragraph(nb_sentences=randint(2, 10), variable_nb_sentences=True),
                 a.question = question
                 a.correct = True if i == 0 else False
                 a.save()
@@ -82,8 +78,8 @@ class Command(BaseCommand):
 
     def create_likes(self):
         users = User.objects.all()[1:]
-        questions = Question.objects.all()
-        answers = Answer.objects.all()
+        questions = Question.object.all()
+        answers = Answer.object.all()
 
         for question in questions:
             for i in range(0, randint(0, self.USERS_COUNT // 10)):
@@ -105,18 +101,18 @@ class Command(BaseCommand):
 
     def create_tags(self):
         tags = [
-            'JavaScript', 'Java', 'C#', 'PHP', 'Android', 'JQuery', 'Python',
-            'HTML', 'CSS', 'C++', 'iOS', 'MySQL', 'Objective-C',
-            'SQL', '.net', 'RUBY', 'Swift', 'Vue', '1C'
+            'JavaScript', 'Java', 'C#', 'Android', 'Ajax', 'Python', 'FireFox', 'Mail.ru', 'TechnoPark', 'Perl'
+            'HTML', 'CSS', 'C++', 'iOS', 'MySQL', 'Objective-C', 'Django', 'ASM',
+            'SQL', '.net', 'RUBY', 'Swift'
         ]
         for tag in tags:
-            if len(Tag.objects.filter(title=tag)) == 0:
+            if len(Tag.object.filter(title=tag)) == 0:
                 t = Tag()
                 t.title = tag
                 t.save()
 
-        tags = Tag.objects.all()
-        questions = Question.objects.all()
+        tags = Tag.object.all()
+        questions = Question.object.all()
         for question in questions:
             for i in range(0, self.TAGS_COUNT):
                 t = choice(tags)

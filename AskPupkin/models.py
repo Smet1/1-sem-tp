@@ -9,7 +9,7 @@ from django.utils import timezone
 
 
 class Profile(models.Model):
-    user_img = models.ImageField(upload_to='usr_img', default='usr_img/default')
+    user_img = models.ImageField(upload_to='static/usr_img', default='static/usr_img/default')
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
 
@@ -116,14 +116,13 @@ class Answer(models.Model):
     object = AnswerManager()
 
 
-class QuestionLike(models.Model):
-    question = models.ForeignKey(Question, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    value = models.SmallIntegerField(default=1)
-
-
 class AnswerLike(models.Model):
     answer = models.ForeignKey(Answer, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     value = models.SmallIntegerField(default=1)
 
+
+class QuestionLike(models.Model):
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    value = models.SmallIntegerField(default=1)

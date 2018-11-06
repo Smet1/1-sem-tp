@@ -37,7 +37,7 @@
                 <div class="left_top">
                     <!-- картинка -->
                     <p style="text-align: center;">
-                        <img src="{{ question.author.profile.avatar.url }}" alt=ava width="40%">
+                        <img src="/static/{{ question.author.profile.user_img }}" alt="{{ question.author.profile.user_img.url }}" width="80%">
                     </p>
                 </div>
                 <div class="left_bot">
@@ -47,7 +47,7 @@
                             <i class="far fa-thumbs-down" style="margin-right: 2% !important;"></i>
                         </div>
                         <div>
-                            <b>{{ question.raiting }}</b>
+                            <b>{{ question.likes }}</b>
                         </div>
                         <div style="margin-left: 5%">
                             <i class="far fa-thumbs-up" style="margin-left: 2% !important;"></i>
@@ -72,14 +72,14 @@
                     <div class="mx-auto">
                         <!-- количество респонсов -->
                         <div style="display: inline-block; flex: 20%">
-                            <a class="u_text-14" href="{% url 'question' question_id=question.id %}#answer_list">Answers: {{ question.answers }}</a>
+                            <a class="u_text-14" href="{% url 'question' question_id=question.id %}">Answers: {{ question.answers }}</a>
                         </div>
                         <!-- теги -->
                         <div style="display: inline-block; flex: 80%;">
                             <a>Tags:</a>
                             {% for tag in question.tags.all %}
                                 {% if not forloop.first %}, {% endif %}
-                                <a class="u_text-14" href="{% url 'tag_questions' tag=tag.title %}">{{ tag.title }}</a>
+                                <a class="u_text-14" href="{% url 'tag_sort' tag_sort=tag.title %}">{{ tag.title }}</a>
                             {% endfor %}
                         </div>
                     </div>
