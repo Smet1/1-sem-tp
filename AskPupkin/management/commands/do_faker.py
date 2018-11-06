@@ -1,6 +1,4 @@
-# -*- coding: utf-8 -*-
 from faker import Factory
-import codecs
 from django.core.management.base import BaseCommand
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import User
@@ -14,53 +12,52 @@ class Command(BaseCommand):
     help = 'Fills database with fake data'
     faker = Factory.create()
 
-    USERS_COUNT = 20
-    QUESTIONS_COUNT = 50
-    TAGS_COUNT = 3
-    MIN_ANSWERS = 4
-    MAX_ANSWERS = 13
+    USERS_COUNT = 75
+    QUESTIONS_COUNT = 150
+    TAGS_COUNT = 5
+    MIN_ANSWERS = 5
+    MAX_ANSWERS = 15
 
     def add_arguments(self, parser):
         pass
 
     def create_users(self):
-
         for i in range(0, self.USERS_COUNT):
             profile = self.faker.simple_profile()
 
-            u = User()
-            u.username = profile['username']
-            u.first_name = self.faker.first_name()
-            u.last_name = self.faker.last_name()
-            u.email = profile['mail']
-            u.password = make_password('web')
-            u.is_active = True
-            u.is_superuser = False
-            u.save()
+            usr = User()
+            usr.username = profile['username']
+            usr.first_name = self.faker.first_name()
+            usr.last_name = self.faker.last_name()
+            usr.email = profile['mail']
+            usr.password = make_password('web')
+            usr.is_active = True
+            usr.is_superuser = False
+            usr.save()
 
             up = Profile()
-            up.user = u
+            up.user = usr
 
-            image_url = 'https://robohash.org/%s.png' \
-                        % u.id
+            image_url = 'https://robohash.org/%s.png' % usr.id
             content = request.urlretrieve(image_url)
-            up.user_img.save('%s.png' % u.username, File(open(content[0], 'rb')), save=True)
+            up.user_img.save('%s.png' % usr.username, File(open(content[0], 'rb')), save=True)
             up.save()
 
-            self.stdout.write('[%d] added user %s' % (u.id, u.username))
+            self.stdout.write('[%d] added user %s' % (usr.id, usr.username))
 
     def create_questions(self):
         users = User.objects.all()[1:]
 
         for i in range(0, self.QUESTIONS_COUNT):
-            q = Question()
+            quest = Question()
 
-            q.title = self.faker.sentence(nb_words=randint(4, 6), variable_nb_words=True)
-            q.text = self.faker.paragraph(nb_sentences=randint(4, 13), variable_nb_sentences=True),
+            quest.title = self.faker.sentence(nb_words=randint(4, 6), variable_nb_words=True)
+            quest.text = self.faker.paragraph(nb_sentences=randint(4, 13), variable_nb_sentences=True),
 
-            q.author = choice(users)
-            q.save()
-            self.stdout.write('added question [%d]' % q.id)
+            quest.author = choice(users)
+            quest.save()
+
+            self.stdout.write('[%d] added question' % quest.id)
 
     def create_answers(self):
         users = User.objects.all()[1:]
@@ -68,13 +65,14 @@ class Command(BaseCommand):
 
         for question in questions:
             for i in range(0, randint(self.MIN_ANSWERS, self.MAX_ANSWERS)):
-                a = Answer()
-                a.author = choice(users)
-                a.text = self.faker.paragraph(nb_sentences=randint(2, 10), variable_nb_sentences=True),
-                a.question = question
-                a.correct = True if i == 0 else False
-                a.save()
-                self.stdout.write('added answer [%d]' % a.id)
+                answer = Answer()
+                answer.author = choice(users)
+                answer.text = self.faker.paragraph(nb_sentences=randint(2, 10), variable_nb_sentences=True),
+                answer.question = question
+                answer.correct = True if i == 0 else False
+                answer.save()
+
+                self.stdout.write('[%d] added answer' % answer.id)
 
     def create_likes(self):
         users = User.objects.all()[1:]
@@ -83,27 +81,28 @@ class Command(BaseCommand):
 
         for question in questions:
             for i in range(0, randint(0, self.USERS_COUNT // 10)):
-                like = QuestionLike()
-                like.user = users[i]
-                like.value = choice([-1, 1])
-                like.question = question
-                self.stdout.write('liked question [%d]' % question.id)
-                like.save()
+                quest_like = QuestionLike()
+                quest_like.user = users[i]
+                quest_like.value = choice([-1, 1])
+                quest_like.question = question
+                quest_like.save()
+
+                self.stdout.write('[%d] liked question' % question.id)
 
         for answer in answers:
             for i in range(0, randint(0, self.USERS_COUNT // 10)):
-                like = AnswerLike()
-                like.user = users[i]
-                like.value = choice([-1, 1])
-                like.answer = answer
-                self.stdout.write('liked answer [%d]' % answer.id)
-                like.save()
+                answer_like = AnswerLike()
+                answer_like.user = users[i]
+                answer_like.value = choice([-1, 1])
+                answer_like.answer = answer
+                answer_like.save()
+
+                self.stdout.write('[%d] liked answer' % answer.id)
 
     def create_tags(self):
         tags = [
             'JavaScript', 'Java', 'C#', 'Android', 'Ajax', 'Python', 'FireFox', 'Mail.ru', 'TechnoPark', 'Perl'
-            'HTML', 'CSS', 'C++', 'iOS', 'MySQL', 'Objective-C', 'Django', 'ASM',
-            'SQL', '.net', 'RUBY', 'Swift'
+            'HTML', 'CSS', 'C++', 'iOS', 'MySQL', 'Objective-C', 'Django', 'ASM', 'SQL', '.net', 'RUBY', 'Swift'
         ]
         for tag in tags:
             if len(Tag.object.filter(title=tag)) == 0:
@@ -119,7 +118,8 @@ class Command(BaseCommand):
 
                 if t not in question.tags.all():
                     question.tags.add(t)
-            self.stdout.write('tagged question [%d]' % question.id)
+
+            self.stdout.write('[%d] tagged question' % question.id)
 
     def handle(self, *args, **options):
         self.create_users()
