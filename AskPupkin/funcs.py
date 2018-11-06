@@ -1,5 +1,7 @@
 from django.core.paginator import Paginator
 
+# TODO():шаблонизатор в шаблон
+
 
 def paginate(request, objects, objects_per_page=10):
     paginator = Paginator(objects, objects_per_page)

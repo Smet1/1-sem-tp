@@ -18,9 +18,6 @@ class Command(BaseCommand):
     MIN_ANSWERS = 5
     MAX_ANSWERS = 15
 
-    def add_arguments(self, parser):
-        pass
-
     def create_users(self):
         for i in range(0, self.USERS_COUNT):
             profile = self.faker.simple_profile()
@@ -38,6 +35,7 @@ class Command(BaseCommand):
             up = Profile()
             up.user = usr
 
+            # TODO(): стандартные картинки
             image_url = 'https://robohash.org/%d.png?set=set4' % usr.id
             content = request.urlretrieve(image_url)
             up.user_img.save('%s.png' % usr.username, File(open(content[0], 'rb')), save=True)
@@ -51,14 +49,12 @@ class Command(BaseCommand):
         for i in range(0, self.QUESTIONS_COUNT):
             quest = Question()
 
-            # quest.title = self.faker.sentence(nb_words=randint(4, 6), variable_nb_words=True)
-            # quest.text = self.faker.paragraph(nb_sentences=randint(4, 13), variable_nb_sentences=True),
-
             quest.title = self.faker.sentence()
 
             quest.text = self.faker.paragraph(),
 
             quest.author = choice(users)
+            # брать айди вместо объектов
             quest.save()
 
             self.stdout.write('[%d] question' % quest.id)
@@ -71,7 +67,6 @@ class Command(BaseCommand):
             for i in range(0, randint(self.MIN_ANSWERS, self.MAX_ANSWERS)):
                 answer = Answer()
                 answer.author = choice(users)
-                # answer.text = self.faker.paragraph(nb_sentences=randint(2, 10), variable_nb_sentences=True),
                 answer.text = self.faker.paragraph(),
 
                 answer.question = question

@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import models
 
-
+# TODO(): убрать сырые SQL
 # Create your models here.
 from django.db.models import Count
 from django.db.models.expressions import RawSQL
@@ -14,15 +14,12 @@ class Profile(models.Model):
 
 
 class TagManager(models.Manager):
-    # adds number of questions to each tag
     def with_question_count(self):
         return self.annotate(questions_count=Count('question'))
 
-    # sorts tags using number of questions
     def order_by_question_count(self):
         return self.with_question_count().order_by('-questions_count')
 
-    # searches using title
     def get_by_title(self, title):
         return self.get(title=title)
 
@@ -45,8 +42,8 @@ class QuestionQuerySet(models.QuerySet):
     def with_likes(self):
         return self.annotate(likes=RawSQL('''
             SELECT IFNULL(SUM(value), 0) 
-            FROM {QuestionLike} AS qlike 
-            WHERE qlike.question_id = {Question}.id '''.format(
+            FROM {QuestionLike} AS quest_like 
+            WHERE quest_like.question_id = {Question}.id '''.format(
             Question=Question._meta.db_table,
             QuestionLike=QuestionLike._meta.db_table), ()))
 
@@ -89,8 +86,8 @@ class AnswerQuerySet(models.QuerySet):
     def with_likes(self):
         return self.annotate(likes=RawSQL('''
             SELECT IFNULL(SUM(value), 0) 
-            FROM {AnswerLike} AS alike 
-            WHERE alike.answer_id = {Answer}.id '''.format(
+            FROM {AnswerLike} AS answer_like 
+            WHERE answer_like.answer_id = {Answer}.id '''.format(
             Answer=Answer._meta.db_table,
             AnswerLike=AnswerLike._meta.db_table), ()))
 
@@ -113,7 +110,7 @@ class Answer(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     date = models.DateTimeField(default=timezone.now)
     is_correct = models.BooleanField(default=False)
-    object = AnswerManager()
+    objects = AnswerManager()
 
 
 class AnswerLike(models.Model):
