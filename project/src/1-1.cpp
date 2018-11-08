@@ -161,6 +161,11 @@ bool HashTable::find(std::string val) {
 }
 
 bool HashTable::remove(std::string val) {
+    int key = hash_key(val, str_mas.get_capacity());
+    if (str_mas[key] == val) {
+        str_mas[key].clear();
+        return true;
+    }
     return false;
 }
 
@@ -207,6 +212,9 @@ int main() {
 
     std::cin >> operation >> value;
     hash_interface(ht, value, operation);
+
+    ht.print();
+
     std::cin >> operation >> value;
     hash_interface(ht, value, operation);
 
