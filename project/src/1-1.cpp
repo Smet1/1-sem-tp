@@ -40,6 +40,8 @@ class Dynamic_mas {
         return array[size - 1];
     }
 
+    size_t get_capacity() const;
+
  private:
     T *array;
     size_t capacity;
@@ -90,7 +92,7 @@ void Dynamic_mas<T>::print() {
         std::cout << "nothing to print, size = 0\n";
         return;
     } else {
-        for (size_t i = 0; i < capacity; i++) {
+        for (size_t i = 0; i < size; i++) {
             std::cout << array[i] << " ";
         }
         std::cout << std::endl;
@@ -112,8 +114,22 @@ T& Dynamic_mas<T>::operator[](size_t index) {
     assert(index <= capacity);
     return array[index];
 }
+template<class T>
+size_t Dynamic_mas<T>::get_capacity() const {
+    return capacity;
+}
 
 /////////////////////////////////////////////
+
+int hash_key(std::string &str, int hash_size) {
+    int key = 0;
+    int a = 3;
+    for (char i : str) {
+        key = (key * a + i) % hash_size;
+    }
+
+    return key;
+}
 
 class HashTable {
  public:
@@ -121,7 +137,7 @@ class HashTable {
     bool add(std::string val);
     bool find(std::string val);
     bool remove(std::string val);
-
+    void print();
  private:
     Dynamic_mas<std::string> str_mas;
 };
@@ -129,10 +145,18 @@ class HashTable {
 HashTable::HashTable() : str_mas(BASIC_CAPACITY) { }
 
 bool HashTable::add(std::string val) {
-    return false;
+    int key = hash_key(val, str_mas.get_capacity());
+    str_mas[key] = val;
+
+    return true;
 }
 
 bool HashTable::find(std::string val) {
+    int key = hash_key(val, str_mas.get_capacity());
+    if (str_mas[key] == val) {
+        return true;
+    }
+
     return false;
 }
 
@@ -140,16 +164,56 @@ bool HashTable::remove(std::string val) {
     return false;
 }
 
+void HashTable::print() {
+    for (size_t i = 0; i < str_mas.get_capacity(); i++) {
+        std::cout << "[" << i << "] |" << str_mas[i] << "|" << std::endl;
+    }
+}
+
+void hash_interface(HashTable& ht, std::string& val, char& op) {
+    switch (op) {
+        case '+':
+            if (ht.add(val)) {
+                std::cout << "OK\n";
+            } else {
+                std::cout << "FAIL\n";
+            }
+            return;
+        case '?':
+            if (ht.find(val)) {
+                std::cout << "OK\n";
+            } else {
+                std::cout << "FAIL\n";
+            }
+            return;
+        case '-':
+            if (ht.remove(val)) {
+                std::cout << "OK\n";
+            } else {
+                std::cout << "FAIL\n";
+            }
+            return;
+        default:
+            std::cout << "net";
+            return;
+    }
+}
 
 int main() {
     char operation;
     std::string value;
 
-    std::cin >> operation >> value;
+    HashTable ht;
 
-    Dynamic_mas<int> test;
-    test.push_back(1);
-    test[3] = 2;
-    test.print();
+    std::cin >> operation >> value;
+    hash_interface(ht, value, operation);
+    std::cin >> operation >> value;
+    hash_interface(ht, value, operation);
+
+    ht.print();
+    //    Dynamic_mas<int> test;
+//    test.push_back(1);
+//    test[3] = 2;
+//    test.print();
     return 0;
 }
