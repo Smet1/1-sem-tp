@@ -80,7 +80,7 @@
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="/Users/smet_k/Desktop/tp_1_sem/project/src/5-1.cpp">
+		<Unit filename="/Users/smet_k/Desktop/tp_1_sem/project/src/1-1.cpp">
 			<Option target="1_sem_cpp"/>
 		</Unit>
 		<Unit filename="/Users/smet_k/Desktop/tp_1_sem/CMakeLists.txt">

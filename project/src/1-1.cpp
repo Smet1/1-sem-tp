@@ -25,22 +25,20 @@ class Dynamic_mas {
         size = 0;
     }
 
-    T get_elem(size_t index) const;  // получение элемента по индексу
-
-    const T operator[](size_t index) const;
     T& operator[](size_t index);
 
     void push_back(T val);  // запихуевание в конец
     T pop_back();
-    void print();
-    size_t get_size() const { return size; }
+
     void swap(size_t a, size_t b);
-    T back() {
-        assert(size > 0);
-        return array[size - 1];
-    }
+
+    T back();
+    void insert(T val, size_t position);
 
     size_t get_capacity() const;
+    size_t get_size() const;
+
+    void print();
 
  private:
     T *array;
@@ -49,17 +47,6 @@ class Dynamic_mas {
 
     void inc_capacity();  // увеличение капасити
 };
-
-template<class T>
-const T Dynamic_mas<T>::operator[](size_t index) const {
-    return get_elem(index);
-}
-
-template<class T>
-T Dynamic_mas<T>::get_elem(size_t index) const {
-    assert(index <= size);  // мб не ассерт, но вот так
-    return array[index];
-}
 
 template<class T>
 void Dynamic_mas<T>::push_back(T val) {
@@ -76,7 +63,7 @@ void Dynamic_mas<T>::inc_capacity() {
 
     T *new_arr = new T[new_cap];
     size_t i = 0;
-    for (; i < size; i++) {
+    for (; i < capacity; i++) {
         new_arr[i] = array[i];
     }
 
@@ -114,15 +101,39 @@ T& Dynamic_mas<T>::operator[](size_t index) {
     assert(index <= capacity);
     return array[index];
 }
+
 template<class T>
 size_t Dynamic_mas<T>::get_capacity() const {
     return capacity;
 }
 
+template<class T>
+size_t Dynamic_mas<T>::get_size() const { return size; }
+
+template<class T>
+T Dynamic_mas<T>::back() {
+    assert(size > 0);
+    return array[size - 1];
+}
+
+template<class T>
+void Dynamic_mas<T>::insert(T val, size_t position) {
+//    assert(position <= capacity);
+
+    array[position] = val;
+    ++size;
+
+    if (size >= 0.75 * capacity) {
+        inc_capacity();
+    }
+
+}
+
+
 /////////////////////////////////////////////
 
-int hash_key(std::string &str, int hash_size) {
-    int key = 0;
+size_t hash_key(std::string &str, size_t hash_size) {
+    size_t key = 0;
     int a = 3;
     for (char i : str) {
         key = (key * a + i) % hash_size;
@@ -138,6 +149,7 @@ class HashTable {
     bool find(std::string val);
     bool remove(std::string val);
     void print();
+    size_t size() { return str_mas.get_size(); }
  private:
     Dynamic_mas<std::string> str_mas;
 };
@@ -145,14 +157,19 @@ class HashTable {
 HashTable::HashTable() : str_mas(BASIC_CAPACITY) { }
 
 bool HashTable::add(std::string val) {
-    int key = hash_key(val, str_mas.get_capacity());
-    str_mas[key] = val;
+    size_t key = hash_key(val, str_mas.get_capacity());
+//    str_mas[key] = val;
+    if (!find(val)) {
+        str_mas.insert(val, key);
+        return true;
+    } else {
+        return false;
+    }
 
-    return true;
 }
 
 bool HashTable::find(std::string val) {
-    int key = hash_key(val, str_mas.get_capacity());
+    size_t key = hash_key(val, str_mas.get_capacity());
     if (str_mas[key] == val) {
         return true;
     }
@@ -161,7 +178,7 @@ bool HashTable::find(std::string val) {
 }
 
 bool HashTable::remove(std::string val) {
-    int key = hash_key(val, str_mas.get_capacity());
+    size_t key = hash_key(val, str_mas.get_capacity());
     if (str_mas[key] == val) {
         str_mas[key].clear();
         return true;
@@ -210,15 +227,15 @@ int main() {
 
     HashTable ht;
 
-    std::cin >> operation >> value;
-    hash_interface(ht, value, operation);
+    for (size_t i = 0; i < 8; i++) {
+        std::cin >> operation >> value;
+        hash_interface(ht, value, operation);
 
-    ht.print();
+        ht.print();
+        std::cout << ht.size() << std::endl;
+    }
 
-    std::cin >> operation >> value;
-    hash_interface(ht, value, operation);
 
-    ht.print();
     //    Dynamic_mas<int> test;
 //    test.push_back(1);
 //    test[3] = 2;

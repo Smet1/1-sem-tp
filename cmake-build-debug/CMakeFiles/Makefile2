@@ -65,39 +65,39 @@ CMAKE_SOURCE_DIR = /Users/smet_k/Desktop/tp_1_sem
 CMAKE_BINARY_DIR = /Users/smet_k/Desktop/tp_1_sem/cmake-build-debug
 
 #=============================================================================
-# Target rules for target CMakeFiles/1_sem_cpp.dir
+# Target rules for target CMakeFiles/tp_1_sem.dir
 
 # All Build rule for target.
-CMakeFiles/1_sem_cpp.dir/all:
-	$(MAKE) -f CMakeFiles/1_sem_cpp.dir/build.make CMakeFiles/1_sem_cpp.dir/depend
-	$(MAKE) -f CMakeFiles/1_sem_cpp.dir/build.make CMakeFiles/1_sem_cpp.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/smet_k/Desktop/tp_1_sem/cmake-build-debug/CMakeFiles --progress-num=1,2 "Built target 1_sem_cpp"
-.PHONY : CMakeFiles/1_sem_cpp.dir/all
+CMakeFiles/tp_1_sem.dir/all:
+	$(MAKE) -f CMakeFiles/tp_1_sem.dir/build.make CMakeFiles/tp_1_sem.dir/depend
+	$(MAKE) -f CMakeFiles/tp_1_sem.dir/build.make CMakeFiles/tp_1_sem.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/smet_k/Desktop/tp_1_sem/cmake-build-debug/CMakeFiles --progress-num=1,2 "Built target tp_1_sem"
+.PHONY : CMakeFiles/tp_1_sem.dir/all
 
 # Include target in all.
-all: CMakeFiles/1_sem_cpp.dir/all
+all: CMakeFiles/tp_1_sem.dir/all
 
 .PHONY : all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/1_sem_cpp.dir/rule: cmake_check_build_system
+CMakeFiles/tp_1_sem.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start /Users/smet_k/Desktop/tp_1_sem/cmake-build-debug/CMakeFiles 2
-	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/1_sem_cpp.dir/all
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/tp_1_sem.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /Users/smet_k/Desktop/tp_1_sem/cmake-build-debug/CMakeFiles 0
-.PHONY : CMakeFiles/1_sem_cpp.dir/rule
+.PHONY : CMakeFiles/tp_1_sem.dir/rule
 
 # Convenience name for target.
-1_sem_cpp: CMakeFiles/1_sem_cpp.dir/rule
+tp_1_sem: CMakeFiles/tp_1_sem.dir/rule
 
-.PHONY : 1_sem_cpp
-
-# clean rule for target.
-CMakeFiles/1_sem_cpp.dir/clean:
-	$(MAKE) -f CMakeFiles/1_sem_cpp.dir/build.make CMakeFiles/1_sem_cpp.dir/clean
-.PHONY : CMakeFiles/1_sem_cpp.dir/clean
+.PHONY : tp_1_sem
 
 # clean rule for target.
-clean: CMakeFiles/1_sem_cpp.dir/clean
+CMakeFiles/tp_1_sem.dir/clean:
+	$(MAKE) -f CMakeFiles/tp_1_sem.dir/build.make CMakeFiles/tp_1_sem.dir/clean
+.PHONY : CMakeFiles/tp_1_sem.dir/clean
+
+# clean rule for target.
+clean: CMakeFiles/tp_1_sem.dir/clean
 
 .PHONY : clean
 

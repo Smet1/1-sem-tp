@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.12)
-project(1_sem_cpp)
+project(tp_1_sem)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(1_sem_cpp project/src/1-1.cpp)
+add_executable(tp_1_sem project/src/1-1.cpp)
