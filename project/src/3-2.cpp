@@ -37,70 +37,19 @@ public:
         }
     }
 
-    ~Deq() {
-        delete [] (array);
-        capacity = 0;
-        head = 0;
-        tail = 0;
-    }
+    ~Deq();
 
-    void push_front(int val) {
-        if (head == 0) {
-            head = capacity - 1;
-        } else {
-            head--;
-        }
+    void push_front(int val);
 
-        array[head] = val;
-        if (head == tail) {
-            inc_capacity();
-        }
-    }
+    int pop_front();
 
-    int pop_front() {
-        if (head == tail) {
-            return -1;
-        } else {
-            int res = array[head];
-            array[head] = 0;
-            head = (head + 1) % capacity;
-            return res;
-        }
-    }
+    void push_back(int val);
 
-    void push_back(int val) {
-        array[tail] = val;
-        tail = (tail + 1) % capacity;  // тк зацикленный
-        if (tail == head) {
-            inc_capacity();
-        }
-    }
+    int pop_back();
 
-    int pop_back() {
-        if (tail == head) {
-            return -1;
-        } else {
-            if (tail == 0) {
-                tail = capacity - 1;
-            } else {
-                tail--;
-            }
-            int res = array[tail];
-            // TODO(): delete
-            array[tail] = 0;
-            return res;
-        }
+    void print();
 
-    }
-
-    void print() {
-        for (size_t i = 0; i < capacity; i++) {
-            std::cout << array[i] << " ";
-        }
-
-        std::cout << std::endl;
-    }
-
+    Deq& operator=(const Deq& rvl) = delete;
 
 private:
     int* array;
@@ -108,24 +57,88 @@ private:
     int head;
     int tail;
 
-    int inc_capacity() {
-        int* new_arr = new int [capacity * 2];
-
-//        std::memcpy(new_arr, array, (size_t)capacity);  // ток для простых типов, для пользовательских - for
-        for (int i = 0; i < capacity; i++) {
-            new_arr[i] = array[(head + i) % capacity];
-
-        }
-        delete[](array);
-
-        array = new_arr;
-        head = 0;
-        tail = capacity;
-        capacity *= 2;
-
-        return 0;
-    };
+    int inc_capacity();;
 };
+
+Deq::~Deq() {
+  delete [] (array);
+  capacity = 0;
+  head = 0;
+  tail = 0;
+}
+
+void Deq::push_front(int val) {
+  if (head == 0) {
+    head = capacity - 1;
+  } else {
+    head--;
+  }
+
+  array[head] = val;
+  if (head == tail) {
+    inc_capacity();
+  }
+}
+
+int Deq::pop_front() {
+  if (head == tail) {
+    return -1;
+  } else {
+    int res = array[head];
+    array[head] = 0;
+    head = (head + 1) % capacity;
+    return res;
+  }
+}
+
+void Deq::push_back(int val) {
+  array[tail] = val;
+  tail = (tail + 1) % capacity;  // тк зацикленный
+  if (tail == head) {
+    inc_capacity();
+  }
+}
+
+int Deq::pop_back() {
+  if (tail == head) {
+    return -1;
+  } else {
+    if (tail == 0) {
+      tail = capacity - 1;
+    } else {
+      tail--;
+    }
+    int res = array[tail];
+    array[tail] = 0;
+    return res;
+  }
+
+}
+
+int Deq::inc_capacity() {
+  int* new_arr = new int [capacity * 2];
+
+  for (int i = 0; i < capacity; i++) {
+    new_arr[i] = array[(head + i) % capacity];
+
+  }
+  delete[](array);
+
+  array = new_arr;
+  head = 0;
+  tail = capacity;
+  capacity *= 2;
+
+  return 0;
+}
+
+void Deq::print() {
+  for (size_t i = 0; i < capacity; i++) {
+    std::cout << array[i] << " ";
+  }
+
+  std::cout << std::endl;
+}
 
 bool do_command(Deq& deq, int com, int val) {
   switch (com) {
