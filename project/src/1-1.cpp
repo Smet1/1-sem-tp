@@ -34,6 +34,7 @@ class Dynamic_mas {
 
     T back();
     void insert(T val, size_t position);
+    void del(size_t position);
 
     size_t get_capacity() const;
     size_t get_size() const;
@@ -128,16 +129,36 @@ void Dynamic_mas<T>::insert(T val, size_t position) {
     }
 
 }
+template<class T>
+void Dynamic_mas<T>::del(size_t position) {
+    delete_hash_val(array[position]);
+    size--;
+
+}
 
 
 /////////////////////////////////////////////
 
-size_t hash_key(std::string &str, size_t hash_size) {
+struct Hash_val {
+    std::string val;
+    bool deleted = false;
+    bool empty = true;
+};
+
+void delete_hash_val(Hash_val& in_val) {
+    in_val.val.clear();
+    in_val.deleted = true;
+    in_val.empty = true;
+}
+
+size_t hash_key(std::string &str, size_t hash_size, int j = 0) {
     size_t key = 0;
     int a = 3;
     for (char i : str) {
         key = (key * a + i) % hash_size;
     }
+
+    key = (key + j) % hash_size;
 
     return key;
 }
@@ -150,19 +171,22 @@ class HashTable {
     bool remove(std::string val);
     void print();
     size_t size() { return str_mas.get_size(); }
+
  private:
-    Dynamic_mas<std::string> str_mas;
+    Dynamic_mas<Hash_val> str_mas;
 };
 
 HashTable::HashTable() : str_mas(BASIC_CAPACITY) { }
 
 bool HashTable::add(std::string val) {
+    int j = 0;
     size_t key = hash_key(val, str_mas.get_capacity());
 //    str_mas[key] = val;
-    if (!find(val)) {
-        str_mas.insert(val, key);
+    if (str_mas[key].empty) {
+        str_mas.insert({val, false, false}, key);
         return true;
     } else {
+
         return false;
     }
 
@@ -170,7 +194,7 @@ bool HashTable::add(std::string val) {
 
 bool HashTable::find(std::string val) {
     size_t key = hash_key(val, str_mas.get_capacity());
-    if (str_mas[key] == val) {
+    if (str_mas[key].val == val) {
         return true;
     }
 
@@ -179,8 +203,9 @@ bool HashTable::find(std::string val) {
 
 bool HashTable::remove(std::string val) {
     size_t key = hash_key(val, str_mas.get_capacity());
-    if (str_mas[key] == val) {
-        str_mas[key].clear();
+    if (str_mas[key].val == val) {
+        str_mas.del(key);
+
         return true;
     }
     return false;
@@ -188,7 +213,8 @@ bool HashTable::remove(std::string val) {
 
 void HashTable::print() {
     for (size_t i = 0; i < str_mas.get_capacity(); i++) {
-        std::cout << "[" << i << "] |" << str_mas[i] << "|" << std::endl;
+        std::cout << "[" << i << "] |" << str_mas[i].val << "|"
+        << "deleted = " << str_mas[i].deleted << ", empty = " << str_mas[i].empty << std::endl;
     }
 }
 
@@ -234,11 +260,6 @@ int main() {
         ht.print();
         std::cout << ht.size() << std::endl;
     }
-
-
-    //    Dynamic_mas<int> test;
-//    test.push_back(1);
-//    test[3] = 2;
-//    test.print();
+    
     return 0;
 }
