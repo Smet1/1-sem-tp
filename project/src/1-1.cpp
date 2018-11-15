@@ -179,9 +179,7 @@ void Dynamic_mas::insert(Hash_val val, size_t position) {
 void Dynamic_mas::del(size_t position) {
     delete_hash_val(array[position]);
     size--;
-
 }
-
 
 /////////////////////////////////////////////
 
