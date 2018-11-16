@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include <stack>
+#include <vector>
 
 template <class T>
 struct Node {
@@ -54,12 +55,29 @@ void Bin_tree<T>::add(T val) {
 }
 
 std::ostream &operator<<(std::ostream &os, const Bin_tree<int> &in) {
-    std::stack<Node<int> *> tmp;
+    std::vector<Node<int> *> normal_order;
+    std::vector<int> vector_print;
 
-    tmp.push(in.root);
+    Node<int> *buf;
+    normal_order.push_back(in.root);
 
-    Node<int> *it = tmp.top();
-    tmp.pop();
+    while (!normal_order.empty()) {
+        buf = normal_order.back();
+        normal_order.pop_back();
+
+        vector_print.push_back(buf->value);
+        if (buf->left != nullptr) {
+            normal_order.push_back(buf->left);
+        }
+        if (buf->right != nullptr) {
+            normal_order.push_back(buf->right);
+        }
+    }
+
+    for (auto i = vector_print.rbegin(); i != vector_print.rend(); i++) {
+        os << *i << " ";
+    }
+
     os << "chlen\n";
     return os;
 }
@@ -97,8 +115,8 @@ int main() {
     }
 
     int_bin_tree.recursive_print(int_bin_tree.get_root());
-
-//    std::cout << int_bin_tree;
+    std::cout << std::endl;
+    std::cout << int_bin_tree;
 
     return 0;
 }
