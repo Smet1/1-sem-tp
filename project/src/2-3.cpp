@@ -3,6 +3,7 @@
 //
 
 #include <iostream>
+#include <stack>
 
 template <class T>
 struct Node {
@@ -15,6 +16,9 @@ template <class T>
 class Bin_tree {
  public:
     void add(T val);
+    friend std::ostream& operator<<(std::ostream &os, const Bin_tree<T> &in);
+    void recursive_print(Node<T> *point);
+    Node<T> *get_root();
  private:
     Node<T> *root = nullptr;
 };
@@ -49,18 +53,52 @@ void Bin_tree<T>::add(T val) {
     }
 }
 
+std::ostream &operator<<(std::ostream &os, const Bin_tree<int> &in) {
+    std::stack<Node<int> *> tmp;
+
+    tmp.push(in.root);
+
+    Node<int> *it = tmp.top();
+    tmp.pop();
+    os << "chlen\n";
+    return os;
+}
+
+template<class T>
+void Bin_tree<T>::recursive_print(Node<T> *point) {
+    if (point == nullptr)
+        return;
+    recursive_print(point->left);
+    recursive_print(point->right);
+
+    std::cout << point->value << " ";
+}
+
+template<class T>
+Node<T> *Bin_tree<T>::get_root() {
+    return root;
+}
+
 int main() {
     int n = 0;
     std::cin >> n;
     assert(n < 106);
 
     Bin_tree<int> int_bin_tree;
-    int tmp = 0;
+    int input = 0;
 
     for (size_t i = 0; i < n; i ++) {
-        std::cin >> tmp;
-        int_bin_tree.add(tmp);
+        std::cin >> input;
+
+        assert(input >= -231);
+        assert(input <= 231);
+
+        int_bin_tree.add(input);
     }
+
+    int_bin_tree.recursive_print(int_bin_tree.get_root());
+
+//    std::cout << int_bin_tree;
 
     return 0;
 }
