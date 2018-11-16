@@ -3,8 +3,8 @@
 //
 
 #include <iostream>
-#include <stack>
 #include <vector>
+#include <cassert>
 
 template <class T>
 struct Node {
@@ -20,9 +20,8 @@ class Bin_tree {
     ~Bin_tree();
 
     void add(T val);
-    friend std::ostream& operator<<(std::ostream &os, const Bin_tree<T> &in);
-    void recursive_print(Node<T> *point);
-    Node<T> *get_root();
+    friend std::ostream& operator<<(std::ostream &os, const Bin_tree<int> &in);
+
  private:
     Node<T> *root = nullptr;
 };
@@ -81,29 +80,13 @@ std::ostream &operator<<(std::ostream &os, const Bin_tree<int> &in) {
         os << *i << " ";
     }
 
-    os << "chlen\n";
     return os;
-}
-
-template<class T>
-void Bin_tree<T>::recursive_print(Node<T> *point) {
-    if (point == nullptr)
-        return;
-    recursive_print(point->left);
-    recursive_print(point->right);
-
-    std::cout << point->value << " ";
-}
-
-template<class T>
-Node<T> *Bin_tree<T>::get_root() {
-    return root;
 }
 
 template<class T>
 Bin_tree<T>::~Bin_tree() {
     std::vector<Node<int> *> normal_order;
-    std::cout << "=======\n~\n=======\n";
+//    std::cout << "=======\n~\n=======\n";
     Node<int> *buf;
     normal_order.push_back(root);
 
@@ -114,10 +97,11 @@ Bin_tree<T>::~Bin_tree() {
         if (buf->left != nullptr) {
             normal_order.push_back(buf->left);
         }
+
         if (buf->right != nullptr) {
             normal_order.push_back(buf->right);
         }
-        std::cout << buf->value << std::endl;
+//        std::cout << buf->value << std::endl;
         delete(buf);
     }
 }
@@ -125,7 +109,7 @@ Bin_tree<T>::~Bin_tree() {
 int main() {
     int n = 0;
     std::cin >> n;
-    assert(n < 106);
+//    assert(n < 106);
 
     Bin_tree<int> int_bin_tree;
     int input = 0;
@@ -133,14 +117,12 @@ int main() {
     for (size_t i = 0; i < n; i ++) {
         std::cin >> input;
 
-        assert(input >= -231);
-        assert(input <= 231);
+//        assert(input >= -231);
+//        assert(input <= 231);
 
         int_bin_tree.add(input);
     }
 
-    int_bin_tree.recursive_print(int_bin_tree.get_root());
-    std::cout << std::endl;
     std::cout << int_bin_tree;
 
     return 0;
