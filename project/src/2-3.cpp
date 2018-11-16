@@ -16,6 +16,9 @@ struct Node {
 template <class T>
 class Bin_tree {
  public:
+    Bin_tree<T>() = default;
+    ~Bin_tree();
+
     void add(T val);
     friend std::ostream& operator<<(std::ostream &os, const Bin_tree<T> &in);
     void recursive_print(Node<T> *point);
@@ -95,6 +98,28 @@ void Bin_tree<T>::recursive_print(Node<T> *point) {
 template<class T>
 Node<T> *Bin_tree<T>::get_root() {
     return root;
+}
+
+template<class T>
+Bin_tree<T>::~Bin_tree() {
+    std::vector<Node<int> *> normal_order;
+    std::cout << "=======\n~\n=======\n";
+    Node<int> *buf;
+    normal_order.push_back(root);
+
+    while (!normal_order.empty()) {
+        buf = normal_order.back();
+        normal_order.pop_back();
+
+        if (buf->left != nullptr) {
+            normal_order.push_back(buf->left);
+        }
+        if (buf->right != nullptr) {
+            normal_order.push_back(buf->right);
+        }
+        std::cout << buf->value << std::endl;
+        delete(buf);
+    }
 }
 
 int main() {
