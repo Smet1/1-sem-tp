@@ -6,7 +6,8 @@
 #include <cmath>
 
 #define BASIC_CAPACITY 8
-
+// TODO(): на константы
+// TODO(): в рехэше вызывать функцию горнера
 #define DEFAULT_CAPACITY 16
 
 /////////////////
@@ -90,7 +91,8 @@ void Dynamic_mas::push_back(Hash_val val) {
 }
 
 void Dynamic_mas::inc_capacity() {
-    size_t new_cap = (capacity * 2 < DEFAULT_CAPACITY) ? DEFAULT_CAPACITY : capacity * 2;
+//    size_t new_cap = (capacity * 2 < DEFAULT_CAPACITY) ? DEFAULT_CAPACITY : capacity * 2;
+    size_t new_cap = capacity * 2;
 
     auto new_arr = new Hash_val[new_cap];
     for (size_t i = 0; i < capacity; i++) {
@@ -100,7 +102,7 @@ void Dynamic_mas::inc_capacity() {
         int i_prob = 0;
         size_t key = 0;
         size_t temp = key;
-        int a = 3;
+        int a = 97;
         for (char j : array[i].val) {
             key = (key * a + j) % new_cap;
         }
@@ -111,8 +113,8 @@ void Dynamic_mas::inc_capacity() {
 
                 break;
             } else {
-//                key = (temp + (i_prob * i_prob) + i_prob) % new_cap;
                 key = (key + i_prob + 1) % new_cap;
+//                key = (temp + i_prob * (i_prob + 1) / 2) % new_cap;
 
 //                std::cout << i_prob << " <-- i_prob, key = " << key << std::endl;
                 ++i_prob;
@@ -220,6 +222,7 @@ bool HashTable::add(std::string val) {
 
             return true;
         } else {
+//            key = (temp + i_prob * (i_prob + 1) / 2) % str_mas.get_capacity();
             key = (key + i_prob + 1) % str_mas.get_capacity();
 //            std::cout << i_prob << " <-- i_prob, val = " << (temp + (i_prob * i_prob)) << ", key = " << key << std::endl;
             i_prob += 1;
@@ -244,6 +247,7 @@ bool HashTable::find(std::string val) {
 
             return false;
         } else {
+//            key = (temp + i_prob * (i_prob + 1) / 2) % str_mas.get_capacity();
             key = (key + i_prob + 1) % str_mas.get_capacity();
 //            std::cout << i_prob << " <-- i_prob, val = " << (temp + (i_prob * i_prob)) << ", key = " << key << std::endl;
             i_prob += 1;
@@ -259,6 +263,8 @@ bool HashTable::remove(std::string val) {
     size_t key = hash_key(val, str_mas.get_capacity());
     size_t temp = key;
 //    std::cout << "key[0] = " << key << std::endl;
+    if (!find(val))
+        return false;
 
     while (mas_cap > i_prob) {
         if (!str_mas[key].deleted && !str_mas[key].empty && str_mas[key].val == val) {
@@ -270,6 +276,7 @@ bool HashTable::remove(std::string val) {
 
             return false;
         } else {
+//            key = (temp + i_prob * (i_prob + 1) / 2) % str_mas.get_capacity();
             key = (key + i_prob + 1) % str_mas.get_capacity();
 //            std::cout << i_prob << " <-- i_prob, val = " << (temp + (i_prob * i_prob)) << ", key = " << key << std::endl;
             i_prob += 1;
