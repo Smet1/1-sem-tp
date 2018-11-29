@@ -13,7 +13,7 @@ struct Node {
 template <class T>
 class Bin_tree {
  public:
-    Bin_tree<T>() = default;
+    Bin_tree() = default;
     ~Bin_tree();
 
     void add(T val);
@@ -125,17 +125,115 @@ size_t Bin_tree<T>::get_max_width() {
     return res;
 }
 
+///////////////////////////////////
+template <class T>
+struct Treap_node {
+    T val;
+    T priority;
+    Treap_node *left;
+    Treap_node *right;
+    size_t level;
+
+    Treap_node(T val, T priority) : val(val), priority(priority), left(nullptr), right(nullptr), level(0) { }
+};
+
+template <class T>
+class Treap {
+ public:
+    Treap() = default;
+    void add(T val, T priority);
+    void split(Treap_node<T> *current_node, T &val, Treap_node<T> *&left, Treap_node<T> *&right);
+
+ private:
+    Treap_node<T> *root = nullptr;
+    std::vector<size_t> count_levels;
+};
+
+template<class T>
+void Treap<T>::add(T val, T priority) {
+    auto *node = new Treap_node<T>(val, priority);
+
+    Treap_node<T> *point = root;
+    Treap_node<T> *prev_point = root;
+
+    if (point == nullptr) {
+        root = node;
+        return;
+    }
+
+    while (point != nullptr && priority <= point->priority) {
+        prev_point = point;
+        if (val <= point->val)
+            point = point->left;
+        else
+            point = point->right;
+    }
+
+    split(point, val, node->left, node->right);
+
+    if (prev_point == root)
+        prev_point = node;
+    if (val <= prev_point->val)
+        prev_point->left = node;
+    else
+        prev_point->right = node;
+//    while (true) {
+//        if (node->priority <= point->priority) {
+//            prev_point = point;
+//
+//            if (node->val <= point->val) {
+//                if (point->left != nullptr) {
+//                    point = point->left;
+//                } else {
+//                    point->left = node;
+//                    return;
+//                }
+//            } else {
+//                if (point->right != nullptr) {
+//                    point = point->right;
+//                } else {
+//                    point->right = node;
+//                    return;
+//                }
+//            }
+//        } else {
+//            split(point, val, point->left, point->right);
+//
+//        }
+//    }
+}
+template<class T>
+void Treap<T>::split(Treap_node<T> *current_node,
+                     T &val,
+                     Treap_node<T> *&left,
+                     Treap_node<T> *&right) {
+
+    if( current_node == nullptr ) {
+        left = nullptr;
+        right = nullptr;
+    } else if( current_node->val <= val) {
+        split( current_node->right, val, current_node->right, right );
+        left = current_node;
+    } else {
+        split( current_node->left, val, left, current_node->left );
+        right = current_node;
+    }
+}
+
 int main() {
     int n = 0;
     std::cin >> n;
 
     Bin_tree<int> int_bin_tree;
+    Treap<int> int_treap;
+
     int key = 0, priority = 0;
 
     for (size_t i = 0; i < n; i ++) {
         std::cin >> key >> priority;
 
         int_bin_tree.add(key);
+        int_treap.add(key, priority);
     }
 
     int_bin_tree.print_post();
