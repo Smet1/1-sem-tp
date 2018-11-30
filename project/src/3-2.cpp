@@ -18,10 +18,11 @@ class Bin_tree {
 
     void add(T val);
     void print_post();
-    size_t get_max_width();
+    int get_max_width();
  private:
+    void count_width();
     Node<T> *root = nullptr;
-    std::vector<size_t> count_levels;
+    std::vector<int> count_levels;
 };
 
 template<class T>
@@ -41,11 +42,11 @@ void Bin_tree<T>::add(T val) {
             if (point->right == nullptr) {
                 point->right = node;
 
-                if (node->level > count_levels.size()) {
-                    count_levels.push_back(1);
-                } else {
-                    count_levels[node->level]++;
-                }
+//                if (node->level > count_levels.size()) {
+//                    count_levels.push_back(1);
+//                } else {
+//                    count_levels[node->level]++;
+//                }
                 return;
             }
 
@@ -54,11 +55,11 @@ void Bin_tree<T>::add(T val) {
             if (point->left == nullptr) {
                 point->left = node;
 
-                if (node->level > count_levels.size()) {
-                    count_levels.push_back(1);
-                } else {
-                    count_levels[node->level]++;
-                }
+//                if (node->level > count_levels.size()) {
+//                    count_levels.push_back(1);
+//                } else {
+//                    count_levels[node->level]++;
+//                }
                 return;
             }
 
@@ -69,10 +70,10 @@ void Bin_tree<T>::add(T val) {
 
 template <class T>
 void Bin_tree<T>::print_post() {
-    std::vector<Node<int> *> normal_order;
-    std::vector<int> vector_print;
+    std::vector<Node<T> *> normal_order;
+    std::vector<T> vector_print;
 
-    Node<int> *buf;
+    Node<T> *buf;
     normal_order.push_back(root);
 
     while (!normal_order.empty()) {
@@ -95,8 +96,8 @@ void Bin_tree<T>::print_post() {
 
 template<class T>
 Bin_tree<T>::~Bin_tree() {
-    std::vector<Node<int> *> normal_order;
-    Node<int> *buf;
+    std::vector<Node<T> *> normal_order;
+    Node<T> *buf;
     normal_order.push_back(root);
 
     while (!normal_order.empty()) {
@@ -116,8 +117,9 @@ Bin_tree<T>::~Bin_tree() {
 }
 
 template<class T>
-size_t Bin_tree<T>::get_max_width() {
-    size_t res = 0;
+int Bin_tree<T>::get_max_width() {
+    int res = 0;
+    count_width();
     for (auto i : count_levels) {
         res = std::max(res, i);
     }
@@ -125,7 +127,38 @@ size_t Bin_tree<T>::get_max_width() {
     return res;
 }
 
-///////////////////////////////////
+template<class T>
+void Bin_tree<T>::count_width() {
+    std::vector<Node<T> *> tmp;  // первый уровень
+    std::vector<Node<T> *> tmp_next;  // следуюший за ним
+
+    if (root) {
+        tmp.push_back(root);
+        count_levels.push_back(1);
+    } else {
+        count_levels.push_back(0);
+        return;
+    }
+
+    while (true) {
+        for (auto &i : tmp) {
+            if (i->left != nullptr) {
+                tmp_next.push_back(i->left);
+            }
+            if (i->right != nullptr) {
+                tmp_next.push_back(i->right);
+            }
+        }
+        if (tmp_next.empty()) {
+            return;
+        }
+        count_levels.push_back(static_cast<int &&>(tmp_next.size()));
+        tmp = tmp_next;
+        tmp_next.clear();
+    }
+}
+
+/////////////////////////////////////////////////////////
 template <class T>
 struct Treap_node {
     T val;
@@ -141,14 +174,15 @@ template <class T>
 class Treap {
  public:
     Treap() = default;
+    ~Treap();
     void add(T val, T priority);
     void split(Treap_node<T> *current_node, T &val, Treap_node<T> *&left, Treap_node<T> *&right);
-    size_t get_max_width();
+    int get_max_width();
 
  private:
     void count_width();
     Treap_node<T> *root = nullptr;
-    std::vector<size_t> count_levels;
+    std::vector<int> count_levels;
 };
 
 template<class T>
@@ -195,14 +229,14 @@ void Treap<T>::split(Treap_node<T> *current_node,
                      Treap_node<T> *&left,
                      Treap_node<T> *&right) {
 
-    if( current_node == nullptr ) {
+    if (current_node == nullptr) {
         left = nullptr;
         right = nullptr;
-    } else if( current_node->val <= val) {
-        split( current_node->right, val, current_node->right, right );
+    } else if (current_node->val <= val) {
+        split (current_node->right, val, current_node->right, right);
         left = current_node;
     } else {
-        split( current_node->left, val, left, current_node->left );
+        split (current_node->left, val, left, current_node->left);
         right = current_node;
     }
 }
@@ -232,21 +266,44 @@ void Treap<T>::count_width() {
         if (tmp_next.empty()) {
             return;
         }
-        count_levels.push_back(tmp_next.size());
+        count_levels.push_back(static_cast<int &&>(tmp_next.size()));
         tmp = tmp_next;
         tmp_next.clear();
     }
 }
+
 template<class T>
-size_t Treap<T>::get_max_width() {
+int Treap<T>::get_max_width() {
     count_width();
 
-    size_t res = 0;
-    for (auto i : count_levels) {
+    int res = 0;
+    for (auto &i : count_levels) {
         res = std::max(res, i);
     }
 
     return res;
+}
+
+template<class T>
+Treap<T>::~Treap() {
+    std::vector<Treap_node<T> *> normal_order;
+    Treap_node<T> *buf;
+    normal_order.push_back(root);
+
+    while (!normal_order.empty()) {
+        buf = normal_order.back();
+        normal_order.pop_back();
+
+        if (buf->left != nullptr) {
+            normal_order.push_back(buf->left);
+        }
+
+        if (buf->right != nullptr) {
+            normal_order.push_back(buf->right);
+        }
+
+        delete(buf);
+    }
 }
 
 int main() {
@@ -264,14 +321,7 @@ int main() {
         int_bin_tree.add(key);
         int_treap.add(key, priority);
     }
-
-//    int_bin_tree.print_post();
-//
-//    size_t max = int_bin_tree.get_max_width();
-//    std::cout << std::endl << max;
-//
-//    max = int_treap.get_max_width();
-//    std::cout << std::endl << max;
+//    std::cout << int_treap.get_max_width() << std::endl << int_bin_tree.get_max_width() << std::endl;
 
     std::cout << int_treap.get_max_width() - int_bin_tree.get_max_width();
 
