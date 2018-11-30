@@ -143,8 +143,10 @@ class Treap {
     Treap() = default;
     void add(T val, T priority);
     void split(Treap_node<T> *current_node, T &val, Treap_node<T> *&left, Treap_node<T> *&right);
+    size_t get_max_width();
 
  private:
+    void count_width();
     Treap_node<T> *root = nullptr;
     std::vector<size_t> count_levels;
 };
@@ -155,6 +157,7 @@ void Treap<T>::add(T val, T priority) {
 
     Treap_node<T> *point = root;
     Treap_node<T> *prev_point = root;
+    size_t levelOfNode = 0;
 
     if (point == nullptr) {
         root = node;
@@ -163,44 +166,28 @@ void Treap<T>::add(T val, T priority) {
 
     while (point != nullptr && priority <= point->priority) {
         prev_point = point;
-        if (val <= point->val)
+        if (val <= point->val) {
             point = point->left;
-        else
+            levelOfNode++;
+        }
+        else {
             point = point->right;
+            levelOfNode++;
+        }
     }
 
     split(point, val, node->left, node->right);
 
-    if (prev_point == root)
-        prev_point = node;
-    if (val <= prev_point->val)
+    if (point == root) {
+        prev_point->level = levelOfNode;
+        root = node;
+    } else if (val <= prev_point->val) {
+        prev_point->level = levelOfNode;
         prev_point->left = node;
-    else
+    } else {
+        prev_point->level = levelOfNode;
         prev_point->right = node;
-//    while (true) {
-//        if (node->priority <= point->priority) {
-//            prev_point = point;
-//
-//            if (node->val <= point->val) {
-//                if (point->left != nullptr) {
-//                    point = point->left;
-//                } else {
-//                    point->left = node;
-//                    return;
-//                }
-//            } else {
-//                if (point->right != nullptr) {
-//                    point = point->right;
-//                } else {
-//                    point->right = node;
-//                    return;
-//                }
-//            }
-//        } else {
-//            split(point, val, point->left, point->right);
-//
-//        }
-//    }
+    }
 }
 template<class T>
 void Treap<T>::split(Treap_node<T> *current_node,
@@ -220,6 +207,48 @@ void Treap<T>::split(Treap_node<T> *current_node,
     }
 }
 
+template<class T>
+void Treap<T>::count_width() {
+    std::vector<Treap_node<T> *> tmp;  // первый уровень
+    std::vector<Treap_node<T> *> tmp_next;  // следуюший за ним
+
+    if (root) {
+        tmp.push_back(root);
+        count_levels.push_back(1);
+    } else {
+        count_levels.push_back(0);
+        return;
+    }
+
+    while (true) {
+        for (auto &i : tmp) {
+            if (i->left != nullptr) {
+                tmp_next.push_back(i->left);
+            }
+            if (i->right != nullptr) {
+                tmp_next.push_back(i->right);
+            }
+        }
+        if (tmp_next.empty()) {
+            return;
+        }
+        count_levels.push_back(tmp_next.size());
+        tmp = tmp_next;
+        tmp_next.clear();
+    }
+}
+template<class T>
+size_t Treap<T>::get_max_width() {
+    count_width();
+
+    size_t res = 0;
+    for (auto i : count_levels) {
+        res = std::max(res, i);
+    }
+
+    return res;
+}
+
 int main() {
     int n = 0;
     std::cin >> n;
@@ -236,9 +265,15 @@ int main() {
         int_treap.add(key, priority);
     }
 
-    int_bin_tree.print_post();
+//    int_bin_tree.print_post();
+//
+//    size_t max = int_bin_tree.get_max_width();
+//    std::cout << std::endl << max;
+//
+//    max = int_treap.get_max_width();
+//    std::cout << std::endl << max;
 
-    size_t max = int_bin_tree.get_max_width();
-    std::cout << std::endl << max;
+    std::cout << int_treap.get_max_width() - int_bin_tree.get_max_width();
+
     return 0;
 }
