@@ -42,11 +42,6 @@ void Bin_tree<T>::add(T val) {
             if (point->right == nullptr) {
                 point->right = node;
 
-//                if (node->level > count_levels.size()) {
-//                    count_levels.push_back(1);
-//                } else {
-//                    count_levels[node->level]++;
-//                }
                 return;
             }
 
@@ -54,12 +49,7 @@ void Bin_tree<T>::add(T val) {
         } else {
             if (point->left == nullptr) {
                 point->left = node;
-
-//                if (node->level > count_levels.size()) {
-//                    count_levels.push_back(1);
-//                } else {
-//                    count_levels[node->level]++;
-//                }
+                
                 return;
             }
 
@@ -159,6 +149,7 @@ void Bin_tree<T>::count_width() {
 }
 
 /////////////////////////////////////////////////////////
+
 template <class T>
 struct Treap_node {
     T val;
@@ -203,8 +194,7 @@ void Treap<T>::add(T val, T priority) {
         if (val <= point->val) {
             point = point->left;
             levelOfNode++;
-        }
-        else {
+        } else {
             point = point->right;
             levelOfNode++;
         }

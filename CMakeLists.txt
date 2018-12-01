@@ -3,4 +3,4 @@ project(tp_1_sem)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(tp_1_sem project/src/1-1.cpp)
+add_executable(tp_1_sem project/src/3-2.cpp)

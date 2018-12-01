@@ -123,32 +123,32 @@ tp_1_sem/fast:
 	$(MAKE) -f CMakeFiles/tp_1_sem.dir/build.make CMakeFiles/tp_1_sem.dir/build
 .PHONY : tp_1_sem/fast
 
-project/src/1-1.o: project/src/1-1.cpp.o
+project/src/3-2.o: project/src/3-2.cpp.o
 
-.PHONY : project/src/1-1.o
+.PHONY : project/src/3-2.o
 
 # target to build an object file
-project/src/1-1.cpp.o:
-	$(MAKE) -f CMakeFiles/tp_1_sem.dir/build.make CMakeFiles/tp_1_sem.dir/project/src/1-1.cpp.o
-.PHONY : project/src/1-1.cpp.o
+project/src/3-2.cpp.o:
+	$(MAKE) -f CMakeFiles/tp_1_sem.dir/build.make CMakeFiles/tp_1_sem.dir/project/src/3-2.cpp.o
+.PHONY : project/src/3-2.cpp.o
 
-project/src/1-1.i: project/src/1-1.cpp.i
+project/src/3-2.i: project/src/3-2.cpp.i
 
-.PHONY : project/src/1-1.i
+.PHONY : project/src/3-2.i
 
 # target to preprocess a source file
-project/src/1-1.cpp.i:
-	$(MAKE) -f CMakeFiles/tp_1_sem.dir/build.make CMakeFiles/tp_1_sem.dir/project/src/1-1.cpp.i
-.PHONY : project/src/1-1.cpp.i
+project/src/3-2.cpp.i:
+	$(MAKE) -f CMakeFiles/tp_1_sem.dir/build.make CMakeFiles/tp_1_sem.dir/project/src/3-2.cpp.i
+.PHONY : project/src/3-2.cpp.i
 
-project/src/1-1.s: project/src/1-1.cpp.s
+project/src/3-2.s: project/src/3-2.cpp.s
 
-.PHONY : project/src/1-1.s
+.PHONY : project/src/3-2.s
 
 # target to generate assembly for a file
-project/src/1-1.cpp.s:
-	$(MAKE) -f CMakeFiles/tp_1_sem.dir/build.make CMakeFiles/tp_1_sem.dir/project/src/1-1.cpp.s
-.PHONY : project/src/1-1.cpp.s
+project/src/3-2.cpp.s:
+	$(MAKE) -f CMakeFiles/tp_1_sem.dir/build.make CMakeFiles/tp_1_sem.dir/project/src/3-2.cpp.s
+.PHONY : project/src/3-2.cpp.s
 
 # Help Target
 help:
@@ -159,9 +159,9 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
 	@echo "... tp_1_sem"
-	@echo "... project/src/1-1.o"
-	@echo "... project/src/1-1.i"
-	@echo "... project/src/1-1.s"
+	@echo "... project/src/3-2.o"
+	@echo "... project/src/3-2.i"
+	@echo "... project/src/3-2.s"
 .PHONY : help
 
 
