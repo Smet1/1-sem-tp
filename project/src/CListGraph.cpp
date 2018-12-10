@@ -6,9 +6,7 @@
 #include <assert.h>
 #include <iostream>
 
-ListGraph::ListGraph(size_t vertices_count)
-    : out_edges_(vertices_count),
-      in_edges_(vertices_count) {}
+ListGraph::ListGraph(size_t vertices_count) : out_edges_(vertices_count), in_edges_(vertices_count) {}
 
 void ListGraph::add_edge(int from, int to) {
     assert(from >= 0 && from < vertices_count());
@@ -17,6 +15,10 @@ void ListGraph::add_edge(int from, int to) {
     // No checks (multigraph)
     out_edges_[from].push_back(to);
     in_edges_[to].push_back(from);
+}
+
+size_t ListGraph::vertices_count() const {
+    return out_edges_.size();
 }
 
 std::vector<int> ListGraph::get_next_vertices(int vertex) const {

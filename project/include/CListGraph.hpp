@@ -12,10 +12,10 @@
 class ListGraph : public IGraph {
  public:
     explicit ListGraph(size_t vertices_count);
+    ~ListGraph() override = default;
 
     void add_edge(int from, int to) override;
-
-    size_t vertices_count() const override { return out_edges_.size(); }
+    size_t vertices_count() const override;
 
     std::vector<int> get_next_vertices(int vertex) const override;
     std::vector<int> get_prev_vertices(int vertex) const override;
