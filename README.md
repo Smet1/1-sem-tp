@@ -1,19 +1,20 @@
-**HW_2 (algs):**
+**HW_3 (algs):**
 ---
 1. Задача 1 «Представление графа» (5 баллов)
 
     Дан базовый интерфейс для представленияориентированного графа:
+    
     ```C++
         struct IGraph {
             virtual ~IGraph() {}
             
             // Добавление ребра от from к to.
-            virtual void AddEdge(int from, int to) = 0;
+            virtual void add_edge(int from, int to) = 0;
         
-            virtual int VerticesCount() const  = 0;
+            virtual int vertices_count() const  = 0;
         
-            virtual std::vector<int> GetNextVertices(int vertex) const = 0;
-            virtual std::vector<int> GetPrevVertices(int vertex) const = 0;
+            virtual std::vector<int> get_next_vertices(int vertex) const = 0;
+            virtual std::vector<int> get_prev_vertices(int vertex) const = 0;
         };
     ```
     
