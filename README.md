@@ -3,7 +3,7 @@
 1. Задача 1 «Представление графа» (5 баллов)
 
     Дан базовый интерфейс для представленияориентированного графа:
-    
+    ```C++
         struct IGraph {
             virtual ~IGraph() {}
             
@@ -15,6 +15,7 @@
             virtual std::vector<int> GetNextVertices(int vertex) const = 0;
             virtual std::vector<int> GetPrevVertices(int vertex) const = 0;
         };
+    ```
     
     Необходимо написать несколько реализаций интерфейса:
     
