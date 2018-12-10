@@ -2,6 +2,40 @@
 #include <vector>
 #include <algorithm>
 
+// TODO(): функция максимальной ширины общая для всех деревьев
+
+template <class T>
+std::vector<int> count_tree_width(T *node) {
+    std::vector<T *> tmp;  // первый уровень
+    std::vector<T *> tmp_next;  // следуюший за ним
+    std::vector<int> count_levels;
+
+    if (node != nullptr) {
+        tmp.push_back(node);
+        count_levels.push_back(1);
+    } else {
+        count_levels.push_back(0);
+        return count_levels;
+    }
+
+    while (true) {
+        for (auto &i : tmp) {
+            if (i->left != nullptr) {
+                tmp_next.push_back(i->left);
+            }
+            if (i->right != nullptr) {
+                tmp_next.push_back(i->right);
+            }
+        }
+        if (tmp_next.empty()) {
+            return count_levels;
+        }
+        count_levels.push_back(static_cast<int &&>(tmp_next.size()));
+        tmp = tmp_next;
+        tmp_next.clear();
+    }
+}
+
 template <class T>
 struct Node {
     T value;
@@ -14,6 +48,7 @@ template <class T>
 class Bin_tree {
  public:
     Bin_tree() = default;
+    Node<T> *getRoot() const;
     ~Bin_tree();
 
     void add(T val);
@@ -109,7 +144,8 @@ Bin_tree<T>::~Bin_tree() {
 template<class T>
 int Bin_tree<T>::get_max_width() {
     int res = 0;
-    count_width();
+//    count_width();
+    count_levels = count_tree_width<Node<T>>(root);
     for (auto i : count_levels) {
         res = std::max(res, i);
     }
@@ -147,6 +183,10 @@ void Bin_tree<T>::count_width() {
         tmp_next.clear();
     }
 }
+template<class T>
+Node<T> *Bin_tree<T>::getRoot() const {
+    return root;
+}
 
 /////////////////////////////////////////////////////////
 
@@ -168,6 +208,7 @@ class Treap {
     ~Treap();
     void add(T val, T priority);
     void split(Treap_node<T> *current_node, T &val, Treap_node<T> *&left, Treap_node<T> *&right);
+    Treap_node<T> *getRoot() const;
     int get_max_width();
 
  private:
@@ -264,9 +305,9 @@ void Treap<T>::count_width() {
 
 template<class T>
 int Treap<T>::get_max_width() {
-    count_width();
-
     int res = 0;
+    //    count_width();
+    count_levels = count_tree_width<Treap_node<T>>(root);
     for (auto &i : count_levels) {
         res = std::max(res, i);
     }
@@ -295,6 +336,10 @@ Treap<T>::~Treap() {
         delete(buf);
     }
 }
+template<class T>
+Treap_node<T> *Treap<T>::getRoot() const {
+    return root;
+}
 
 int main() {
     int n = 0;
@@ -311,9 +356,14 @@ int main() {
         int_bin_tree.add(key);
         int_treap.add(key, priority);
     }
+
+//    std::vector<int> count_levels = count_tree_width<Treap_node<int>>(int_treap.getRoot());
+
 //    std::cout << int_treap.get_max_width() << std::endl << int_bin_tree.get_max_width() << std::endl;
 
-    std::cout << int_treap.get_max_width() - int_bin_tree.get_max_width();
+    std::cout << int_treap.get_max_width() << ' ' << int_bin_tree.get_max_width();
 
     return 0;
 }
+
++5 +8 +2 +3 +4 -3 +9 +6 +7 -2

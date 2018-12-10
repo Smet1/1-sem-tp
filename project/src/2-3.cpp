@@ -8,6 +8,7 @@
 
 // TODO(): постордер на функторе
 // TODO(): принт в отдельной функции
+
 template <class T>
 struct Node {
     T value;

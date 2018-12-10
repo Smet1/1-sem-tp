@@ -5,10 +5,9 @@
 #include <vector>
 #include <cmath>
 
-#define BASIC_CAPACITY 8
-// TODO(): на константы
-// TODO(): в рехэше вызывать функцию горнера
-#define DEFAULT_CAPACITY 16
+const int BASIC_CAPACITY = 8;
+// TODO(): на константы (Done)
+// TODO(): в рехэше вызывать функцию горнера (Done)
 
 /////////////////
 struct Hash_val {
@@ -91,7 +90,6 @@ void Dynamic_mas::push_back(Hash_val val) {
 }
 
 void Dynamic_mas::inc_capacity() {
-//    size_t new_cap = (capacity * 2 < DEFAULT_CAPACITY) ? DEFAULT_CAPACITY : capacity * 2;
     size_t new_cap = capacity * 2;
 
     auto new_arr = new Hash_val[new_cap];
@@ -101,11 +99,12 @@ void Dynamic_mas::inc_capacity() {
         }
         int i_prob = 0;
         size_t key = 0;
-        size_t temp = key;
-        int a = 97;
-        for (char j : array[i].val) {
-            key = (key * a + j) % new_cap;
-        }
+
+//        int a = 97;
+//        for (char j : array[i].val) {
+//            key = (key * a + j) % new_cap;
+//        }
+        key = hash_key(array[i].val, new_cap);
 
         while (new_cap > i_prob) {
             if (new_arr[key].empty) {
