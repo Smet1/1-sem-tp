@@ -12,7 +12,7 @@
 
 class CSetGraph : public IGraph {
  public:
-    CSetGraph(size_t size) : vertices(size) {}
+    CSetGraph(size_t size) : vertices(size), vertices_size(size) {}
     CSetGraph(const IGraph *graph);
     ~CSetGraph() override = default;
 
@@ -24,6 +24,8 @@ class CSetGraph : public IGraph {
     void print();
  private:
     std::vector<std::unordered_set<int>> vertices;
+    size_t vertices_size;
+
 };
 
 #endif //TP_1_SEM_CSETGRAPH_HPP

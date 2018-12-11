@@ -13,7 +13,7 @@
 class CArcGraph : public IGraph {
  public:
 //    CArcGraph(size_t size) : vertices_mas(size * 2) {};
-    CArcGraph(size_t size) {};
+    CArcGraph(size_t size) : vertices_size(size) {};
     CArcGraph(const IGraph *graph);
     ~CArcGraph() override = default;
 
@@ -26,6 +26,7 @@ class CArcGraph : public IGraph {
     void print();
  private:
     std::vector<std::pair<int, int>> vertices_mas;
+    size_t vertices_size;
 };
 
 #endif //TP_1_SEM_CARCGRAPH_HPP

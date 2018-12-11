@@ -24,8 +24,10 @@ class CListGraph : public IGraph {
     void print(std::ostream &out);
 
  private:
-    std::vector<std::vector<int>> out_edges_;
-    std::vector<std::vector<int>> in_edges_;
+    std::vector<std::vector<int>> out_edges;
+    std::vector<std::vector<int>> in_edges;
+    size_t vertices_size;
+
 };
 
 #endif //TP_1_SEM_CLISTGRAPH_HPP

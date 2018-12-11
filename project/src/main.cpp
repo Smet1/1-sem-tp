@@ -13,11 +13,11 @@
 
 // TODO(): генератор графов (±)
 // TODO(): тесты
-// TODO(): время работы
+// TODO(): время работы (±)
 // TODO(): ассерты
 // TODO(): размер графов
 
-const int graph_size = 5000;
+const int graph_size = 100;
 
 int main() {
     std::cout << "graph_size = " << graph_size << std::endl;
@@ -42,16 +42,16 @@ int main() {
 
     ///////////////////////////////////////////////
     std::cout << "CListGraph\n";
-    timer.set_begin();
 
+    timer.set_begin();
     CListGraph graph(graph_size);
     for (auto i : rand_verts) {
         graph.add_edge(i.first, i.second);
     }
     timer.set_end();
     timer.calculate("CListGraph adding edges");
+    std::cout << "--Vertices count = " << graph.vertices_count() << std::endl;
 
-//    std::cout << "--Vertices count = " << graph.vertices_count() << std::endl;
     timer.set_begin();
     std::vector<int> front_vertices = graph.get_next_vertices(0);
     timer.set_end();
@@ -73,16 +73,16 @@ int main() {
 //    std::cout << std::endl;
     ///////////////////////////////////////////////
     std::cout << "CMatrixGraph\n";
-    timer.set_begin();
 
+    timer.set_begin();
     CMatrixGraph graph1(graph_size);
     for (auto i : rand_verts) {
         graph1.add_edge(i.first, i.second);
     }
     timer.set_end();
     timer.calculate("CMatrixGraph adding edges");
+    std::cout << "--Vertices count = " << graph1.vertices_count() << std::endl;
 
-//    std::cout << "--Vertices count = " << graph1.vertices_count() << std::endl;
     timer.set_begin();
     front_vertices = graph1.get_next_vertices(0);
     timer.set_end();
@@ -104,8 +104,8 @@ int main() {
 //    std::cout << std::endl;
     ///////////////////////////////////////////////
     std::cout << "CSetGraph\n";
-    timer.set_begin();
 
+    timer.set_begin();
     CSetGraph graph2(graph_size);
     for (auto i : rand_verts) {
         graph2.add_edge(i.first, i.second);
@@ -113,7 +113,8 @@ int main() {
     timer.set_end();
     timer.calculate("CSetGraph adding edges");
 
-//    std::cout << "--Vertices count = " << graph2.vertices_count() << std::endl;
+    std::cout << "--Vertices count = " << graph2.vertices_count() << std::endl;
+
     timer.set_begin();
     front_vertices = graph2.get_next_vertices(0);
     timer.set_end();
@@ -137,7 +138,6 @@ int main() {
     std::cout << "CArcGraph\n";
 
     timer.set_begin();
-
     CArcGraph graph3(graph_size);
     for (auto i : rand_verts) {
         graph3.add_edge(i.first, i.second);
@@ -145,7 +145,8 @@ int main() {
     timer.set_end();
     timer.calculate("CArcGraph adding edges");
 
-//    std::cout << "--Vertices count = " << graph3.vertices_count() << std::endl;
+    std::cout << "--Vertices count = " << graph3.vertices_count() << std::endl;
+
     timer.set_begin();
     front_vertices = graph3.get_next_vertices(0);
     timer.set_end();
@@ -202,7 +203,6 @@ int main() {
     ///////////////////////////////////////////////
     std::cout << "CMatrixGraph" << std::endl;
 
-    //    std::cout << "--Vertices count = " << graph1.vertices_count() << std::endl;
     timer.set_begin();
     prev_vertices = graph1.get_prev_vertices(0);
     timer.set_end();
@@ -225,7 +225,6 @@ int main() {
     ///////////////////////////////////////////////
     std::cout << "CSetGraph" << std::endl;
 
-//    std::cout << "--Vertices count = " << graph2.vertices_count() << std::endl;
     timer.set_begin();
     prev_vertices = graph2.get_prev_vertices(0);
     timer.set_end();
@@ -248,7 +247,6 @@ int main() {
     ///////////////////////////////////////////////
     std::cout << "CArcGraph" << std::endl;
 
-//    std::cout << "--Vertices count = " << graph3.vertices_count() << std::endl;
     timer.set_begin();
     prev_vertices = graph3.get_prev_vertices(0);
     timer.set_end();

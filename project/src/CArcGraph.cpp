@@ -5,20 +5,27 @@
 #include <CArcGraph.hpp>
 
 void CArcGraph::add_edge(int from, int to) {
+    assert(from >= 0 && from < vertices_count());
+    assert(to >= 0 && to < vertices_count());
+
     vertices_mas.emplace_back(from, to);
 }
 
 size_t CArcGraph::vertices_count() const {
-    std::set<int> vertices;
-
-    for (auto vert : vertices_mas) {
-        vertices.insert(vert.first);
-        vertices.insert(vert.second);
-    }
-
-    return vertices.size();
+//    std::set<int> vertices;
+//
+//    for (auto vert : vertices_mas) {
+//        vertices.insert(vert.first);
+//        vertices.insert(vert.second);
+//    }
+//
+//    return vertices.size();
+    return vertices_size;
 }
+
 std::vector<int> CArcGraph::get_next_vertices(int vertex) const {
+    assert(vertex >= 0 && vertex < vertices_count());
+
     std::vector<int> next_vertices;
 
     for (auto i : vertices_mas) {
@@ -27,7 +34,10 @@ std::vector<int> CArcGraph::get_next_vertices(int vertex) const {
     }
     return next_vertices;
 }
+
 std::vector<int> CArcGraph::get_prev_vertices(int vertex) const {
+    assert(vertex >= 0 && vertex < vertices_count());
+
     std::vector<int> prev_vertices;
 
     for (auto i : vertices_mas) {
@@ -42,7 +52,10 @@ void CArcGraph::print() {
         std::cout << "[" << counter++ << "]: (" << i.first << ", " << i.second << ")" << std::endl;
     }
 }
-CArcGraph::CArcGraph(const IGraph *graph) {
+
+CArcGraph::CArcGraph(const IGraph *graph) : vertices_size(graph->vertices_count()) {
+    vertices_mas.clear();
+
     std::vector<int> temp;
     for (auto i = 0; i < graph->vertices_count(); ++i) {
         temp = graph->get_next_vertices(i);

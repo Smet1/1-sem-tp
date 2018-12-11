@@ -4,11 +4,15 @@
 
 #include <CMatrixGraph.hpp>
 
-CMatrixGraph::CMatrixGraph(size_t size) : matrix(size, std::vector<bool>(size, false)) {}
+CMatrixGraph::CMatrixGraph(size_t size) : matrix(size, std::vector<bool>(size, false)), vertices_size(size) {}
 
 void CMatrixGraph::add_edge(int from, int to) {
+    assert(from >= 0 && from < vertices_count());
+    assert(to >= 0 && to < vertices_count());
+
     matrix[from][to] = true;
 }
+
 size_t CMatrixGraph::vertices_count() const {
     // TODO(): сделать как яков на семе, мой варик неправильный
 //    size_t counter = 0;
@@ -19,9 +23,14 @@ size_t CMatrixGraph::vertices_count() const {
 //        }
 //    }
 //    return counter;
-    return matrix[0].size();
+//    return matrix[0].size();
+
+    return vertices_size;
 }
+
 std::vector<int> CMatrixGraph::get_next_vertices(int vertex) const {
+    assert(vertex >= 0 && vertex < vertices_count());
+
     std::vector<int> next_vertices;
     for (size_t vert = 0; vert < vertices_count(); ++vert) {
         if (matrix[vertex][vert]) {
@@ -31,7 +40,10 @@ std::vector<int> CMatrixGraph::get_next_vertices(int vertex) const {
 
     return next_vertices;
 }
+
 std::vector<int> CMatrixGraph::get_prev_vertices(int vertex) const {
+    assert(vertex >= 0 && vertex < vertices_count());
+
     std::vector<int> prev_vertices;
     for (size_t vert = 0; vert < vertices_count(); ++vert) {
         if (matrix[vert][vertex]) {
@@ -41,6 +53,7 @@ std::vector<int> CMatrixGraph::get_prev_vertices(int vertex) const {
 
     return prev_vertices;
 }
+
 void CMatrixGraph::print() {
 //    std::cout << " ";
 //    for (size_t k = 0; k < vertices_count(); ++k) {
@@ -58,7 +71,9 @@ void CMatrixGraph::print() {
         std::cout << std::endl;
     }
 }
-CMatrixGraph::CMatrixGraph(const IGraph *graph) {
+
+CMatrixGraph::CMatrixGraph(const IGraph *graph) : vertices_size(graph->vertices_count()) {
+    matrix.clear();
     std::vector<int> temp;
     for (auto i = 0; i < graph->vertices_count(); ++i) {
         temp = graph->get_next_vertices(i);

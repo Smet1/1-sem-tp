@@ -25,5 +25,7 @@ class CMatrixGraph : public IGraph {
 
  private:
     std::vector<std::vector<bool>> matrix;  // матрица смежности
+    size_t vertices_size;
+
 };
 #endif //TP_1_SEM_CMATRIXGRAPH_HPP
