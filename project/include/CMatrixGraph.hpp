@@ -7,6 +7,8 @@
 
 #include "IGraph.hpp"
 
+#include <iostream>
+
 class CMatrixGraph : public IGraph {
  public:
     CMatrixGraph(size_t size);
@@ -17,6 +19,8 @@ class CMatrixGraph : public IGraph {
 
     std::vector<int> get_next_vertices(int vertex) const override;
     std::vector<int> get_prev_vertices(int vertex) const override;
+
+    void print();
 
  private:
     std::vector<std::vector<bool>> matrix;  // матрица смежности

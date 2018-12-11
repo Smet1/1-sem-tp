@@ -32,7 +32,6 @@ std::vector<int> ListGraph::get_prev_vertices(int vertex) const {
 }
 
 void ListGraph::print(std::ostream &out) {
-    out << "Out_edges" << std::endl;
     for (int i = 0; i < out_edges_.size(); ++i) {
         out << i << ": ";
         for (int out_target : out_edges_[i]) {
