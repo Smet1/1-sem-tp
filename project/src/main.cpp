@@ -4,9 +4,10 @@
 
 #include <CListGraph.hpp>
 #include <CMatrixGraph.hpp>
+#include <CArcGraph.hpp>
+#include <CSetGraph.hpp>
 
 #include <iostream>
-#include <CArcGraph.hpp>
 
 int main() {
     std::cout << "<============- CListGraph -============>\n";
@@ -97,6 +98,36 @@ int main() {
 
     std::cout << std::endl << "--print:" << std::endl;
     cArcGraph.print();
+
+    /////////////////////////////
+    std::cout << "<============- CSetGraph -============>\n";
+
+    CSetGraph cSetGraph(4);
+    cSetGraph.add_edge(0, 1);
+    cSetGraph.add_edge(0, 3);
+    cSetGraph.add_edge(2, 3);
+    cSetGraph.add_edge(2, 0);
+    cSetGraph.add_edge(1, 3);
+    cSetGraph.add_edge(3, 1);
+
+    std::cout << "Vertices count = " << cSetGraph.vertices_count() << std::endl;
+
+    prev_vertices = cSetGraph.get_prev_vertices(1);
+    std::cout << "--In edges for a vertex 1 = ";
+    for (int prev : prev_vertices) {
+        std::cout << "(" << prev << ", 1), ";
+    }
+    std::cout << std::endl;
+
+    front_vertices = cSetGraph.get_next_vertices(2);
+    std::cout << "--Out edges for a vertex 2 = ";
+    for (int front : front_vertices) {
+        std::cout << "(2, " << front << "), ";
+    }
+    std::cout << std::endl;
+
+    std::cout << std::endl << "--print:" << std::endl;
+    cSetGraph.print();
 
     return 0;
 }

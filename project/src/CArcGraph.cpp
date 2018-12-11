@@ -7,6 +7,7 @@
 void CArcGraph::add_edge(int from, int to) {
     vertices_mas.emplace_back(from, to);
 }
+
 size_t CArcGraph::vertices_count() const {
     std::set<int> vertices;
 
