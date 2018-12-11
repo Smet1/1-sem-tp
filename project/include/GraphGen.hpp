@@ -9,6 +9,8 @@
 #include <vector>
 #include <random>
 #include <unordered_set>
+#include <chrono>
+
 
 class GraphGen {
  public:
@@ -16,6 +18,17 @@ class GraphGen {
     ~GraphGen() = default;
 
     std::vector<std::pair<int, int>> generate(size_t size);
+};
+
+class Timer {
+ public:
+    void set_begin();
+    void set_end();
+    void calculate(const std::string &str);
+
+ private:
+    std::chrono::time_point<std::chrono::steady_clock> time_begin;
+    std::chrono::time_point<std::chrono::steady_clock> time_end;
 };
 
 #endif //TP_1_SEM_GRAPHGEN_HPP

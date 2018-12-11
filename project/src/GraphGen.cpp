@@ -35,3 +35,14 @@ std::vector<std::pair<int, int>> GraphGen::generate(size_t size) {
 
     return pair_mas;
 }
+void Timer::set_begin() {
+    time_begin = std::chrono::steady_clock::now();
+}
+void Timer::set_end() {
+    time_end = std::chrono::steady_clock::now();
+}
+void Timer::calculate(const std::string &str) {
+    auto elapsed_mks = std::chrono::duration_cast<std::chrono::microseconds>(time_end - time_begin);
+    auto elapsed_ms = std::chrono::duration_cast<std::chrono::milliseconds>(time_end - time_begin);
+    std::cout << "\t\033[0;31m" << str << " time: " << elapsed_ms.count() << "ms, (" << elapsed_mks.count() << " µs)" << "\033[0m\n";
+}
