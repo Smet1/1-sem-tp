@@ -9,10 +9,15 @@
 
 #include <iostream>
 
+// TODO(): генератор графов
+// TODO(): тесты
+// TODO(): время работы
+// TODO(): ассерты
+
 int main() {
     std::cout << "<============- CListGraph -============>\n";
 
-    ListGraph graph(4);
+    CListGraph graph(4);
     graph.add_edge(0, 1);
     graph.add_edge(0, 3);
     graph.add_edge(2, 3);
@@ -99,6 +104,28 @@ int main() {
     std::cout << std::endl << "--print:" << std::endl;
     cArcGraph.print();
 
+    std::cout << "<============- CArcGraph.constr_test -============>\n";
+
+    CArcGraph cArcGraph_1(&graph);
+
+    std::cout << "Vertices count = " << cArcGraph_1.vertices_count() << std::endl;
+
+    prev_vertices = cArcGraph_1.get_prev_vertices(1);
+    std::cout << "--In edges for a vertex 1 = ";
+    for (int prev : prev_vertices) {
+        std::cout << "(" << prev << ", 1), ";
+    }
+    std::cout << std::endl;
+
+    front_vertices = cArcGraph_1.get_next_vertices(2);
+    std::cout << "--Out edges for a vertex 2 = ";
+    for (int front : front_vertices) {
+        std::cout << "(2, " << front << "), ";
+    }
+    std::cout << std::endl;
+
+    std::cout << std::endl << "--print:" << std::endl;
+    cArcGraph_1.print();
     /////////////////////////////
     std::cout << "<============- CSetGraph -============>\n";
 

@@ -13,6 +13,7 @@
 class CSetGraph : public IGraph {
  public:
     CSetGraph(size_t size) : vertices(size) {}
+    CSetGraph(const IGraph *graph);
     ~CSetGraph() override = default;
 
     void add_edge(int from, int to) override;

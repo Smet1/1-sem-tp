@@ -9,10 +9,11 @@
 
 #include "IGraph.hpp"
 
-class ListGraph : public IGraph {
+class CListGraph : public IGraph {
  public:
-    explicit ListGraph(size_t vertices_count);
-    ~ListGraph() override = default;
+    explicit CListGraph(size_t vertices_count);
+    CListGraph(const IGraph *graph);
+    ~CListGraph() override = default;
 
     void add_edge(int from, int to) override;
     size_t vertices_count() const override;

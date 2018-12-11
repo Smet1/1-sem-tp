@@ -12,6 +12,7 @@
 class CMatrixGraph : public IGraph {
  public:
     CMatrixGraph(size_t size);
+    CMatrixGraph(const IGraph *graph);
     ~CMatrixGraph() override = default;
 
     void add_edge(int from, int to) override;

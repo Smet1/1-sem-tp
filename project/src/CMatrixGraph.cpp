@@ -58,3 +58,13 @@ void CMatrixGraph::print() {
         std::cout << std::endl;
     }
 }
+CMatrixGraph::CMatrixGraph(const IGraph *graph) {
+    std::vector<int> temp;
+    for (auto i = 0; i < graph->vertices_count(); ++i) {
+        temp = graph->get_next_vertices(i);
+
+        for (auto x : temp) {
+            add_edge(i, x);
+        }
+    }
+}

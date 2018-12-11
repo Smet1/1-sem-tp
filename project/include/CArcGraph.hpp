@@ -14,6 +14,7 @@ class CArcGraph : public IGraph {
  public:
 //    CArcGraph(size_t size) : vertices_mas(size * 2) {};
     CArcGraph(size_t size) {};
+    CArcGraph(const IGraph *graph);
     ~CArcGraph() override = default;
 
     void add_edge(int from, int to) override;

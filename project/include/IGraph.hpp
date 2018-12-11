@@ -9,7 +9,6 @@
 
 struct IGraph {
     virtual ~IGraph() {}
-
     // Добавление ребра от from к to.
     virtual void add_edge(int from, int to) = 0;
 

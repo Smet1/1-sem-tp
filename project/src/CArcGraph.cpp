@@ -42,3 +42,13 @@ void CArcGraph::print() {
         std::cout << "[" << counter++ << "]: (" << i.first << ", " << i.second << ")" << std::endl;
     }
 }
+CArcGraph::CArcGraph(const IGraph *graph) {
+    std::vector<int> temp;
+    for (auto i = 0; i < graph->vertices_count(); ++i) {
+        temp = graph->get_next_vertices(i);
+
+        for (auto x : temp) {
+            add_edge(i, x);
+        }
+    }
+}
