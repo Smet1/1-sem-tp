@@ -8,6 +8,7 @@
 #include <deque>
 #include <utility>
 #include <set>
+#include <algorithm>
 
 template <class T>
 class Graph {
@@ -78,7 +79,7 @@ void print_deque(std::deque<std::pair<int, int>> &queue) {
 }
 
 template <class T>
-std::vector<std::vector<std::pair<int, int>>> dijkstra(const Graph<T> *graph, const int &begin, const int &end) {
+size_t dijkstra(const Graph<T> *graph, const int &begin, const int &end) {
     std::vector<std::vector<std::pair<T, T>>> fastest_routes;  // вектор наилучших маршрутов (если совпадают по весам)
     size_t size_graph = graph->get_size();
 //    std::deque<std::pair<T, T>> queue;
@@ -141,8 +142,12 @@ std::vector<std::vector<std::pair<int, int>>> dijkstra(const Graph<T> *graph, co
     std::cout << std::endl;
 
 
+    size_t max = 0;
+    for (auto i : verts_from) {
+        max = std::max(max, i.size());
+    }
 
-    return fastest_routes;
+    return max;
 }
 
 int main() {
@@ -177,7 +182,7 @@ int main() {
 //        std::cout << i << " ";
 //    }
     // run dijkstra
-    size_t routes_count = dijkstra<int>(&graph, vertex_from, vertex_to).size();
+    size_t routes_count = dijkstra<int>(&graph, vertex_from, vertex_to);
     std::cout << routes_count;
 
     return 0;
