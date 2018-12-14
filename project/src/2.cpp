@@ -9,6 +9,7 @@
 #include <utility>
 #include <set>
 #include <algorithm>
+#include <queue>
 
 template <class T>
 class Graph {
@@ -78,6 +79,16 @@ void print_deque(std::deque<std::pair<int, int>> &queue) {
     std::cout << "===========" << std::endl;
 }
 
+void print_deque(std::deque<int> &queue) {
+    std::cout << "===========\ndeque (" << queue.size() << ")\n";
+    for (size_t i = 0; i < queue.size(); i++)
+        std::cout << "[" << i << "] = (" << queue[i] << ")\n";
+    std::cout << "===========" << std::endl;
+}
+
+// TODO(): восстанавливать путь, а не брать макс в массиве (непрвильный ответ)
+// TODO(): при отсутсвии маршрута не работает (скорее всего проблема в пред пункте)
+
 template <class T>
 size_t dijkstra(const Graph<T> *graph, const int &begin, const int &end) {
     std::vector<std::vector<std::pair<T, T>>> fastest_routes;  // вектор наилучших маршрутов (если совпадают по весам)
@@ -92,10 +103,10 @@ size_t dijkstra(const Graph<T> *graph, const int &begin, const int &end) {
     std::vector<int> temp = graph->get_next_vertices(begin);
 
     for (auto i : temp) {
-        std::cout << i << " ";
+//        std::cout << i << " ";
         queue.emplace_back(begin, i);
     }
-    std::cout << std::endl;
+//    std::cout << std::endl;
 //    print_deque(queue);
 
     vertices_weights[begin] = 0;
@@ -104,8 +115,8 @@ size_t dijkstra(const Graph<T> *graph, const int &begin, const int &end) {
     int tmp_to = 0;
     int wave_num = 1;
     while (!queue.empty()) {
-        std::cout << "wave_num = " << wave_num << std::endl;
-        print_deque(queue);
+//        std::cout << "wave_num = " << wave_num << std::endl;
+//        print_deque(queue);
 
         tmp_from = queue.front().first;
         tmp_to = queue.front().second;
@@ -139,12 +150,38 @@ size_t dijkstra(const Graph<T> *graph, const int &begin, const int &end) {
         }
     }
 
-    std::cout << std::endl;
-
+//    std::cout << std::endl;
 
     size_t max = 0;
-    for (auto i : verts_from) {
-        max = std::max(max, i.size());
+//    for (auto i : verts_from) {
+//        max = std::max(max, i.size());
+//    }
+
+    if (verts_from[end].empty())
+        return 0;
+    else {
+        std::deque<int> tmp;
+        std::deque<int> routes;
+        for (auto i : verts_from[end])
+            routes.push_back(i);
+
+        max = routes.size();
+
+        while (!routes.empty()) {
+            for (auto j : routes) {
+                for (auto k : verts_from[j])
+                    tmp.push_back(k);
+            }
+
+//            print_deque(routes);
+//            print_deque(tmp);
+
+            routes = tmp;
+            tmp.clear();
+
+            max = (max < routes.size()) ? routes.size() : max;
+        }
+
     }
 
     return max;
@@ -177,10 +214,8 @@ int main() {
     std::cin >> vertex_to;
     assert(vertex_to >= 0 && vertex_to <= vert_count);
 
-    graph.print();
-//    for (auto i : graph.get_next_vertices(0)) {
-//        std::cout << i << " ";
-//    }
+//    graph.print();
+
     // run dijkstra
     size_t routes_count = dijkstra<int>(&graph, vertex_from, vertex_to);
     std::cout << routes_count;
