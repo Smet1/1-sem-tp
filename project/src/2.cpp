@@ -14,9 +14,9 @@
 template <class T>
 class Graph {
  public:
-    Graph() : graph_size(0), out_edges(0), in_edges(0) {};
+    Graph() : graph_size(0), out_edges(0) {};
     Graph(size_t graph_size, size_t edges_count) : graph_size(graph_size), edges_count(edges_count),
-                                                   out_edges(edges_count), in_edges(edges_count) {};
+                                                   out_edges(edges_count) {};
     ~Graph() = default;
 
     size_t get_size() const { return graph_size; };
@@ -24,14 +24,12 @@ class Graph {
     void add_edge(T from, T to);
 
     std::vector<T> get_next_vertices(int vertex) const;
-    std::vector<T> get_prev_vertices(int vertex) const;
     void print();
  private:
     size_t graph_size;
     size_t edges_count;
 
     std::vector<std::vector<T>> out_edges;
-    std::vector<std::vector<T>> in_edges;
 };
 
 template<class T>
@@ -42,8 +40,6 @@ void Graph<T>::add_edge(T from, T to) {
     out_edges[from].push_back(to);
     out_edges[to].push_back(from);
 
-//    in_edges[to].push_back(from);
-//    in_edges[from].push_back(to);
 }
 
 template<class T>
@@ -51,13 +47,6 @@ std::vector<T> Graph<T>::get_next_vertices(int vertex) const {
     assert(vertex >= 0 && vertex < graph_size);
 
     return out_edges[vertex];
-}
-
-template<class T>
-std::vector<T> Graph<T>::get_prev_vertices(int vertex) const {
-    assert(vertex >= 0 && vertex < graph_size);
-
-    return in_edges[vertex];
 }
 
 template<class T>
@@ -91,16 +80,14 @@ void print_deque(std::deque<int> &queue) {
 
 template <class T>
 size_t dijkstra(const Graph<T> *graph, const int &begin, const int &end) {
-    std::vector<std::vector<std::pair<T, T>>> fastest_routes;  // вектор наилучших маршрутов (если совпадают по весам)
     size_t size_graph = graph->get_size();
-//    std::deque<std::pair<T, T>> queue;
     std::deque<std::pair<int, int>> queue;
     std::deque<std::pair<int, int>> tmp_queue;  // чтобы контролировать номер волны
     std::set<int> visited;
 
     std::vector<int> vertices_weights(size_graph, static_cast<const int &>(graph->get_edges_count() + 1));
     std::vector<std::vector<int>> verts_from(size_graph);  // вершины откуда пришли в текущую по минимальному весу
-    std::vector<int> temp = graph->get_next_vertices(begin);
+    std::vector<unsigned short> temp = graph->get_next_vertices(begin);
 
     for (auto i : temp) {
 //        std::cout << i << " ";
@@ -199,13 +186,13 @@ int main() {
     std::cin >> edges_count;
     assert(edges_count >= 0 && edges_count <= 200000);
 
-    Graph<int> graph(static_cast<size_t>(vert_count), static_cast<size_t>(edges_count));
+    Graph<unsigned short> graph(static_cast<size_t>(vert_count), static_cast<size_t>(edges_count));
 
     for (size_t i = 0; i < edges_count; ++i) {
         std::cin >> from;  // asserting vals in add_edge()
         std::cin >> to;
 
-        graph.add_edge(from, to);
+        graph.add_edge(static_cast<unsigned short>(from), static_cast<unsigned short>(to));
     }
 
     std::cin >> vertex_from;
@@ -217,7 +204,7 @@ int main() {
 //    graph.print();
 
     // run dijkstra
-    size_t routes_count = dijkstra<int>(&graph, vertex_from, vertex_to);
+    size_t routes_count = dijkstra<unsigned short >(&graph, vertex_from, vertex_to);
     std::cout << routes_count;
 
     return 0;
