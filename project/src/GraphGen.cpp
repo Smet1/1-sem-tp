@@ -41,8 +41,20 @@ void Timer::set_begin() {
 void Timer::set_end() {
     time_end = std::chrono::steady_clock::now();
 }
-void Timer::calculate(const std::string &str) {
+void Timer::calculate() {
     auto elapsed_mks = std::chrono::duration_cast<std::chrono::microseconds>(time_end - time_begin);
     auto elapsed_ms = std::chrono::duration_cast<std::chrono::milliseconds>(time_end - time_begin);
-    std::cout << "\t\033[0;31m" << str << " time: " << elapsed_ms.count() << "ms, (" << elapsed_mks.count() << " µs)" << "\033[0m\n";
+    std::cout << "\t\t\033[0;31m" << " time: " << "\033[0m" << elapsed_ms.count() << " ms, ("
+              << "\033[0;36m" << elapsed_mks.count() << "\033[0m" << " µs)" << "\n";
+}
+
+void Timer::check_rps(int count = 1000) {
+    auto elapsed_mks = std::chrono::duration_cast<std::chrono::microseconds>(time_end - time_begin);
+    long double hz = 0.0;
+    try {
+        hz = (1000000.0 / (elapsed_mks.count() / count));
+    } catch (std::logic_error e) {
+        std::cout << e.what() << " -> ";
+    }
+    std::cout << "\t\t\033[0;32m" << " RPS = " << "\033[0m" << "\033[0;36m" << hz << "\033[0m" << std::endl;
 }

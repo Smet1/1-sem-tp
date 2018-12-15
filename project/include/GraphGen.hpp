@@ -24,7 +24,8 @@ class Timer {
  public:
     void set_begin();
     void set_end();
-    void calculate(const std::string &str);
+    void calculate();
+    void check_rps(int count);
 
  private:
     std::chrono::time_point<std::chrono::steady_clock> time_begin;
