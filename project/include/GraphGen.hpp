@@ -17,7 +17,7 @@ class GraphGen {
     GraphGen() = default;
     ~GraphGen() = default;
 
-    std::vector<std::pair<int, int>> generate(size_t size);
+    std::vector<std::pair<int, int>> generate(size_t size, size_t percent = 0);  // percent = 0 - random
 };
 
 class Timer {

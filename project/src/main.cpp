@@ -11,6 +11,7 @@
 #include <iostream>
 #include <chrono>
 #include <Generator.h>
+#include <iomanip>
 
 // TODO(): генератор графов (±)
 // TODO(): тесты
@@ -19,21 +20,21 @@
 // TODO(): размер графов
 
 
-// TODO(): RPS для каждого метода
+// TODO(): RPS для каждого метода (+)
 
-const int graph_size = 1000;
+const int graph_size = 100;
 const int rps_iter = 1000;
 
 int main() {
-    std::cout << "graph_size = " << graph_size << std::endl;
+    std::cout << std::fixed << std::setprecision(3) << "graph_size = " << graph_size << std::endl;
     Timer timer;
 
     std::cout << "Generation\n";
     timer.set_begin();
-//    GraphGen gen;
-    Generator gen;
-//    std::vector<std::pair<int, int>> rand_verts = gen.generate(graph_size);
-    std::vector<std::pair<int, int>> rand_verts = gen.generator(graph_size);
+    GraphGen gen;
+//    Generator gen;
+    std::vector<std::pair<int, int>> rand_verts = gen.generate(graph_size, 70);
+//    std::vector<std::pair<int, int>> rand_verts = gen.generator(graph_size);
 
     timer.set_end();
     timer.calculate();

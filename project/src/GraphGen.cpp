@@ -13,24 +13,43 @@ T rand_num(const T &from = 0, const T &to = 10) {  // рандомное чис�
     return distr(generator);
 }
 
-std::vector<std::pair<int, int>> GraphGen::generate(size_t size) {
+std::vector<std::pair<int, int>> GraphGen::generate(size_t size, size_t percent) {
     std::vector<std::pair<int, int>> pair_mas;
     std::unordered_set<int> unique_vals;
     int edges = 0;
     int vert = 0;
 
-    for (size_t i = 0; i < size; ++i) {
-        edges = rand_num<int>(0, size);
+    switch (percent) {
+        case 0: {
+            for (size_t i = 0; i < size; ++i) {
+                edges = rand_num<int>(0, size);
 
-        for (size_t j = 0; j < edges; ++j) {
-            vert = rand_num<int>(0, size - 1);
+                for (size_t j = 0; j < edges; ++j) {
+                    vert = rand_num<int>(0, size - 1);
 
-            if (unique_vals.find(vert) == unique_vals.end()) {
-                unique_vals.insert(vert);
-                pair_mas.emplace_back(i, vert);
+                    if (unique_vals.find(vert) == unique_vals.end()) {
+                        unique_vals.insert(vert);
+                        pair_mas.emplace_back(i, vert);
+                    }
+                }
+                unique_vals.clear();
             }
+
+            break;
         }
-        unique_vals.clear();
+
+        default: {
+            size_t vert_edges = size * percent;
+
+            for (size_t i = 0; i < size; ++i) {
+                for (size_t j = 0; j < vert_edges; ++j) {
+                    vert = rand_num<int>(0, size - 1);
+                    pair_mas.emplace_back(i, vert);
+                }
+            }
+
+            break;
+        }
     }
 
     return pair_mas;
