@@ -39,7 +39,7 @@ std::vector<std::pair<int, int>> GraphGen::generate(size_t size, size_t percent)
         }
 
         default: {
-            size_t vert_edges = size * percent;
+            size_t vert_edges = size * (percent / 100.0);
 
             for (size_t i = 0; i < size; ++i) {
                 for (size_t j = 0; j < vert_edges; ++j) {
