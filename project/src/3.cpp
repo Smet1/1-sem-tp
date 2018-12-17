@@ -87,6 +87,11 @@ struct Edge {
 };
 
 template <class T>
+bool operator <(const Edge<T> &x, const Edge<T> &y) {
+    return x.weight <= y.weight;
+}
+
+template <class T>
 void print_deque(std::deque<Edge<T>> &queue) {
     std::cout << "===========\ndeque (" << queue.size() << ")\n";
     for (size_t i = 0; i < queue.size(); i++)
@@ -100,8 +105,8 @@ void print_deque(std::deque<Edge<T>> &queue) {
 template <class T>
 size_t dijkstra(const Graph_weighted<T> *graph, const int &begin, const int &end) {
     size_t graph_size = graph->get_size();
-    std::deque<Edge<T>> deque;
-    std::deque<Edge<T>> tmp_deque;
+    std::set<Edge<T>> deque;
+    std::set<Edge<T>> tmp_deque;
 
     std::set<int> visited;
 
@@ -110,23 +115,23 @@ size_t dijkstra(const Graph_weighted<T> *graph, const int &begin, const int &end
     vertices_weights[begin] = 0;
 
     for (auto i : graph->get_next_vertices(begin))
-        deque.emplace_back(begin, i.first, i.second);
+        deque.emplace(begin, i.first, i.second);
 
 //    print_deque(deque);
 
-    int tmp_from(0);
-    int tmp_to(0);
+    size_t tmp_from(0);
+    size_t tmp_to(0);
     T tmp_weight(0);
     int wave_num(1);
 
     while (!deque.empty()) {
         std::cout << "wave_num = " << wave_num << std::endl;
-        print_deque(deque);
+//        print_deque(deque);
 
-        tmp_from = deque.front().vert_from;
-        tmp_to = deque.front().vert_to;
-        tmp_weight = deque.front().weight;
-        deque.pop_front();
+        tmp_from = deque.begin()->vert_from;
+        tmp_to = deque.begin()->vert_to;
+        tmp_weight = deque.begin()->weight;
+        deque.erase(deque.begin());
 
         if (vertices_weights[tmp_to] > tmp_weight + vertices_weights[tmp_from]) {
             vertices_weights[tmp_to] = tmp_weight + vertices_weights[tmp_from];
@@ -135,7 +140,7 @@ size_t dijkstra(const Graph_weighted<T> *graph, const int &begin, const int &end
 
         if (visited.find(tmp_to) == visited.end()) {
             for (auto i : graph->get_next_vertices(tmp_to)) {
-                tmp_deque.emplace_back(tmp_to, i.first, i.second);
+                tmp_deque.emplace(tmp_to, i.first, i.second);
             }
             visited.insert(tmp_to);
         }

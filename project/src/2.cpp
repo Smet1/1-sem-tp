@@ -134,6 +134,10 @@ size_t dijkstra(const Graph<T> *graph, const int &begin, const int &end) {
             queue = tmp_queue;
             tmp_queue.clear();
             ++wave_num;
+            if (!verts_from[end].empty()) {
+                // если кратчайшие пути найдены, следующие уже будут с большим весом
+                break;
+            }
         }
     }
 
