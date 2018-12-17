@@ -120,15 +120,15 @@ size_t dijkstra(const Graph_weighted<T> *graph, const int &begin, const int &end
     int wave_num(1);
 
     while (!deque.empty()) {
-//        std::cout << "wave_num = " << wave_num << std::endl;
-//        print_deque(deque);
+        std::cout << "wave_num = " << wave_num << std::endl;
+        print_deque(deque);
 
         tmp_from = deque.front().vert_from;
         tmp_to = deque.front().vert_to;
         tmp_weight = deque.front().weight;
         deque.pop_front();
 
-        if (vertices_weights[tmp_to] > tmp_weight) {
+        if (vertices_weights[tmp_to] > tmp_weight + vertices_weights[tmp_from]) {
             vertices_weights[tmp_to] = tmp_weight + vertices_weights[tmp_from];
             // можно еще хранить точки откуда, но в данной задаче излишне
         }
