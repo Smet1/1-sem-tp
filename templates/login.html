@@ -12,35 +12,51 @@
     <h3>Log In</h3>
 
     <!-- Main part -->
-    <form class="needs-validation" novalidate id="login_form">
-        <div class="form-group row">
-            <label for="title_input" class="col-sm-2 col-form-label" style="padding-left: 7%">Login</label>
-            <div class="col-sm-3">
-                <input type="text" class="form-control" id="login_input" name="login_input" placeholder="Enter your login here" required>
-
-                <!-- div's with valid's out -->
-                <div class="invalid-feedback">
-                    Login required
-                </div>
-
-            </div>
+{#    <form class="needs-validation" novalidate id="login_form">#}
+{#        <div class="form-group row">#}
+{#            <label for="title_input" class="col-sm-2 col-form-label" style="padding-left: 7%">Login</label>#}
+{#            <div class="col-sm-3">#}
+{#                <input type="text" class="form-control" id="login_input" name="login_input" placeholder="Enter your login here" required>#}
+{##}
+{#                <!-- div's with valid's out -->#}
+{#                <div class="invalid-feedback">#}
+{#                    Login required#}
+{#                </div>#}
+{##}
+{#            </div>#}
+{#        </div>#}
+{#        <div class="form-group row">#}
+{#            <label for="tags_input" class="col-sm-2 col-form-label" style="padding-left: 7%">Password</label>#}
+{#            <div class="col-sm-3">#}
+{#                <input type="password" class="form-control" id="password_input" name="password_input" placeholder="********" required>#}
+{##}
+{#                <!-- div's with valid's out -->#}
+{#                <div class="invalid-feedback">#}
+{#                    Password is required#}
+{#                </div>#}
+{##}
+{#            </div>#}
+{#        </div>#}
+{##}
+{#        <button type="submit" id="submit" class="btn btn-primary" style="margin-left: 17%">Log in!</button>#}
+{#        <p class="register_login"><a href="{% url 'signup' %}">create new acount</a></p>#}
+{##}
+{#    </form>#}
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% for f in form.visible_fields %}
+        <div class="login-form-group">
+            <label for="{{ f.name }}">{{ f.label }}</label>
+            {{ f }}
         </div>
-        <div class="form-group row">
-            <label for="tags_input" class="col-sm-2 col-form-label" style="padding-left: 7%">Password</label>
-            <div class="col-sm-3">
-                <input type="password" class="form-control" id="password_input" name="password_input" placeholder="********" required>
-
-                <!-- div's with valid's out -->
-                <div class="invalid-feedback">
-                    Password is required
-                </div>
-
-            </div>
-        </div>
-
-        <button type="submit" id="submit" class="btn btn-primary" style="margin-left: 17%">Log in!</button>
-        <p class="register_login"><a href="{% url 'signup' %}">create new acount</a></p>
-
+        {% endfor %}
+        <button type="submit" class="btn btn-default login-btn">Submit</button>
+        {% for error in form.non_field_errors %}
+          <div class="askme__login-error col-lg-5 col-lg-offset-3" role="alert">
+            <span class="glyphicon glyphicon-exclamation-sign"></span>
+            {{ error }}
+          </div>
+        {% endfor %}
     </form>
     <!-- ----------------------------------------/LOGIN---------------------------------------- -->
 {% endblock %}

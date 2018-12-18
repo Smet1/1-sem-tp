@@ -12,11 +12,11 @@ class Command(BaseCommand):
     help = 'fake data'
     faker = Factory.create()
 
-    USERS_COUNT = 75
-    QUESTIONS_COUNT = 150
-    TAGS_COUNT = 5
-    MIN_ANSWERS = 5
-    MAX_ANSWERS = 15
+    USERS_COUNT = 0
+    QUESTIONS_COUNT = 0
+    TAGS_COUNT = 0
+    MIN_ANSWERS = 0
+    MAX_ANSWERS = 0
 
     def create_users(self):
         for i in range(0, self.USERS_COUNT):
@@ -41,7 +41,7 @@ class Command(BaseCommand):
             up.user_img.save('%s.png' % usr.username, File(open(content[0], 'rb')), save=True)
             up.save()
 
-            self.stdout.write('[%d] user %s' % (usr.id, usr.username))
+            self.stdout.write('[%d] user %s pass %s' % (usr.id, usr.username, usr.password))
 
     def create_questions(self):
         users = User.objects.all()[1:]

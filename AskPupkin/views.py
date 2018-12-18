@@ -1,6 +1,11 @@
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
+from django.contrib import auth
 from faker import Faker
 from AskPupkin.funcs import paginate
+from AskPupkin.forms import *
+
 import random
 
 from AskPupkin.models import Question, Answer, Tag
@@ -11,44 +16,12 @@ fake = Faker()
 # Create your views here.
 
 def home_page(request):
-    # quest = [
-    #     {
-    #         'id': quest_id,
-    #         'title': fake.sentence(),
-    #         'text': fake.text(),
-    #         'raiting': random.randint(0, 2000),
-    #         'tags': [
-    #             {
-    #                 'tag': fake.sentence(nb_words=1)
-    #             } for x in range(3)
-    #         ],
-    #     } for quest_id in range(40)
-    # ]
     quest = Question.object.list_new()
     quest = paginate(request, quest)
     return render(request, 'index.html', {'questions': quest, 'title': 'new'})
 
 
 def question_page(request, question_id):
-    # quest = {
-    #     'id': 0,
-    #     'title': fake.sentence(),
-    #     'text': fake.text(),
-    #     'raiting': random.randint(0, 2000),
-    # }
-    #
-    # tags = [
-    #     {
-    #         'tag': fake.sentence(nb_words=1)
-    #     } for x in range(3)
-    # ]
-    #
-    # responses = [
-    #     {
-    #         'id': id_res,
-    #         'text': fake.text()
-    #     } for id_res in range(15)
-    # ]
     quest = Question.object.get_single(question_id)
     responses = Answer.object.get_for_question(quest)
     responses = paginate(request, responses, 10)
@@ -64,27 +37,49 @@ def signup_page(request):
     return render(request, 'signup.html')
 
 
+def signup(request):
+    if request.user.is_authenticated:
+        return HttpResponseRedirect('/')
+    if request.method == "POST":
+        form = SignupForm(request.POST, request.FILES)
+        if form.is_valid():
+            user = form.save()
+            auth.login(request, user)
+            return HttpResponseRedirect('/')
+        else:
+            print(form.is_valid())
+            print(form.errors)
+    else:
+        form = SignupForm()
+    return render(request, 'signup.html', {'form': form})
+
+
 def login_page(request):
     return render(request, 'login.html')
 
 
+def login(request):
+    redirect = request.GET.get('continue', '/')
+    if request.user.is_authenticated:
+        return HttpResponseRedirect(redirect)
+    if request.method == "POST":
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            auth.login(request, form.cleaned_data['user'])
+            return HttpResponseRedirect(redirect)
+    else:
+        form = LoginForm()
+    return render(request, 'login.html', {'form': form})
+
+
+@login_required
+def logout(request):
+    redirect = request.GET.get('continue', '/')
+    auth.logout(request)
+    return HttpResponseRedirect(redirect)
+
+
 def tag_page(request, tag_sort):
-    # quest = [
-    #     {
-    #         'id': quest_id,
-    #         'title': fake.sentence(),
-    #         'text': fake.text(),
-    #         'raiting': random.randint(0, 2000),
-    #         'tags': [
-    #             {
-    #                 'tag': fake.sentence(nb_words=1)
-    #             } for x in range(3)
-    #         ],
-    #     } for quest_id in range(20)
-    # ]
-    #
-    # for x in quest:
-    #     x['tags'].append({'tag': tag_sort})
     tag = get_object_or_404(Tag, title=tag_sort)
     quest = Question.object.list_tag(tag)
     quest = paginate(request, quest)
@@ -93,20 +88,6 @@ def tag_page(request, tag_sort):
 
 
 def hot_page(request):
-    # quest = [
-    #     {
-    #         'id': quest_id,
-    #         'title': fake.sentence(),
-    #         'text': fake.text(),
-    #         'raiting': random.randint(0, 2000),
-    #         'tags': [
-    #             {
-    #                 'tag': fake.sentence(nb_words=1)
-    #             } for x in range(3)
-    #         ],
-    #     } for quest_id in range(30)
-    # ]
-
     quest = Question.object.list_hot()
     quest = paginate(request, quest)
 

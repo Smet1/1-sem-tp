@@ -24,8 +24,9 @@ urlpatterns = [
     path('hot/', views.hot_page, name='hot'),
     path('tag/<str:tag_sort>/', views.tag_page, name='tag_sort'),
     path('question/<int:question_id>/', views.question_page, name='question'),
-    path('login/', views.login_page, name='login'),
-    path('signup/', views.signup_page, name='signup'),
+    path('login/', views.login, name='login'),
+    path('logout/', views.logout, name='logout'),
+    path('signup/', views.signup, name='signup'),
     path('ask/', views.ask_page, name='ask'),
 
     path('settings/', views.user_settings, name='settings')
