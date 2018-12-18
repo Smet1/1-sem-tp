@@ -1,4 +1,5 @@
-
+.DS_Store
+.idea
 # Created by https://www.gitignore.io/api/django,pycharm,database,visualstudiocode
 # Edit at https://www.gitignore.io/?templates=django,pycharm,database,visualstudiocode
 
