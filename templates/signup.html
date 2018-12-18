@@ -12,81 +12,9 @@
     <h3>Registration</h3>
 
     <!-- Main part -->
-{#    <form class="needs-validation" novalidate id="register_form">#}
-{#        <div class="form-group row">#}
-{#            <label for="title_input" class="col-sm-3 col-form-label" style="padding-left: 7%">Login</label>#}
-{#            <div class="col-sm-3">#}
-{#                <input type="text" class="form-control" id="login_input" name="login_input" placeholder="dr_pepper" required>#}
-{##}
-{#                <!-- div's with valid's out -->#}
-{#                <div class="invalid-feedback">#}
-{#                    Login required#}
-{#                </div>#}
-{##}
-{#            </div>#}
-{#        </div>#}
-{##}
-{#        <div class="form-group row">#}
-{#            <label for="email_input" class="col-sm-3 col-form-label" style="padding-left: 7%">Email</label>#}
-{#            <div class="col-sm-3">#}
-{#                <input type="email" class="form-control" id="email_input" placeholder="dr.pepper@mail.ru" required>#}
-{#            </div>#}
-{##}
-{#            <!-- div's with valid's out -->#}
-{#            <div class="invalid-feedback">#}
-{#                Email required#}
-{#            </div>#}
-{##}
-{#        </div>#}
-{##}
-{#        <div class="form-group row">#}
-{#            <label for="nick_input" class="col-sm-3 col-form-label" style="padding-left: 7%">NickName</label>#}
-{#            <div class="col-sm-3">#}
-{#                <input type="text" class="form-control" id="nick_input" name="nick_input" placeholder="Dr. Pepper" required>#}
-{##}
-{#                <!-- div's with valid's out -->#}
-{#                <div class="invalid-feedback">#}
-{#                    Nick is required#}
-{#                </div>#}
-{##}
-{#            </div>#}
-{#        </div>#}
-{#        <div class="form-group row">#}
-{#            <label for="password_input" class="col-sm-3 col-form-label" style="padding-left: 7%">Password</label>#}
-{#            <div class="col-sm-3">#}
-{#                <input type="password" class="form-control" id="password_input" name="password_input" placeholder="********" required>#}
-{##}
-{#                <!-- div's with valid's out -->#}
-{#                <div class="invalid-feedback">#}
-{#                    Password is required#}
-{#                </div>#}
-{##}
-{#            </div>#}
-{#        </div>#}
-{#        <div class="form-group row">#}
-{#            <label for="password2_input" class="col-sm-3 col-form-label" style="padding-left: 7%">Repeat Password</label>#}
-{#            <div class="col-sm-3">#}
-{#                <input type="password" class="form-control" id="password2_input" name="password2_input" placeholder="********" required>#}
-{##}
-{#                <!-- div's with valid's out -->#}
-{#                <div class="invalid-feedback">#}
-{#                    Repeat password#}
-{#                </div>#}
-{##}
-{#            </div>#}
-{#        </div>#}
-{#        <div class="form-group row">#}
-{#            <label for="avatar_input" class="col-sm-3 col-form-label" style="padding-left: 7%">Upload avatar</label>#}
-{#            <div class="col-sm-3 custom-file" style="margin-left: 1.5%;">#}
-{#                <input type="file" class="custom-file-input" id="customFile">#}
-{#                <label class="custom-file-label" for="customFile">c:\avatar.jpg</label>#}
-{#            </div>#}
-{#        </div>#}
-{#        <button type="submit" id="submit" class="btn btn-primary" style="margin-left: 25.8%">Register!</button>#}
-{##}
-{#    </form>#}
-    <form method="POST" enctype="multipart/form-data">
+    <form method="POST" enctype="multipart/form-data" class="needs-validation">
         {% csrf_token %}
+
         {% if form.subject.errors %}
             <ol>
             {% for error in form.subject.errors %}
@@ -94,16 +22,20 @@
             {% endfor %}
             </ol>
         {% endif %}
+
         {% for f in form.visible_fields %}
-        <div class="login-form-group">
-            <label for="{{ f.name }}">{{ f.label }}</label>
-            {{ f }}
+        <div class="form-group row">
+            <label for="{{ f.name }}" class="col-sm-3 col-form-label" style="padding-left: 7%">{{ f.label }}</label>
+            <div class="col-sm-3">
+                {{ f }}
+            </div>
+
             {% for e in f.errors %}
                 <span class="form-error-text">{{ e }}</span>
             {% endfor %}
         </div>
         {% endfor %}
-        <button type="submit" class="btn btn-default login-btn">Submit</button>
+        <button type="submit" id="submit" class="btn btn-primary" style="margin-left: 25.8%">Register!</button>
     </form>
     <!-- ----------------------------------------/REGISTER---------------------------------------- -->
 {% endblock %}

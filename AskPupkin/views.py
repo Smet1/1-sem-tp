@@ -6,8 +6,6 @@ from faker import Faker
 from AskPupkin.funcs import paginate
 from AskPupkin.forms import *
 
-import random
-
 from AskPupkin.models import Question, Answer, Tag
 
 fake = Faker()
@@ -29,6 +27,7 @@ def question_page(request, question_id):
     return render(request, 'question.html', {'questions': quest, 'responses': responses})
 
 
+@login_required
 def ask_page(request):
     return render(request, 'ask.html')
 
@@ -94,5 +93,6 @@ def hot_page(request):
     return render(request, 'index.html', {'questions': quest, 'title': 'hot'})
 
 
+@login_required
 def user_settings(request):
     return render(request, 'usr_settings.html')

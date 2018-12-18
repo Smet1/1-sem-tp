@@ -11,12 +11,12 @@ from AskPupkin.models import Profile
 class LoginForm(forms.Form):
     login = forms.CharField(
         label='Login',
-        widget=forms.TextInput(attrs={'class': 'login-form-control', 'placeholder': 'Enter your Username here', }),
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter your Username here', }),
         max_length=30
     )
     password = forms.CharField(
         label='Password',
-        widget=forms.PasswordInput(attrs={'class': 'login-form-control', 'placeholder': '*******', }),
+        widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': '*******', }),
         min_length=8
     )
 
@@ -39,27 +39,37 @@ class LoginForm(forms.Form):
 class SignupForm(forms.Form):
     username = forms.CharField(
         label='Login',
-        widget=forms.TextInput(attrs={'class': 'login-form-control', 'placeholder': 'Enter your Username here', }),
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'dr_pepper'}),
         max_length=30
     )
+
     email = forms.EmailField(
         label='Email',
-        widget=forms.EmailInput(attrs={'class': 'login-form-control', 'placeholder': 'example@mail.ru', }),
+        widget=forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'dr.pepper@mail.ru'}),
         max_length=100
     )
+
+    nick_name = forms.CharField(
+        label='NickName',
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Dr. Pepper'}),
+        max_length=30
+    )
+
     password = forms.CharField(
         label='Password',
-        widget=forms.PasswordInput(attrs={'class': 'login-form-control', 'placeholder': '********'}),
+        widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': '------------'}),
         min_length=8
     )
+
     password_repeat = forms.CharField(
         label='Repeat Password',
-        widget=forms.PasswordInput(attrs={'class': 'login-form-control', 'placeholder': '********'}),
+        widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': '------------'}),
         min_length=8
     )
+
     avatar = forms.FileField(
-        label='Avatar',
-        widget=forms.ClearableFileInput(),
+        label='Upload avatar',
+        widget=forms.ClearableFileInput(attrs={}),
         required=False
     )
 
@@ -67,24 +77,39 @@ class SignupForm(forms.Form):
         username = self.cleaned_data.get('username', '')
 
         try:
-            u = User.objects.get(username=username)
+            User.objects.get(username=username)
+
             raise forms.ValidationError('Username is already used')
         except User.DoesNotExist:
+
             return username
 
-    def clean_password_repeat(self):
-        pswd = self.cleaned_data.get('password', '')
-        pswd_repeat = self.cleaned_data.get('password_repeat', '')
+    def clean_nick_name(self):
+        nickname = self.cleaned_data.get('nick_name', '')
 
-        if pswd != pswd_repeat:
+        try:
+            User.objects.get(last_name=nickname)
+
+            raise forms.ValidationError('NickName is already used')
+        except User.DoesNotExist:
+
+            return nickname
+
+    def clean_password_repeat(self):
+        password = self.cleaned_data.get('password', '')
+        password_repeat = self.cleaned_data.get('password_repeat', '')
+
+        if password != password_repeat:
             raise forms.ValidationError('Passwords does not matched')
-        return pswd_repeat
+
+        return password_repeat
 
     def clean_email(self):
         email = self.cleaned_data.get('email', '')
 
         try:
-            e = User.objects.get(email=email)
+            User.objects.get(email=email)
+
             raise forms.ValidationError('Email is already used')
         except User.DoesNotExist:
             return email
@@ -92,9 +117,9 @@ class SignupForm(forms.Form):
     def clean_avatar(self):
         avatar = self.cleaned_data.get('avatar')
 
-        if avatar is not None:
-            if 'image' not in avatar.content_type:
-                raise forms.ValidationError('Wrong image type')
+        # if avatar is not None:
+        #     if 'image' not in avatar.content_type:
+        #         raise forms.ValidationError('Wrong image type')
         return avatar
 
     def save(self):
@@ -103,6 +128,7 @@ class SignupForm(forms.Form):
         u = User()
 
         u.username = data.get('username')
+        u.last_name = data.get('nick_name')
         u.password = make_password(password)
         u.email = data.get('email')
         u.is_active = True
@@ -115,7 +141,7 @@ class SignupForm(forms.Form):
 
         if data.get('avatar') is not None:
             avatar = data.get('avatar')
-            up.avatar.save('%s_%s' % (u.username, avatar.name), avatar, save=True)
+            up.user_img.save('%s.png' % u.username, avatar, save=True)
 
         up.save()
 

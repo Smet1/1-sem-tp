@@ -33,8 +33,9 @@
                 <!-- Search form -->
                 <form class="form-inline my-2 my-sm-0" action="{% url 'ask' %}">
                     <input class="form-control mr-sm-2" style="flex: 0.9 !important" type="text" placeholder="Search">
-                    <button class="btn btn-success my-2 my-sm-2" type="submit">ASK!</button>
+{#                    <button class="btn btn-success my-2 my-sm-2" type="submit">ASK!</button>#}
                 </form>
+                <a href="{% url 'ask'%}" class="header-menu-nav-ul-li-a">ask!</a>
                 
                 <!-- Register / login -->
 {#                <ul class="navbar-nav ml-auto" style="display: inline-flex !important; flex-direction: row;">#}
@@ -48,10 +49,10 @@
                 {% if not request.user.is_authenticated %}
                     <ul class="navbar-nav ml-auto" style="display: inline-flex !important; flex-direction: row;">
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'signup' %}">Register</a>
+                            <a class="nav-link" href="{% url 'signup' %}?continue={{ request.path }}">Register</a>
                         </li>
                         <li class="nav-item" style="margin-left: 5%">
-                            <a class="nav-link" href="{% url 'login' %}">Login</a>
+                            <a class="nav-link" href="{% url 'login' %}?continue={{ request.path }}">Login</a>
                         </li>
                     </ul>
                 {% else %}
@@ -59,7 +60,7 @@
                         <li>
                             <div class="usr_block">
                                 <div class = "usr_img">
-                                    <img src="static {{ request.user.profile.avatar.url }}" width="30%" alt="ava">
+                                    <img src="{{ request.user.profile.usr_img }}" width="30%" alt="ava">
                                 </div>
                                 <div class="usr_r-col">
                                     <div class="usr_nick">
