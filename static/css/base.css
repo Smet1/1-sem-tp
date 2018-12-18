@@ -188,8 +188,8 @@
     .usr_img {
         flex: 0.6;
         text-align: right !important;
-
     }
+
     .usr_r-col {
         flex: 0.4;
     }
@@ -224,4 +224,21 @@
 .registrate{
     display: flex;
     align-items: baseline;
+}
+
+.header-menu-nav-register-btns {
+	margin-top: -60px;
+	margin-left: 430px;
+	font-size: 20pt;
+}
+
+.header-user-info {
+	width: 100px;
+	margin-top: -60px;
+	margin-left: 50px;
+}
+
+.header-user-info-p {
+	width: 60px;
+	font: 7pt 'Indie Flower';
 }

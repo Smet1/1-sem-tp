@@ -14,6 +14,7 @@ fake = Faker()
 # Create your views here.
 
 def home_page(request):
+    print(request.user.profile.user_img.url)
     quest = Question.object.list_new()
     quest = paginate(request, quest)
     return render(request, 'index.html', {'questions': quest, 'title': 'new'})

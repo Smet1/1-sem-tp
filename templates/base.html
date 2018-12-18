@@ -38,14 +38,6 @@
                 <a href="{% url 'ask'%}" class="header-menu-nav-ul-li-a">ask!</a>
                 
                 <!-- Register / login -->
-{#                <ul class="navbar-nav ml-auto" style="display: inline-flex !important; flex-direction: row;">#}
-{#                    <li class="nav-item">#}
-{#                        <a class="nav-link" href="{% url 'signup' %}">Register</a>#}
-{#                    </li>#}
-{#                    <li class="nav-item" style="margin-left: 5%">#}
-{#                        <a class="nav-link" href="{% url 'login' %}">Login</a>#}
-{#                    </li>#}
-{#                </ul>#}
                 {% if not request.user.is_authenticated %}
                     <ul class="navbar-nav ml-auto" style="display: inline-flex !important; flex-direction: row;">
                         <li class="nav-item">
@@ -60,7 +52,7 @@
                         <li>
                             <div class="usr_block">
                                 <div class = "usr_img">
-                                    <img src="{{ request.user.profile.usr_img }}" width="30%" alt="ava">
+                                    <img src="{{ request.user.profile.user_img.url }}" width="30%" alt="ava">
                                 </div>
                                 <div class="usr_r-col">
                                     <div class="usr_nick">
@@ -78,6 +70,13 @@
                             </div>
                         </li>
                     </ul>
+{#                    <div class="header-menu-nav-register-btns">#}
+{#                        <img src="{{ request.user.profile.usr_img }}" class="img-circle header-user-avatar">#}
+{#                        <div class="header-user-info">#}
+{#                            <p class="header-user-info-p"><a href="{% url 'settings' %}" class="header-user-info-p-a">settings</a></p>#}
+{#                            <p class="header-user-info-p"><a href="{% url 'logout' %}?continue={{ request.path }}" class="header-user-info-p-a">logout</a></p>#}
+{#                        </div>#}
+{#                    </div>#}
                 {% endif %}
             </div>
         </nav>
