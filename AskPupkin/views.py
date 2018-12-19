@@ -14,7 +14,7 @@ fake = Faker()
 # Create your views here.
 
 def home_page(request):
-    print(request.user.profile.user_img.url)
+    # print(request.user.profile.user_img.url)
     quest = Question.object.list_new()
     quest = paginate(request, quest)
     return render(request, 'index.html', {'questions': quest, 'title': 'new'})
@@ -22,7 +22,7 @@ def home_page(request):
 
 def question_page(request, question_id):
     quest = Question.object.get_single(question_id)
-    responses = Answer.object.get_for_question(quest)
+    responses = Answer.objects.get_for_question(quest)
     responses = paginate(request, responses, 10)
 
     return render(request, 'question.html', {'questions': quest, 'responses': responses})
@@ -46,9 +46,6 @@ def signup(request):
             user = form.save()
             auth.login(request, user)
             return HttpResponseRedirect('/')
-        else:
-            print(form.is_valid())
-            print(form.errors)
     else:
         form = SignupForm()
     return render(request, 'signup.html', {'form': form})

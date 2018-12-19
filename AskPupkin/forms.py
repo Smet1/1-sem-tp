@@ -11,12 +11,13 @@ from AskPupkin.models import Profile
 class LoginForm(forms.Form):
     login = forms.CharField(
         label='Login',
-        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter your Username here', }),
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter your Username here'}),
         max_length=30
     )
+
     password = forms.CharField(
         label='Password',
-        widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': '*******', }),
+        widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': '*******'}),
         min_length=8
     )
 
@@ -57,13 +58,13 @@ class SignupForm(forms.Form):
 
     password = forms.CharField(
         label='Password',
-        widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': '------------'}),
+        widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': '*******'}),
         min_length=8
     )
 
     password_repeat = forms.CharField(
         label='Repeat Password',
-        widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': '------------'}),
+        widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': '*******'}),
         min_length=8
     )
 
@@ -117,9 +118,6 @@ class SignupForm(forms.Form):
     def clean_avatar(self):
         avatar = self.cleaned_data.get('avatar')
 
-        # if avatar is not None:
-        #     if 'image' not in avatar.content_type:
-        #         raise forms.ValidationError('Wrong image type')
         return avatar
 
     def save(self):
