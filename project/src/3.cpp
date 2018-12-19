@@ -78,24 +78,37 @@ void print_deque(std::deque<int> &queue) {
 template <class T>
 struct Edge {
     Edge() : vert_from(0), vert_to(0), weight(0) {};
-    Edge(size_t from, size_t to, T weight) : vert_from(from), vert_to(to), weight(weight) {};
-    Edge(size_t from, size_t to) : vert_from(from), vert_to(to) {};
+    Edge(size_t from, size_t to, T weight) : vert_from(from), vert_to(to), weight(weight), priority(weight) {};
+    Edge(size_t from, size_t to) : vert_from(from), vert_to(to), weight(0), priority(0) {};
+    Edge(size_t from, size_t to, T weight, T priority) : vert_from(from), vert_to(to), weight(weight), priority(priority) {};
 
     size_t vert_from;
     size_t vert_to;
     T weight;
+    T priority;
 };
 
 template <class T>
 bool operator <(const Edge<T> &x, const Edge<T> &y) {
-    return x.weight <= y.weight;
+    return x.priority <= y.priority;
 }
 
 template <class T>
 void print_deque(std::deque<Edge<T>> &queue) {
     std::cout << "===========\ndeque (" << queue.size() << ")\n";
     for (size_t i = 0; i < queue.size(); i++)
-        std::cout << "[" << i << "] = (f = " << queue[i].vert_from << ", t = " << queue[i].vert_to << ", w = " << queue[i].weight << ")\n";
+        std::cout << "[" << i << "] = (f = " << queue[i].vert_from << ", t = " << queue[i].vert_to << ", w = "
+                  << queue[i].weight << ", p = " << queue[i].priority << ")\n";
+    std::cout << "===========" << std::endl;
+}
+
+template <class T>
+void print_deque(std::set<Edge<T>> &queue) {
+    std::cout << "===========\ndeque (" << queue.size() << ")\n";
+    int i = 0;
+    for (auto j : queue)
+        std::cout << "[" << i++ << "] = (f = " << j.vert_from << ", t = " << j.vert_to << ", w = " << j.weight
+        << ", p = " << j.priority << ")\n";
     std::cout << "===========" << std::endl;
 }
 
@@ -104,6 +117,10 @@ void print_deque(std::deque<Edge<T>> &queue) {
 
 template <class T>
 size_t dijkstra(const Graph_weighted<T> *graph, const int &begin, const int &end) {
+    // TODO(): delete
+    std::vector<std::vector<int>> verts_from(graph->get_size());  // вершины откуда пришли в текущую по минимальному весу
+
+
     size_t graph_size = graph->get_size();
     std::set<Edge<T>> deque;
     std::set<Edge<T>> tmp_deque;
@@ -126,7 +143,7 @@ size_t dijkstra(const Graph_weighted<T> *graph, const int &begin, const int &end
 
     while (!deque.empty()) {
         std::cout << "wave_num = " << wave_num << std::endl;
-//        print_deque(deque);
+        print_deque(deque);
 
         tmp_from = deque.begin()->vert_from;
         tmp_to = deque.begin()->vert_to;
@@ -136,11 +153,19 @@ size_t dijkstra(const Graph_weighted<T> *graph, const int &begin, const int &end
         if (vertices_weights[tmp_to] > tmp_weight + vertices_weights[tmp_from]) {
             vertices_weights[tmp_to] = tmp_weight + vertices_weights[tmp_from];
             // можно еще хранить точки откуда, но в данной задаче излишне
+
+            // TODO(): delete
+            verts_from[tmp_to].clear();
+            verts_from[tmp_to].push_back(tmp_from);
+        } else if (vertices_weights[tmp_to] == wave_num) {
+            verts_from[tmp_to].push_back(tmp_from);
         }
 
         if (visited.find(tmp_to) == visited.end()) {
             for (auto i : graph->get_next_vertices(tmp_to)) {
-                tmp_deque.emplace(tmp_to, i.first, i.second);
+                if (i.first != tmp_from)
+                    tmp_deque.emplace(tmp_to, i.first, i.second, i.second + vertices_weights[tmp_to]);
+                // + vertices_weights[tmp_from] чтобы правильно работал сет
             }
             visited.insert(tmp_to);
         }
