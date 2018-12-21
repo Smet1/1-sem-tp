@@ -5,7 +5,7 @@
 #include <GraphGen.hpp>
 
 template<class T>
-T rand_num(const T &from = 0, const T &to = 10) {  // рандомное число в интервале
+T rand_num(const T &from, const T &to) {  // рандомное число в интервале
     std::random_device rand_dev;
     std::mt19937 generator(rand_dev());
     std::uniform_int_distribution<T> distr(from, to);

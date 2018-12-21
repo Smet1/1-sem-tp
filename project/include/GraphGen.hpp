@@ -33,3 +33,6 @@ class Timer {
 };
 
 #endif //TP_1_SEM_GRAPHGEN_HPP
+
+template<class T>
+T rand_num(const T &from = 0, const T &to = 10); // рандомное число в интервале
