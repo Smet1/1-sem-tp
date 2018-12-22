@@ -22,7 +22,7 @@
 
 // TODO(): RPS для каждого метода (+)
 
-const int graph_size = 100;
+const int graph_size = 1000;
 const int rps_iter = 1000;
 
 int main() {
